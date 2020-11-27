@@ -70,16 +70,14 @@ export const Header: React.FC<{
           </Link>
         ))}
 
-        <Link href="/profile">
-          <a>
-            <Image
-              src="/gvempire-logo.png"
-              alt="GVEMPIRE.dev logo"
-              height="50px"
-              width="50px"
-            />
-          </a>
-        </Link>
+        <a>
+          <Image
+            src="/gvempire-logo.png"
+            alt="GVEMPIRE.dev logo"
+            height="50px"
+            width="50px"
+          />
+        </a>
       </nav>
     </header>
   );

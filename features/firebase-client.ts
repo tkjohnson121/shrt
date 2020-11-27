@@ -1,3 +1,4 @@
+import 'firebase/analytics';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -5,7 +6,17 @@ import 'firebase/functions';
 import 'firebase/messaging';
 import 'firebase/storage';
 
-const firebaseConfig = {
+/**
+ * # Firebase-Client (Functions)
+ * @packageDescription
+ *
+ * Client-side firebase tools and sdk.
+ *
+ * The admin tools below have no regard for the {@link firestore.rules}.
+ * @note Be careful!
+ */
+
+export const defaultConfig = {
   apiKey: process.env.FIREBASE_API_KEY || 'api_key',
   authDomain: process.env.FIREBASE_AUTH_DOMAIN || 'auth_domain',
   databaseURL: process.env.FIREBASE_DATABASE_URL || 'database_url',
@@ -40,16 +51,24 @@ export const enablePersistance = async () =>
  *
  * @see https://firebase.google.com/docs/web/setup
  */
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+const initializeFirebase = (config = defaultConfig) => {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+  }
+};
 
-  enablePersistance();
+export class FirebaseClient {
+  constructor(config = defaultConfig) {
+    initializeFirebase(config);
+    enablePersistance();
+  }
+
+  app = firebase;
+  db = firebase.firestore();
+  auth = firebase.auth();
+  storage = firebase.storage();
+  functions = firebase.functions();
+  analytics = firebase.analytics();
 }
 
-const app = firebase;
-const db = firebase.firestore();
-const auth = firebase.auth();
-const storage = firebase.storage();
-const functions = firebase.functions();
-
-export { app, db, auth, storage, functions };
+export default new FirebaseClient();
