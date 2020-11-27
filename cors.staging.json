@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://staging.Nextjs-starter.gvempire.dev"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600000
+  }
+]

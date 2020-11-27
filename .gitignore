@@ -1,0 +1,38 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Internals
+_docs/**
+_archive/**
+clients/**
+
+# dependencies
+**/node_modules/**
+**/.cache/**
+**/.pnp/**
+**/.pnp.js/**
+
+# production
+**/build/**
+**/functions/lib/**
+**/dist/**
+**/storybook-static/**
+**/.next/**
+**/out/**
+**/.now/**
+**/docs/**
+
+# functions output dir
+packages/controller/functions/lib
+
+# misc
+**/coverage/**
+**/.DS_Store
+**/gv-collection-adminsdk.json
+**/.env.*
+**/hosting.*
+
+#logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+firebase-debug.log*

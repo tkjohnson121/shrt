@@ -1,0 +1,48 @@
+stages:
+  - functions
+  - app
+
+cache:
+  paths:
+    - node_modules/
+    - functions/node_modules/
+
+'functions':
+  image: node:10
+  stage: functions
+  script:
+    - cd functions
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - functions/node_modules/
+
+'app':
+  image: node:latest
+  stage: app
+  script:
+    - yarn install
+    - yarn test --runInBand --detectOpenHandles --forceExit
+    - yarn build
+    - yarn build:docs
+
+  artifacts:
+    paths:
+      - node_modules/
+      - coverage/
+      - components/__snapshots__/
+      - features/recorder/__snapshots__/
+      - features/theme/__snapshots__/
+# Handled by Vercel
+# 'build app':
+#   image: node:latest
+#   stage: app
+#   script:
+#     - yarn build
+#   artifacts:
+#     paths:
+#       - out
+#       - .next
+#   only:
+#     - latest
