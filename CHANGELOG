@@ -1,6 +1,3 @@
-* c7c5231 (HEAD -> main) finished the landing page
-* e2eb25d add header'
-* 95f1025 (tag: v0.0.2) v0.0.2
-* 2f6f012 update changelog
-* a1cc37d scaffold init
-* 1e7bc51 (master) Initial commit from Create Next App
+* 2971c7f (HEAD -> main) create firebase classes
+* 1a80122 remove uncessecary
+* 96f8d68 (origin/main, master) init
