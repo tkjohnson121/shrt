@@ -55,13 +55,14 @@ export const Loading: React.FC<{ number?: number }> = ({
   number,
   ...props
 }) => (
-  <motion.section variants={fadeInDown} {...props}>
+  <motion.span variants={fadeInDown} {...props}>
     <h6 css={{ textAlign: 'center', marginBottom: '1rem' }}>{children}</h6>
     <motion.div
       css={loadingContainer}
       variants={loadingContainerVariants}
       initial="initial"
       animate="animate"
+      exit="exit"
     >
       {Array.from({ length: number || 5 }).map((_, idx) => (
         <motion.span
@@ -71,7 +72,7 @@ export const Loading: React.FC<{ number?: number }> = ({
         />
       ))}
     </motion.div>
-  </motion.section>
+  </motion.span>
 );
 
 export default Loading;

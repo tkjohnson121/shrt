@@ -1,5 +1,7 @@
+import { Loading } from 'common';
 import firebase from 'firebase';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import { MdClose } from 'react-icons/md';
 import {
   AnimatePresence,
   ComponentStyles,
@@ -12,7 +14,7 @@ import {
 import { FetchState } from 'types';
 import FirebaseClient from './firebase-client';
 
-export class AuthService {
+class Authentication {
   openAuthListener = (
     withUser: (user: firebase.User) => any,
     withoutUser?: () => any,
@@ -59,6 +61,8 @@ export class AuthService {
   }) => FirebaseClient.auth.currentUser?.updateProfile(profile);
 }
 
+export const AuthService = new Authentication();
+
 interface AuthState {
   isAuthenticated: boolean;
   currentUser?: {
@@ -95,9 +99,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   React.useEffect(() => {
-    let unsubscribe = FirebaseClient.auth.onAuthStateChanged((user) => {
-      // user is signed-in
-      if (user) {
+    let unsubscribe = AuthService.openAuthListener(
+      (user) =>
         setState({
           loading: false,
           data: {
@@ -110,12 +113,9 @@ export const AuthProvider: React.FC = ({ children }) => {
               uid: user.uid,
             },
           },
-        });
-        // No user is signed-in
-      } else {
-        setState({ loading: false, data: initialState });
-      }
-    });
+        }),
+      () => setState({ loading: false, data: initialState }),
+    );
 
     return () => {
       !!unsubscribe && unsubscribe();
@@ -126,12 +126,48 @@ export const AuthProvider: React.FC = ({ children }) => {
 };
 
 const styles: ComponentStyles = {
+  header: (theme) => css`
+    margin-bottom: ${theme.space[8]};
+
+    button {
+      background-color: transparent;
+      color: ${theme.colors.text};
+      border-bottom: 2px solid ${theme.colors.primary};
+    }
+  `,
   title: () => css``,
+  error: (theme) => css`
+    position: relative;
+    background-color: ${theme.colors.error};
+    border-radius: ${theme.radii['md']};
+    padding: ${theme.space[2]};
+    margin: ${theme.space[4]} 0;
+    display: inline-block;
+
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      border-radius: ${theme.radii['md']};
+      background-color: ${theme.colors.whiteAlpha[300]};
+      color: ${theme.colors.whiteAlpha[900]};
+      font-size: ${theme.fontSizes.xl};
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+  `,
   form: () => css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+
+    &.disabled {
+      pointer-events: none;
+    }
   `,
   label: () => css``,
   input: (theme) => css`
@@ -162,6 +198,8 @@ export function AuthForm() {
 
   const onError = (error: Error) =>
     setState((prev) => ({ ...prev, loading: false, error }));
+  const onErrorClose = () =>
+    setState((prev) => ({ ...prev, loading: false, error: null }));
 
   const onInputChange = ({
     target: { name, value },
@@ -183,35 +221,39 @@ export function AuthForm() {
       },
     }));
 
-  const onFormSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-    try {
-      evt.preventDefault();
-      const { email, password } = state.data || {};
+  const onFormSubmit = useCallback(
+    async (evt: FormEvent<HTMLFormElement>) => {
+      try {
+        evt.preventDefault();
+        setState((prev) => ({ ...prev, loading: true }));
+        const { email, password } = state.data || {};
 
-      if (typeof email !== 'string') {
-        throw new Error('Email is incorrect');
+        if (typeof email !== 'string') {
+          throw new Error('Email is incorrect');
+        }
+
+        if (typeof password !== 'string' || password.length < 6) {
+          throw new Error('Password is incorrect');
+        }
+
+        if (state.data?.isNewUser) {
+          await AuthService.signUp(email, password);
+        } else {
+          await AuthService.signIn(email, password);
+        }
+
+        setState((prev) => ({ ...prev, loading: false }));
+      } catch (error) {
+        onError(error);
       }
-
-      if (typeof password !== 'string' || password.length < 6) {
-        throw new Error('Password is incorrect');
-      }
-
-      if (state.data?.isNewUser) {
-        await new AuthService().signUp(email, password);
-      } else {
-        await new AuthService().signIn(email, password);
-      }
-
-      setState({ loading: false });
-    } catch (error) {
-      onError(error);
-    }
-  };
+    },
+    [state.data],
+  );
 
   return (
     <AnimatePresence>
       {state.data?.isNewUser ? (
-        <header>
+        <header css={styles.header} key="header">
           <h1 css={styles.title} className="display">
             Welcome to SHRT!
           </h1>
@@ -219,73 +261,107 @@ export function AuthForm() {
           <button onClick={toggleIsNewUser}>Need to sign-in?</button>
         </header>
       ) : (
-        <header>
+        <header css={styles.header} key="header">
           <h1 css={styles.title} className="display">
-            Welcome back! It's nice to see you again.
+            Welcome Back!
           </h1>
           <button onClick={toggleIsNewUser}>Need to sign-up?</button>
         </header>
       )}
 
-      {state.error && (
-        <motion.section variants={fadeInDown}>
-          <h3>{state.error?.name}</h3>
-          <p>{state.error?.message}</p>
-        </motion.section>
+      {!!state.loading ? (
+        <Loading key="loading" />
+      ) : (
+        <motion.form
+          css={styles.form}
+          onSubmit={onFormSubmit}
+          variants={listAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          key="form"
+          className={`${state.loading ? 'disabled' : 'active'}`}
+        >
+          <motion.label
+            htmlFor="email"
+            variants={listChildAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="label-email"
+          >
+            Email
+          </motion.label>
+          <motion.input
+            id="email"
+            name="email"
+            placeholder="Enter your email..."
+            type="text"
+            css={styles.input}
+            onChange={onInputChange}
+            value={state.data?.email}
+            variants={listChildAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="input-email"
+          />
+
+          <motion.label
+            htmlFor="password"
+            variants={listChildAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="label-password"
+          >
+            Password
+          </motion.label>
+          <motion.input
+            id="password"
+            name="password"
+            placeholder="Enter your password..."
+            type="password"
+            css={styles.input}
+            onChange={onInputChange}
+            value={state.data?.password}
+            variants={listChildAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="input-password"
+          />
+
+          <motion.button
+            type="submit"
+            css={styles.button}
+            variants={listChildAnimation}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="button-submit"
+          >
+            Submit
+          </motion.button>
+        </motion.form>
       )}
 
-      <motion.form
-        css={styles.form}
-        onSubmit={onFormSubmit}
-        variants={listAnimation}
-      >
-        <motion.label
-          htmlFor="email"
-          variants={listChildAnimation}
-          key="label-email"
+      {!!state.error && (
+        <motion.section
+          variants={fadeInDown}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          css={styles.error}
+          key="error"
         >
-          Email
-        </motion.label>
-        <motion.input
-          id="email"
-          name="email"
-          placeholder="Enter your email..."
-          type="text"
-          css={styles.input}
-          onChange={onInputChange}
-          value={state.data?.email}
-          variants={listChildAnimation}
-          key="input-email"
-        />
-
-        <motion.label
-          htmlFor="password"
-          variants={listChildAnimation}
-          key="label-password"
-        >
-          Password
-        </motion.label>
-        <motion.input
-          id="password"
-          name="password"
-          placeholder="Enter your password..."
-          type="password"
-          css={styles.input}
-          onChange={onInputChange}
-          value={state.data?.password}
-          variants={listChildAnimation}
-          key="input-password"
-        />
-
-        <motion.button
-          type="submit"
-          css={styles.button}
-          variants={listChildAnimation}
-          key="button-submit"
-        >
-          Submit
-        </motion.button>
-      </motion.form>
+          <h3>{state.error?.name}</h3>
+          <p>{state.error?.message}</p>
+          <button onClick={onErrorClose}>
+            <MdClose />
+          </button>
+        </motion.section>
+      )}
     </AnimatePresence>
   );
 }

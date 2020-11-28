@@ -6,6 +6,6 @@
 
 export interface FetchState<T = {}> {
   loading: boolean;
-  error?: Error | { [key: string]: any };
+  error?: Error | { [key: string]: any } | null;
   data?: T;
 }

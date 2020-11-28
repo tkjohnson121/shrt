@@ -97,6 +97,11 @@ export const globalStyles: ThemedStyles = (theme) => css`
     color: ${theme.colors.text};
   }
 
+  a,
+  button {
+    cursor: pointer;
+  }
+
   img {
     max-width: 100%;
   }
