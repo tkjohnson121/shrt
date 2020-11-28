@@ -1,4 +1,7 @@
-* 17993d8 (HEAD -> main, tag: v0.0.6) v0.0.6
+* 41173a1 (HEAD -> main) gst
+* f9d6dab (tag: v0.0.7, origin/main) v0.0.7
+* 0450da5 update changelog
+* 17993d8 (tag: v0.0.6) v0.0.6
 * 609bb87 update changelog
 * aa2d4ea add shrten and user-dashboard
 * ec54a2e add shrten anduser apis
