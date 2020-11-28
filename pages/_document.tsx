@@ -71,7 +71,7 @@ export default class MyDocument extends Document {
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:url" content="https://Shrt.gvempire.dev" />
           <meta name="twitter:title" content="Shrt | A GVEMPIRE product" />
-          <meta name="twitter:description" content="TM1 from Shrt" />
+          <meta name="twitter:description" content="Shrt from GVEMPIRE" />
           <meta
             name="twitter:image"
             content="https://Shrt.gvempire.dev/icons/android-chrome-192x192.png"

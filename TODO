@@ -1,10 +1,12 @@
-- Authentication
-- Create URL collection on user document
-- Create user dashboard
-  - add link
-  - remove link
-  - view analytics
-- Create user profile page
+✅ Authentication
+- User dashboard
+  - custom link
+  - ensure unique unique per user
+  - edit link
+  ✅ add link
+  ✅ remove link
+  -  view analytics
+- User profile page
   - add name and bio
   - add title and link(s)
   - add social media link(s)
@@ -14,6 +16,5 @@
     - youtube
     - github
     - ??
-  - edit image and background
+  - edit profile image and background
     - color or image
-- create user edit profile page

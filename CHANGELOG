@@ -1,8 +1,10 @@
-* aa2d4ea (HEAD -> main) add shrten and user-dashboard
+* 17993d8 (HEAD -> main, tag: v0.0.6) v0.0.6
+* 609bb87 update changelog
+* aa2d4ea add shrten and user-dashboard
 * ec54a2e add shrten anduser apis
 * 8740bb1 styl authform
 * 5b813af add authentication and form
-* b8422f6 (tag: v0.0.5, origin/main, origin/HEAD) v0.0.5
+* b8422f6 (tag: v0.0.5) v0.0.5
 * aa65b28 update changelog
 * 12adca6 start adding auth
 * cac79fb (tag: v0.0.4) v0.0.4
