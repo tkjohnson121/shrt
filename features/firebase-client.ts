@@ -59,7 +59,7 @@ const initializeFirebase = (config = defaultConfig) => {
 
 initializeFirebase();
 
-export class FirebaseClient {
+class Firebase {
   constructor(config = defaultConfig) {
     initializeFirebase(config);
     enablePersistance();
@@ -73,4 +73,4 @@ export class FirebaseClient {
   analytics = typeof window !== 'undefined' ? firebase.analytics() : null;
 }
 
-export default new FirebaseClient();
+export const FirebaseClient = new Firebase();

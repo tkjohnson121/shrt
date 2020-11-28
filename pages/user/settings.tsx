@@ -1,9 +1,9 @@
-import { ErrorWrapper, Loading } from 'common';
-import { AuthForm, AuthService, useAuth } from 'features/authentication';
+import { AuthForm, ErrorWrapper, Loading } from 'common';
+import { AuthService, useAuth } from 'features/authentication';
 import React, { useState } from 'react';
 import { FetchState } from 'types';
 
-export default function UserSetting() {
+export default function UserSettings() {
   const authState = useAuth();
   const [state, setState] = useState<FetchState>({ loading: false });
   const onError = (error: Error) =>

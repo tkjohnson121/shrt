@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 // You can include shared interfaces/types in a separate file
 // and then use them in any component by importing them. For
 // example, to import the interface below do:
@@ -9,3 +10,14 @@ export interface FetchState<T = {}> {
   error?: Error | { [key: string]: any } | null;
   data?: T;
 }
+
+export type ShrtUser =
+  | {
+      token?: string | Promise<string>;
+      email: string | null;
+      emailVerified: boolean;
+      displayName: string | null;
+      uid: string;
+      photoURL: string | null;
+    }
+  | firebase.User;

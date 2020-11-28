@@ -1,4 +1,5 @@
-import { AuthForm, useAuth } from 'features/authentication';
+import { AuthForm } from 'common';
+import { useAuth } from 'features/authentication';
 import React from 'react';
 
 export default function UserDashboard() {
