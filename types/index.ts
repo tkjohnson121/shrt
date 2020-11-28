@@ -4,11 +4,6 @@
 //
 // import User from 'path/to/interfaces';
 
-export type User = {
-  id: number;
-  name: string;
-};
-
 export interface FetchState<T = {}> {
   loading: boolean;
   error?: Error | { [key: string]: any };

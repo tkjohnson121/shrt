@@ -1,10 +1,13 @@
 import { css } from '@emotion/core';
+import { AuthForm, useAuth } from 'features/authentication';
 import { pageTransition } from 'features/theme';
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
+import ErrorWrapper from './error-wrapper';
 import Header from './header';
+import Loading from './loading';
 
 export const Layout = ({
   children,
@@ -14,6 +17,8 @@ export const Layout = ({
   title?: string;
 }) => {
   const router = useRouter();
+  const { loading, error, data } = useAuth();
+
   const menuRef = React.useRef<HTMLElement>(null);
 
   return (
@@ -26,21 +31,29 @@ export const Layout = ({
 
       <Header heightRef={menuRef} />
 
-      <AnimatePresence exitBeforeEnter>
-        <motion.main
-          variants={pageTransition}
-          css={css`
-            min-height: 100vh;
-            padding: 0 5%;
-          `}
-          initial={'initial'}
-          animate={'animate'}
-          exit={'exit'}
-          key={router?.route}
-        >
-          {children}
-        </motion.main>
-      </AnimatePresence>
+      {loading ? (
+        <Loading />
+      ) : error ? (
+        <ErrorWrapper error={error} />
+      ) : data?.isAuthenticated || ['/'].includes(router.pathname) ? (
+        <AnimatePresence exitBeforeEnter>
+          <motion.main
+            variants={pageTransition}
+            css={css`
+              min-height: 100vh;
+              padding: 0 5%;
+            `}
+            initial={'initial'}
+            animate={'animate'}
+            exit={'exit'}
+            key={router?.route}
+          >
+            {children}
+          </motion.main>
+        </AnimatePresence>
+      ) : (
+        <AuthForm />
+      )}
 
       <footer>
         <hr />
