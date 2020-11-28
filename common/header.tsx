@@ -18,7 +18,7 @@ import React from 'react';
 const defaultLinks = [{ text: 'Home', href: '/' }];
 const authLinks = [
   { text: 'Home', href: '/' },
-  { text: 'Settings', href: '/user/settings' },
+  { text: 'Dashboard', href: '/user/dashboard' },
 ];
 
 export const Header: React.FC<{
@@ -77,6 +77,7 @@ export const Header: React.FC<{
     >
       <Link href="/">
         <motion.a
+          className={isLinkActive('/')}
           variants={addDelay(fadeInUp, 0.5)}
           initial="initial"
           animate="animate"
@@ -116,8 +117,9 @@ export const Header: React.FC<{
           ),
         )}
 
-        <Link href="/user">
+        <Link href="/user/settings">
           <motion.a
+            className={isLinkActive('/user/settings')}
             variants={addDelay(fadeInUp, 0.7)}
             initial="initial"
             animate="animate"

@@ -22,10 +22,10 @@ export default function LandingPage() {
   return (
     <>
       <section css={styles.section}>
-        <h1 className="display">Big Title, Says Something</h1>
+        <h1 className="display">Welcome to SHRT!</h1>
         <p className="tagline">
-          Some tagline feature that makes you want to use this thing because
-          It’s very important.
+          Personal Landing Page (PLP) and URL-Shortner that allows you to
+          connect faster and network more efficiently.
         </p>
       </section>
     </>

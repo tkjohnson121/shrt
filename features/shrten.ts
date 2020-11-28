@@ -1,10 +1,29 @@
-import { ShrtUser } from './../types/index';
+import { ShrtUrl, ShrtUser } from './../types/index';
 import { FirebaseClient } from './firebase-client';
 
 class Shrten {
-  async getLinkByUserID(uid: string) {
+  openShrtListener(
+    uid: string,
+    onSnapshot: (document: Array<ShrtUrl & { uid: string }>) => any,
+  ) {
+    FirebaseClient.analytics?.logEvent('open_shrt_listener');
+
+    return FirebaseClient.db
+      .collection('shrten')
+      .where('created_by', '==', uid)
+      .onSnapshot((snapshot) => {
+        const documents = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          uid: doc.id,
+        })) as Array<ShrtUrl & { uid: string }>;
+
+        onSnapshot(documents);
+      });
+  }
+
+  async getShrtByUserID(uid: string) {
     try {
-      FirebaseClient.analytics?.logEvent('get_link');
+      FirebaseClient.analytics?.logEvent('get_shrt_by_user_id');
 
       const documents = await FirebaseClient.db
         .collection('shrten')
@@ -20,9 +39,9 @@ class Shrten {
     }
   }
 
-  async getLinkByURL(url: string) {
+  async getShrtByURL(url: string) {
     try {
-      FirebaseClient.analytics?.logEvent('get_link');
+      FirebaseClient.analytics?.logEvent('get_shrt_by_url');
 
       const documents = await FirebaseClient.db
         .collection('shrten')
@@ -38,7 +57,7 @@ class Shrten {
     }
   }
 
-  async addLink(currentUser: ShrtUser, url: string) {
+  async addShrt(currentUser: ShrtUser, url: string) {
     try {
       FirebaseClient.analytics?.logEvent('add_link', {
         uid: currentUser.uid,
@@ -57,7 +76,7 @@ class Shrten {
     }
   }
 
-  async deleteLink(currentUser: ShrtUser, linkID: string) {
+  async deleteShrt(currentUser: ShrtUser, linkID: string) {
     try {
       FirebaseClient.analytics?.logEvent('delete_link', {
         uid: currentUser.uid,

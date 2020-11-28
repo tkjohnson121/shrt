@@ -1,7 +1,6 @@
 import { AuthForm, ErrorWrapper, Loading } from 'common';
 import { ShrtForm } from 'common/shrt-form';
 import { useAuth } from 'features/authentication';
-import { FirebaseClient } from 'features/firebase-client';
 import { ShrtenService } from 'features/shrten';
 import React from 'react';
 import { MdDelete } from 'react-icons/md';
@@ -98,7 +97,7 @@ export default function UserDashboard() {
         throw new Error('Please Login.');
       }
 
-      await ShrtenService.deleteLink(authState.data?.currentUser, shrt.uid);
+      await ShrtenService.deleteShrt(authState.data?.currentUser, shrt.uid);
     } catch (error) {
       onError(error);
     }
@@ -109,17 +108,10 @@ export default function UserDashboard() {
     let unsubscribe: () => void;
 
     if (currentUser) {
-      unsubscribe = FirebaseClient.db
-        .collection('shrten')
-        .where('created_by', '==', currentUser.uid)
-        .onSnapshot((snapshot) => {
-          const documents = snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            uid: doc.id,
-          })) as Array<ShrtUrl & { uid: string }>;
-
-          setState({ loading: false, data: { links: documents } });
-        });
+      unsubscribe = ShrtenService.openShrtListener(
+        currentUser.uid,
+        (documents) => setState({ loading: false, data: { links: documents } }),
+      );
     }
 
     return () => {
@@ -131,7 +123,7 @@ export default function UserDashboard() {
   if (state.error) return <ErrorWrapper error={state.error} />;
 
   return authState.data?.isAuthenticated ? (
-    <div>
+    <>
       <motion.h1
         className="display"
         variants={fadeInDown}
@@ -199,7 +191,7 @@ export default function UserDashboard() {
             ))}
         </AnimatePresence>
       </motion.ul>
-    </div>
+    </>
   ) : (
     <AuthForm />
   );

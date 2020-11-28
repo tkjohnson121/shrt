@@ -125,7 +125,7 @@ export function ShrtForm() {
           throw new Error('Please login Shrten a link');
         }
 
-        await ShrtenService.addLink(authState.data.currentUser, url);
+        await ShrtenService.addShrt(authState.data.currentUser, url);
         setState({ loading: false, data: { url: '' } });
       } catch (error) {
         onError(error);
