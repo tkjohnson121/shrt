@@ -21,3 +21,10 @@ export type ShrtUser =
       photoURL: string | null;
     }
   | firebase.User;
+
+export interface ShrtUrl {
+  created_by: string;
+  created_on: number;
+  url: string;
+  shrt_url: string | null;
+}

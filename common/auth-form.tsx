@@ -157,19 +157,19 @@ export function AuthForm() {
         </header>
       )}
 
-      {!!state.loading ? (
-        <Loading key="loading" />
-      ) : (
-        <motion.form
-          css={styles.form}
-          onSubmit={onFormSubmit}
-          variants={listAnimation}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          key="form"
-          className={`${state.loading ? 'disabled' : 'active'}`}
-        >
+      <motion.form
+        css={styles.form}
+        onSubmit={onFormSubmit}
+        variants={listAnimation}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        key="form"
+        className={`${state.loading ? 'disabled' : 'active'}`}
+      >
+        {!!state.loading ? (
+          <Loading key="loading-email" />
+        ) : (
           <motion.label
             htmlFor="email"
             variants={listChildAnimation}
@@ -180,21 +180,26 @@ export function AuthForm() {
           >
             Email
           </motion.label>
-          <motion.input
-            id="email"
-            name="email"
-            placeholder="Enter your email..."
-            type="text"
-            css={styles.input}
-            onChange={onInputChange}
-            value={state.data?.email}
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="input-email"
-          />
+        )}
 
+        <motion.input
+          id="email"
+          name="email"
+          placeholder="Enter your email..."
+          type="text"
+          css={styles.input}
+          onChange={onInputChange}
+          value={state.data?.email}
+          variants={listChildAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          key="input-email"
+        />
+
+        {!!state.loading ? (
+          <Loading key="loading-password" />
+        ) : (
           <motion.label
             htmlFor="password"
             variants={listChildAnimation}
@@ -205,34 +210,35 @@ export function AuthForm() {
           >
             Password
           </motion.label>
-          <motion.input
-            id="password"
-            name="password"
-            placeholder="Enter your password..."
-            type="password"
-            css={styles.input}
-            onChange={onInputChange}
-            value={state.data?.password}
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="input-password"
-          />
+        )}
 
-          <motion.button
-            type="submit"
-            css={styles.button}
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="button-submit"
-          >
-            Submit
-          </motion.button>
-        </motion.form>
-      )}
+        <motion.input
+          id="password"
+          name="password"
+          placeholder="Enter your password..."
+          type="password"
+          css={styles.input}
+          onChange={onInputChange}
+          value={state.data?.password}
+          variants={listChildAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          key="input-password"
+        />
+
+        <motion.button
+          type="submit"
+          css={styles.button}
+          variants={listChildAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          key="button-submit"
+        >
+          Submit
+        </motion.button>
+      </motion.form>
 
       {!!state.error && (
         <motion.section

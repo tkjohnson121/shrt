@@ -2,21 +2,23 @@ import { css } from '@emotion/core';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { fadeInDown } from '../features/theme';
-import { Theme } from '../features/theme/theme';
+import { ComponentStyles } from '../features/theme/theme';
 
-const loadingContainer = () => css`
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-`;
+const styles: ComponentStyles = {
+  loadingContainer: (theme) => css`
+    margin: ${theme.space[2]} auto;
+    display: flex;
+    justify-content: center;
+  `,
 
-const loadingCircle = (theme: Theme) => css`
-  display: block;
-  width: ${theme.space[2]};
-  height: ${theme.space[2]};
-  background-color: ${theme.colors['info']};
-  border-radius: ${theme.radii['full']};
-`;
+  loadingCircle: (theme) => css`
+    display: block;
+    width: ${theme.space[2]};
+    height: ${theme.space[2]};
+    background-color: ${theme.colors['info']};
+    border-radius: ${theme.radii['full']};
+  `,
+};
 
 const loadingContainerVariants = {
   initial: {
@@ -55,10 +57,12 @@ export const Loading: React.FC<{ number?: number }> = ({
   number,
   ...props
 }) => (
-  <motion.span variants={fadeInDown} {...props}>
-    <h6 css={{ textAlign: 'center', marginBottom: '1rem' }}>{children}</h6>
-    <motion.div
-      css={loadingContainer}
+  <motion.div variants={fadeInDown} {...props}>
+    {children && (
+      <h6 css={{ textAlign: 'center', marginBottom: '1rem' }}>{children}</h6>
+    )}
+    <motion.span
+      css={styles.loadingContainer}
       variants={loadingContainerVariants}
       initial="initial"
       animate="animate"
@@ -67,12 +71,12 @@ export const Loading: React.FC<{ number?: number }> = ({
       {Array.from({ length: number || 5 }).map((_, idx) => (
         <motion.span
           key={idx}
-          css={loadingCircle}
+          css={styles.loadingCircle}
           variants={loadingCircleVariants}
         />
       ))}
-    </motion.div>
-  </motion.span>
+    </motion.span>
+  </motion.div>
 );
 
 export default Loading;
