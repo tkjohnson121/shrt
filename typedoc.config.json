@@ -6,9 +6,11 @@
     "paths": {
       "common": ["common/"],
       "features": ["features/"],
+      "theme": ["features/theme"],
       "pages": ["pages/"],
       "services": ["services/"],
-      "utils": ["utils/"]
+      "utils": ["utils/"],
+      "types": ["types/"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

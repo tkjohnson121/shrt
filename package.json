@@ -4,7 +4,7 @@
   "scripts": {
     "start": "next",
     "build": "next build",
-    "build:docs": "typedoc --out docs --tsconfig ./typedoc.config.json --categorizeByGroup true --includeDeclarations --excludeExternals --name \"Next-Starter\" --includeVersion --readme ./README.md ",
+    "build:docs": "typedoc --out docs --tsconfig ./typedoc.config.json --categorizeByGroup true --includeDeclarations --excludeExternals --name \"SHRT\" --includeVersion --readme ./README.md ",
     "build:docs-json": "typedoc --out docs --exclude \"**/*.test.(ts|tsx)\" --json --name \"Shrt\" --includeVersion --readme ./README.md ",
     "build:functions": "cd functions && yarn build",
     "export": "next export",
@@ -17,18 +17,8 @@
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "predeploy": "npm-run-all -l -s format lint type-check test",
-    "use:development": "firebase use development",
-    "use:staging": "firebase use staging",
-    "use:production": "firebase use production",
     "changelog": "git log --all --graph --decorate --oneline > CHANGELOG; git add .; git commit -m \"update changelog\"; yarn version --patch; git push --follow-tags; echo \"Released $npm_package_version\"",
-    "deploy": "npm-run-all -l -s deploy:*",
-    "deploy:functions": "firebase deploy --only functions",
-    "deploy:firestore": "firebase deploy --only firestore",
-    "deploy:storage": "firebase deploy --only storage",
-    "preview": "vercel",
-    "development": "yarn use:development && yarn deploy",
-    "staging": "yarn use:staging && yarn deploy",
-    "production": "yarn use:production && yarn deploy"
+    "preview": "vercel"
   },
   "dependencies": {
     "@emotion/core": "^10.0.35",
