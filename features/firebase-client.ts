@@ -57,6 +57,8 @@ const initializeFirebase = (config = defaultConfig) => {
   }
 };
 
+initializeFirebase();
+
 export class FirebaseClient {
   constructor(config = defaultConfig) {
     initializeFirebase(config);
@@ -68,7 +70,7 @@ export class FirebaseClient {
   auth = firebase.auth();
   storage = firebase.storage();
   functions = firebase.functions();
-  analytics = firebase.analytics();
+  analytics = typeof window !== 'undefined' ? firebase.analytics() : null;
 }
 
 export default new FirebaseClient();

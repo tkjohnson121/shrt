@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "alias": ["nextjs-starter.gvempire.dev"],
+  "alias": ["shrt.gvempire.dev"],
   "trailingSlash": false,
   "rewrites": [
     {

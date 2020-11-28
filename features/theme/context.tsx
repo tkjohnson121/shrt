@@ -25,10 +25,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
   const changeTheme = (name: 'base' | 'dark' | 'light') => {
     typeof window !== 'undefined' &&
-      localStorage.setItem(
-        'Nextjs-starter-preferred-theme',
-        JSON.stringify(name),
-      );
+      localStorage.setItem('Shrt-preferred-theme', JSON.stringify(name));
 
     return setTheme(themes[name]);
   };

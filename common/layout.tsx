@@ -8,7 +8,7 @@ import Header from './header';
 
 export const Layout = ({
   children,
-  title = 'Nextjs-starter | A GVEMPIRE Product',
+  title = 'Shrt | A GVEMPIRE Product',
 }: {
   children?: ReactNode;
   title?: string;

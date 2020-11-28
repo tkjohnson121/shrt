@@ -1,7 +1,7 @@
 {
-  "name": "Nextjs-starter",
-  "short_name": "Nextjs-starter",
-  "description": "Nextjs-starter | A GVEMPIRE product",
+  "name": "Shrt",
+  "short_name": "Shrt",
+  "description": "Shrt | A GVEMPIRE product",
   "lang": "en-US",
   "display": "standalone",
   "orientation": "portrait",
@@ -10,9 +10,9 @@
   "share_target": {
     "action": "/",
     "params": {
-      "title": "Nextjs-starter",
-      "text": "Welcome to Nextjs-starter!",
-      "url": "https://Nextjs-starter.gvempire.dev"
+      "title": "Shrt",
+      "text": "Welcome to Shrt!",
+      "url": "https://Shrt.gvempire.dev"
     }
   },
   "gcm_sender_id": "370072803732",

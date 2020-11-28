@@ -45,7 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <Layout title="Nextjs-starter | A GVEMPIRE product">
+      <Layout title="Shrt | A GVEMPIRE product">
         <Component {...pageProps} />
       </Layout>
     </ThemeProvider>

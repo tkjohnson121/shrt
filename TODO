@@ -1,0 +1,19 @@
+- Authentication
+- Create URL collection on user document
+- Create user dashboard
+  - add link
+  - remove link
+  - view analytics
+- Create user profile page
+  - add name and bio
+  - add title and link(s)
+  - add social media link(s)
+    - twitter
+    - instagram
+    - linkedin
+    - youtube
+    - github
+    - ??
+  - edit image and background
+    - color or image
+- create user edit profile page

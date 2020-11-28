@@ -23,10 +23,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta
-            name="application-name"
-            content="Nextjs-starter | A GVEMPIRE product"
-          />
+          <meta name="application-name" content="Shrt | A GVEMPIRE product" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
@@ -34,9 +31,9 @@ export default class MyDocument extends Document {
           />
           <meta
             name="apple-mobile-web-app-title"
-            content="Nextjs-starter | A GVEMPIRE product"
+            content="Shrt | A GVEMPIRE product"
           />
-          <meta name="description" content="TM1 from Nextjs-starter" />
+          <meta name="description" content="TM1 from Shrt" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta
@@ -72,37 +69,22 @@ export default class MyDocument extends Document {
           />
           <link rel="shortcut icon" href="/icons/favicon.ico" />
           <meta name="twitter:card" content="summary" />
-          <meta
-            name="twitter:url"
-            content="https://Nextjs-starter.gvempire.dev"
-          />
-          <meta
-            name="twitter:title"
-            content="Nextjs-starter | A GVEMPIRE product"
-          />
-          <meta name="twitter:description" content="TM1 from Nextjs-starter" />
+          <meta name="twitter:url" content="https://Shrt.gvempire.dev" />
+          <meta name="twitter:title" content="Shrt | A GVEMPIRE product" />
+          <meta name="twitter:description" content="TM1 from Shrt" />
           <meta
             name="twitter:image"
-            content="https://Nextjs-starter.gvempire.dev/icons/android-chrome-192x192.png"
+            content="https://Shrt.gvempire.dev/icons/android-chrome-192x192.png"
           />
           <meta name="twitter:creator" content="@DavidWShadow" />
           <meta property="og:type" content="website" />
-          <meta
-            property="og:title"
-            content="Nextjs-starter | A GVEMPIRE product"
-          />
-          <meta property="og:description" content="TM1 from Nextjs-starter" />
-          <meta
-            property="og:site_name"
-            content="Nextjs-starter | A GVEMPIRE product"
-          />
-          <meta
-            property="og:url"
-            content="https://Nextjs-starter.gvempire.dev"
-          />
+          <meta property="og:title" content="Shrt | A GVEMPIRE product" />
+          <meta property="og:description" content="TM1 from Shrt" />
+          <meta property="og:site_name" content="Shrt | A GVEMPIRE product" />
+          <meta property="og:url" content="https://Shrt.gvempire.dev" />
           <meta
             property="og:image"
-            content="https://Nextjs-starter.gvempire.dev/icons/apple-touch-icon.png"
+            content="https://Shrt.gvempire.dev/icons/apple-touch-icon.png"
           />
         </Head>
         <body>

@@ -1,11 +1,11 @@
 {
-  "name": "@gvempire/nextjs-starter",
+  "name": "@gvempire/shrt",
   "version": "0.0.4",
   "scripts": {
     "start": "next",
     "build": "next build",
     "build:docs": "typedoc --out docs --tsconfig ./typedoc.config.json --categorizeByGroup true --includeDeclarations --excludeExternals --name \"Next-Starter\" --includeVersion --readme ./README.md ",
-    "build:docs-json": "typedoc --out docs --exclude \"**/*.test.(ts|tsx)\" --json --name \"NextJs-Starter\" --includeVersion --readme ./README.md ",
+    "build:docs-json": "typedoc --out docs --exclude \"**/*.test.(ts|tsx)\" --json --name \"Shrt\" --includeVersion --readme ./README.md ",
     "build:functions": "cd functions && yarn build",
     "export": "next export",
     "serve": "next start",

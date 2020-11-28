@@ -1,9 +1,6 @@
 [
   {
-    "origin": [
-      "https://Nextjs-starter.gvempire.dev",
-      "https://gv-Nextjs-starter.now.sh"
-    ],
+    "origin": ["https://Shrt.gvempire.dev", "https://gv-Shrt.now.sh"],
     "method": ["GET"],
     "maxAgeSeconds": 3600000
   }
