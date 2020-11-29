@@ -2,19 +2,67 @@ import { css } from '@emotion/core';
 import { useAuth } from 'features/authentication';
 import {
   addDelay,
+  ComponentStyles,
   easing,
-  fadeInDown,
   fadeInUp,
   listAnimation,
   listChildAnimation,
   motion,
-  Theme,
 } from 'features/theme';
 import { UserService } from 'features/user';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+
+const styles: ComponentStyles = {
+  headerWrapper: (theme) => css`
+    padding: ${theme.space[4]} ${theme.space[8]};
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: ${theme.colors.blackAlpha[700]};
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+
+    a {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: ${theme.space[2]} ${theme.space[4]};
+
+      &::after {
+        content: '';
+        transition: left 150ms cubic-bezier(${easing.join(',')});
+        position: absolute;
+        bottom: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background-color: ${theme.colors['primary']};
+      }
+
+      &.active::after,
+      &:hover::after {
+        left: 0;
+      }
+    }
+
+    nav {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+
+      img {
+        border-radius: ${theme.radii['full']};
+      }
+    }
+  `,
+};
 
 const defaultLinks = [{ text: 'Home', href: '/' }];
 const authLinks = [
@@ -48,58 +96,7 @@ export const Header: React.FC<{
   }, [authState.data?.isAuthenticated]);
 
   return (
-    <motion.header
-      variants={fadeInDown}
-      initial="initial"
-      animate="animate"
-      ref={heightRef}
-      css={(theme: Theme) => css`
-        padding: ${theme.space[4]} ${theme.space[8]};
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        background-color: ${theme.colors.blackAlpha[700]};
-        display: flex;
-        align-items: stretch;
-        justify-content: space-between;
-
-        a {
-          position: relative;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          padding: ${theme.space[2]} ${theme.space[4]};
-
-          &::after {
-            content: '';
-            transition: left 150ms cubic-bezier(${easing.join(',')});
-            position: absolute;
-            bottom: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background-color: ${theme.colors['primary']};
-          }
-
-          &.active::after,
-          &:hover::after {
-            left: 0;
-          }
-        }
-
-        nav {
-          display: flex;
-          align-items: stretch;
-          justify-content: space-between;
-
-          img {
-            border-radius: ${theme.radii['full']};
-          }
-        }
-      `}
-    >
+    <header ref={heightRef} css={styles.headerWrapper}>
       <Link href="/">
         <motion.a
           className={isLinkActive('/')}
@@ -166,7 +163,7 @@ export const Header: React.FC<{
           </motion.a>
         </Link>
       </motion.nav>
-    </motion.header>
+    </header>
   );
 };
 export default Header;

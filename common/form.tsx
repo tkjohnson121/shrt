@@ -72,7 +72,7 @@ const styles: ComponentStyles = {
   `,
 
   formField: (theme) => css`
-    flex: 0.2 0 auto;
+    flex: 1 1 20%;
     display: flex;
     flex-direction: column;
     margin: ${theme.space[4]} ${theme.space[2]};
@@ -109,6 +109,34 @@ const styles: ComponentStyles = {
       opacity: 1;
     }
 
+    &.file {
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      text-align-center;
+      border-radius: ${theme.radii['md']};
+      background-color: ${theme.colors.whiteAlpha[300]};
+      transition: background-color 150ms ease-in-out;
+
+
+      &.circle,
+      &.image {
+        height: ${theme.space['32']};
+      }
+
+      &.circle {
+        width: ${theme.space['32']};
+        border-radius: ${theme.radii['full']};
+      }
+
+      &:hover, &:focus {
+        background-color: ${theme.colors.whiteAlpha[700]};
+      }
+    }
+
     &.checkbox {
       width: 100%;
     }
@@ -134,6 +162,16 @@ const styles: ComponentStyles = {
       order: -1;
       width: auto;
       margin-right: ${theme.space[4]};
+    }
+
+    // hide file inputs in favor of styling the label
+    &.file {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
     }
   `,
 };
@@ -250,7 +288,11 @@ export const Form: React.FC<FormProps> = (props) => {
             animate="animate"
             exit="exit"
           >
-            <label htmlFor={name} css={styles.formLabel} className={field.type}>
+            <label
+              htmlFor={name}
+              css={styles.formLabel}
+              className={`${field.type} ${field.width}`}
+            >
               {field.label}
             </label>
 

@@ -25,7 +25,7 @@ const styles: ComponentStyles = {
     justify-content: space-evenly;
 
     li {
-      position:relative;
+      position: relative;
       flex: 0 1 10%;
       border: 2px solid ${theme.colors.whiteAlpha[700]};
       border-radius: ${theme.radii['md']};

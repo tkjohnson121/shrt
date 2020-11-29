@@ -6,6 +6,27 @@ import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState } from 'types';
 
+const mediaFormFields = {
+  avatar: {
+    label: 'Avatar',
+    type: 'file',
+    width: 'circle',
+    config: {
+      accept: 'png, jpg',
+      multiple: false,
+    },
+  },
+  header: {
+    label: 'Background',
+    type: 'file',
+    config: {
+      accept: 'png, jpg',
+      multiple: false,
+    },
+    width: 'image',
+  },
+};
+
 const profileFields = {
   email: {
     label: 'Username',
@@ -167,27 +188,6 @@ const profileContFields = {
   },
 };
 
-const mediaFormFields = {
-  avatar: {
-    label: 'Avatar',
-    type: 'file',
-    width: 'circle',
-    config: {
-      accept: 'png, jpg',
-      multiple: false,
-    },
-  },
-  header: {
-    label: 'Background',
-    type: 'file',
-    config: {
-      accept: 'png, jpg',
-      multiple: false,
-    },
-    width: 'full',
-  },
-};
-
 const baseSMF = {
   type: 'text',
   config: {
@@ -202,6 +202,7 @@ const baseSMF = {
   },
   width: 'small',
 };
+
 const socialMediaFields = {
   twitter: {
     ...baseSMF,
@@ -331,6 +332,14 @@ export default function UserSettings() {
       <button onClick={onLogout}>Logout</button>
 
       <Form
+        title={'Media'}
+        key="media"
+        onFormSubmit={onMediaSubmit}
+        fields={mediaFormFields}
+        buttonText="Save"
+      />
+
+      <Form
         title={'User Profile'}
         subtitle={
           'Edit these setting to tell your audience more about who you are.'
@@ -347,14 +356,6 @@ export default function UserSettings() {
         key="profile-cont"
         onFormSubmit={onFormSubmit}
         fields={profileContFields}
-        buttonText="Save"
-      />
-
-      <Form
-        title={'Media'}
-        key="media"
-        onFormSubmit={onMediaSubmit}
-        fields={mediaFormFields}
         buttonText="Save"
       />
 
