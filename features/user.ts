@@ -81,9 +81,15 @@ class User {
         await this.updateEmail(update.email);
       }
 
-      if ('name' in update || 'displayName' in update) {
+      if (
+        'name' in update ||
+        'displayName' in update ||
+        'display_name' in update
+      ) {
         // update displayName
-        await this.updateProfile({ displayName: update.displayName });
+        await this.updateProfile({
+          displayName: update['name' || 'displayName' || 'display_name'],
+        });
       }
 
       if ('photoURL' in update || 'avatar' in update) {

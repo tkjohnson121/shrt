@@ -22,6 +22,56 @@ export type ShrtUser =
     }
   | firebase.User;
 
+export interface FileUpload {
+  name: string;
+  timeCreated: string;
+  size: number;
+  contentDisposition: string;
+  metageneration: string;
+  fullPath: string;
+  updated: string;
+  md5Hash: string;
+  contentEncoding: string;
+  type: string;
+  generation: string;
+  contentType: string;
+  bucket: string;
+}
+
+export interface ShrtUserDocument {
+  /** Admin Data */
+  uid?: string;
+  created_on: number;
+  created_by: string;
+  updated_on: number;
+  updated_by: string;
+
+  /** User Profile */
+  username: string;
+  display_name: string;
+  title: string;
+  bio: string;
+  date_of_birth: string;
+
+  /** User Contact */
+  email: string;
+  phone: string;
+
+  /** User Location */
+  state: string;
+  city: string;
+  street: string;
+
+  /** Social Media */
+  twitter: string;
+  twitch: string;
+  youtube: string;
+  instagram: string;
+  linkedin: string;
+  github: string;
+  website: string;
+}
+
 export interface ShrtUrl {
   created_by: string;
   created_on: number;

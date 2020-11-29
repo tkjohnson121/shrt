@@ -93,7 +93,7 @@ const profileFields = {
 };
 
 const profileContFields = {
-  DOB: {
+  date_of_birth: {
     label: 'Birthday',
     type: 'date',
     width: 'small',
@@ -174,7 +174,7 @@ const profileContFields = {
     ],
     width: 'medium',
   },
-  address: {
+  street: {
     label: 'Street Address',
     type: 'text',
     placeholder: 'Where do you live?',
@@ -185,6 +185,18 @@ const profileContFields = {
       },
     },
     width: 'medium',
+  },
+  zip: {
+    label: 'ZIP',
+    type: 'number',
+    placeholder: 'Where do you live?',
+    config: {
+      pattern: {
+        value: /^\d{5}(?:[-\s]\d{4})?$/,
+        message: "Hmm, that doesn't seem quite right.",
+      },
+    },
+    width: 'small',
   },
 };
 
