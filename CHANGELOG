@@ -1,6 +1,12 @@
-* eb603c5 (HEAD -> main) add avatar and background, and user profile page
+* 5acd97d (HEAD -> main) refactor forms
+* 3ee8790 work on profile header and page
+* 47a76b8 start profile page
+* 2811c19 style avatar and header image
+* 14a57fd (tag: v0.0.9, origin/main) v0.0.9
+* 00c7f54 update changelog
+* eb603c5 add avatar and background, and user profile page
 * a0d5fcb refactor dashboard
-* 6ba07b2 (tag: v0.0.8, origin/main) v0.0.8
+* 6ba07b2 (tag: v0.0.8) v0.0.8
 * 23229a1 update changelog
 * 41173a1 gst
 * f9d6dab (tag: v0.0.7) v0.0.7
