@@ -50,6 +50,7 @@ export interface ShrtUserDocument {
   username: string;
   display_name: string;
   title: string;
+  company: string;
   bio: string;
   date_of_birth: string;
 

@@ -1,8 +1,22 @@
 import firebase from 'firebase';
-import { ShrtUser } from './../types/index';
+import { ShrtUser, ShrtUserDocument } from './../types/index';
 import { FirebaseClient } from './firebase-client';
 
 class User {
+  openUserDocumentListener(
+    uid: string,
+    onSnapshotChange: (document: ShrtUserDocument) => any,
+  ) {
+    FirebaseClient.analytics?.logEvent('open_user_document_listener');
+
+    return FirebaseClient.db
+      .collection('users')
+      .doc(uid)
+      .onSnapshot((snapshot) => {
+        onSnapshotChange(snapshot.data() as ShrtUserDocument);
+      });
+  }
+
   // Methods to update attrs for the current signed-in user
   async updateEmail(email: string) {
     try {

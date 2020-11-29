@@ -14,6 +14,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { FetchState, ShrtUserDocument } from 'types';
+import ErrorWrapper from './error-wrapper';
+import Loading from './loading';
 
 const styles: ComponentStyles = {
   headerWrapper: (theme) => css`
@@ -79,21 +82,50 @@ export const Header: React.FC<{
   const isLinkActive = (href: string) =>
     router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
 
-  const [state, setState] = React.useState('');
+  const [state, setState] = React.useState<
+    FetchState<{ userData?: ShrtUserDocument; avatar?: string }>
+  >({ loading: false });
 
   React.useEffect(() => {
     const getAvatar = async () => {
-      const result = (await UserService.getUserAvatarById(
+      const avatar = (await UserService.getUserAvatarById(
         authState.data?.currentUser?.uid,
       )) as string;
 
-      setState(result);
+      setState((prev) => ({ loading: false, data: { ...prev.data, avatar } }));
     };
 
-    if (authState.data?.isAuthenticated) {
+    if (
+      authState.data?.isAuthenticated &&
+      authState.data?.currentUser &&
+      !state.data?.avatar
+    ) {
       getAvatar();
     }
   }, [authState.data?.isAuthenticated]);
+
+  React.useEffect(() => {
+    let unsubscribe: () => void;
+
+    if (authState.data?.isAuthenticated && authState.data?.currentUser) {
+      unsubscribe = UserService.openUserDocumentListener(
+        authState.data?.currentUser?.uid,
+        (document) =>
+          setState((prev) => ({
+            loading: false,
+            data: { ...prev.data, userData: document },
+          })),
+      );
+    }
+
+    return () => {
+      !!unsubscribe && unsubscribe();
+    };
+  }, [authState.data?.isAuthenticated]);
+
+  if (state.loading) return <Loading />;
+
+  if (state.error) return <ErrorWrapper error={state.error} />;
 
   return (
     <header ref={heightRef} css={styles.headerWrapper}>
@@ -139,7 +171,13 @@ export const Header: React.FC<{
           ),
         )}
 
-        <Link href="/user/settings">
+        <Link
+          href={
+            state.data?.userData?.username
+              ? `/user/${state.data?.userData?.username}`
+              : '/user/settings'
+          }
+        >
           <motion.a
             className={isLinkActive('/user/settings')}
             variants={addDelay(fadeInUp, 0.7)}
@@ -149,11 +187,7 @@ export const Header: React.FC<{
             key="profile"
           >
             <img
-              src={
-                authState.data?.currentUser?.photoURL ||
-                state ||
-                '/gvempire-logo.png'
-              }
+              src={state.data?.avatar || '/gvempire-logo.png'}
               alt={`${
                 authState.data?.currentUser?.displayName || 'GVEMPIRE.dev'
               } logo`}
@@ -166,4 +200,5 @@ export const Header: React.FC<{
     </header>
   );
 };
+
 export default Header;

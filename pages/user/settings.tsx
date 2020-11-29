@@ -64,7 +64,7 @@ const profileFields = {
         message: 'Name is too short (min: 2).',
       },
     },
-    width: 'medium',
+    width: 'large',
   },
   title: {
     label: 'Title',
@@ -76,7 +76,19 @@ const profileFields = {
         message: 'Title is too long (max: 32).',
       },
     },
-    width: 'medium',
+    width: 'small',
+  },
+  company: {
+    label: 'Company',
+    type: 'text',
+    placeholder: 'Where do you work?',
+    config: {
+      maxLength: {
+        value: 32,
+        message: 'Company is too long (max: 32).',
+      },
+    },
+    width: 'small',
   },
   bio: {
     label: 'Bio',
