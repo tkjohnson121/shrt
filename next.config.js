@@ -1,6 +1,16 @@
 require('./env.js');
 
 module.exports = {
+  domains: [
+    'storage.googleapis.com',
+    'lh1.googleusercontent.com',
+    'lh2.googleusercontent.com',
+    'lh3.googleusercontent.com',
+    'lh4.googleusercontent.com',
+    'lh5.googleusercontent.com',
+    'lh6.googleusercontent.com',
+    'https://firebasestorage.googleapis.com/',
+  ],
   // Public, build-time env vars.
   // https://nextjs.org/docs#build-time-configuration
   env: {

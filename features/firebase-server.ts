@@ -12,7 +12,7 @@ import 'firebase-functions';
 import * as functions from 'firebase-functions';
 import { defaultConfig } from './firebase-client';
 
-export class FirebaseServer {
+class Firebase {
   constructor(config = defaultConfig) {
     if (!admin.apps.length) {
       admin.initializeApp(config);
@@ -26,4 +26,4 @@ export class FirebaseServer {
   storage = admin.storage();
 }
 
-export default new FirebaseServer();
+export const FirebaseServer = new Firebase();

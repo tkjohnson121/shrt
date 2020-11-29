@@ -70,7 +70,10 @@ class Firebase {
   auth = firebase.auth();
   storage = firebase.storage();
   functions = firebase.functions();
-  analytics = typeof window !== 'undefined' ? firebase.analytics() : null;
+  analytics =
+    typeof window !== 'undefined' && process.env.NODE_ENV === 'production'
+      ? firebase.analytics()
+      : null;
 }
 
 export const FirebaseClient = new Firebase();

@@ -9,4 +9,4 @@ import withReactContent from 'sweetalert2-react-content';
  *
  * @see https://sweetalert2.github.io/
  */
-export const ReactSwal = withReactContent(Swal);
+export const ShrtSwal = withReactContent(Swal);

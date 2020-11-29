@@ -51,47 +51,6 @@ class Authentication {
       throw new Error(error);
     }
   }
-
-  // Methods to update attrs for the current signed-in user
-  async updateEmail(email: string) {
-    try {
-      FirebaseClient.analytics?.logEvent('update_email');
-      return FirebaseClient.auth.currentUser?.updateEmail(email);
-    } catch (error) {
-      FirebaseClient.analytics?.logEvent('exception', error);
-      throw new Error(error);
-    }
-  }
-  async updatePassword(password: string) {
-    try {
-      FirebaseClient.analytics?.logEvent('update_password');
-      return FirebaseClient.auth.currentUser?.updatePassword(password);
-    } catch (error) {
-      FirebaseClient.analytics?.logEvent('exception', error);
-      throw new Error(error);
-    }
-  }
-  async updatePhone(phone: firebase.auth.AuthCredential) {
-    try {
-      FirebaseClient.analytics?.logEvent('update_phone');
-      return FirebaseClient.auth.currentUser?.updatePhoneNumber(phone);
-    } catch (error) {
-      FirebaseClient.analytics?.logEvent('exception', error);
-      throw new Error(error);
-    }
-  }
-  async updateProfile(profile: {
-    displayName?: string | null;
-    photoURL?: string | null;
-  }) {
-    try {
-      FirebaseClient.analytics?.logEvent('update_profile');
-      return FirebaseClient.auth.currentUser?.updateProfile(profile);
-    } catch (error) {
-      FirebaseClient.analytics?.logEvent('exception', error);
-      throw new Error(error);
-    }
-  }
 }
 
 export const AuthService = new Authentication();

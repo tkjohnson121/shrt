@@ -1,20 +1,21 @@
 ✅ Authentication
 - User dashboard
   - custom link
-  - ensure unique username per user
   - edit link
   ✅ add link
   ✅ remove link
   -  view analytics
 - User profile page
-  - add name and bio
-  - add title and link(s)
-  - add social media link(s)
+  - ensure unique username per user
+  - add/edit username, name, title, and bio
+  - add/edit/delete link(s)
+  - add/edit/delete social media link(s)
     - twitter
     - instagram
     - linkedin
     - youtube
     - github
+    - website
     - ??
-  - edit profile image and background
+  - add/edit profile image and background
     - color or image

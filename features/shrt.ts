@@ -1,7 +1,7 @@
-import { ShrtUrl, ShrtUser } from './../types/index';
+import { ShrtUrl, ShrtUser } from '../types/index';
 import { FirebaseClient } from './firebase-client';
 
-class Shrten {
+class Shrt {
   openShrtListener(
     uid: string,
     onSnapshot: (document: Array<ShrtUrl & { uid: string }>) => any,
@@ -9,13 +9,17 @@ class Shrten {
     FirebaseClient.analytics?.logEvent('open_shrt_listener');
 
     return FirebaseClient.db
-      .collection('shrten')
+      .collection('shrts')
       .where('created_by', '==', uid)
       .onSnapshot((snapshot) => {
-        const documents = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          uid: doc.id,
-        })) as Array<ShrtUrl & { uid: string }>;
+        const documents = snapshot.docs
+          .map((doc) => ({
+            ...(doc.data() as ShrtUrl),
+            uid: doc.id,
+          }))
+          .filter((doc) => doc.deleted !== true) as Array<
+          ShrtUrl & { uid: string }
+        >;
 
         onSnapshot(documents);
       });
@@ -26,7 +30,7 @@ class Shrten {
       FirebaseClient.analytics?.logEvent('get_shrt_by_user_id');
 
       const documents = await FirebaseClient.db
-        .collection('shrten')
+        .collection('shrts')
         .where('created_by', '==', uid)
         .get();
 
@@ -44,7 +48,7 @@ class Shrten {
       FirebaseClient.analytics?.logEvent('get_shrt_by_url');
 
       const documents = await FirebaseClient.db
-        .collection('shrten')
+        .collection('shrts')
         .where('url', '==', url)
         .get();
 
@@ -64,7 +68,7 @@ class Shrten {
         url,
       });
 
-      return await FirebaseClient.db.collection('shrten').add({
+      return await FirebaseClient.db.collection('shrts').add({
         url,
         shrt_url: '',
         created_on: Date.now(),
@@ -83,7 +87,10 @@ class Shrten {
         linkID,
       });
 
-      return await FirebaseClient.db.collection('shrten').doc(linkID).delete();
+      return await FirebaseClient.db
+        .collection('shrts')
+        .doc(linkID)
+        .set({ deleted: true });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);
@@ -93,4 +100,4 @@ class Shrten {
   async getAnalyticsByLinkID() {}
 }
 
-export const ShrtenService = new Shrten();
+export const ShrtService = new Shrt();

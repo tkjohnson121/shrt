@@ -1,5 +1,5 @@
 import { useAuth } from 'features/authentication';
-import { ShrtenService } from 'features/shrten';
+import { ShrtService } from 'features/shrt';
 import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 import {
@@ -125,7 +125,7 @@ export function ShrtForm() {
           throw new Error('Please login Shrten a link');
         }
 
-        await ShrtenService.addShrt(authState.data.currentUser, url);
+        await ShrtService.addShrt(authState.data.currentUser, url);
         setState({ loading: false, data: { url: '' } });
       } catch (error) {
         onError(error);

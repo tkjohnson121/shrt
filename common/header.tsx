@@ -10,6 +10,7 @@ import {
   motion,
   Theme,
 } from 'features/theme';
+import { UserService } from 'features/user';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -30,16 +31,36 @@ export const Header: React.FC<{
   const isLinkActive = (href: string) =>
     router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
 
+  const [state, setState] = React.useState('');
+
+  React.useEffect(() => {
+    const getAvatar = async () => {
+      const result = (await UserService.getUserAvatarById(
+        authState.data?.currentUser?.uid,
+      )) as string;
+
+      setState(result);
+    };
+
+    if (authState.data?.isAuthenticated) {
+      getAvatar();
+    }
+  }, [authState.data?.isAuthenticated]);
+
   return (
     <motion.header
       variants={fadeInDown}
       initial="initial"
       animate="animate"
-      exit="exit"
       ref={heightRef}
       css={(theme: Theme) => css`
         padding: ${theme.space[4]} ${theme.space[8]};
-
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: ${theme.colors.blackAlpha[700]};
         display: flex;
         align-items: stretch;
         justify-content: space-between;
@@ -72,6 +93,10 @@ export const Header: React.FC<{
           display: flex;
           align-items: stretch;
           justify-content: space-between;
+
+          img {
+            border-radius: ${theme.radii['full']};
+          }
         }
       `}
     >
@@ -85,7 +110,7 @@ export const Header: React.FC<{
           key="home"
         >
           <Image
-            src="/gvempire-logo.png"
+            src={'/gvempire-logo.png'}
             alt="GVEMPIRE.dev logo"
             height="50px"
             width="50px"
@@ -126,9 +151,11 @@ export const Header: React.FC<{
             exit="exit"
             key="profile"
           >
-            <Image
+            <img
               src={
-                authState.data?.currentUser?.photoURL || '/gvempire-logo.png'
+                authState.data?.currentUser?.photoURL ||
+                state ||
+                '/gvempire-logo.png'
               }
               alt={`${
                 authState.data?.currentUser?.displayName || 'GVEMPIRE.dev'

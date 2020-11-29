@@ -1,7 +1,7 @@
 import { AuthForm, ErrorWrapper, Loading } from 'common';
 import { ShrtForm } from 'common/shrt-form';
 import { useAuth } from 'features/authentication';
-import { ShrtenService } from 'features/shrten';
+import { ShrtService } from 'features/shrt';
 import React from 'react';
 import { MdDelete } from 'react-icons/md';
 import {
@@ -97,7 +97,7 @@ export default function UserDashboard() {
         throw new Error('Please Login.');
       }
 
-      await ShrtenService.deleteShrt(authState.data?.currentUser, shrt.uid);
+      await ShrtService.deleteShrt(authState.data?.currentUser, shrt.uid);
     } catch (error) {
       onError(error);
     }
@@ -108,9 +108,8 @@ export default function UserDashboard() {
     let unsubscribe: () => void;
 
     if (currentUser) {
-      unsubscribe = ShrtenService.openShrtListener(
-        currentUser.uid,
-        (documents) => setState({ loading: false, data: { links: documents } }),
+      unsubscribe = ShrtService.openShrtListener(currentUser.uid, (documents) =>
+        setState({ loading: false, data: { links: documents } }),
       );
     }
 

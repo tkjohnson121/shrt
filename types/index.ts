@@ -25,6 +25,7 @@ export type ShrtUser =
 export interface ShrtUrl {
   created_by: string;
   created_on: number;
+  deleted: boolean;
   url: string;
   shrt_url: string | null;
 }
