@@ -1,27 +1,13 @@
-import { Loading } from 'common';
 import { AuthService } from 'features/authentication';
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
-import { MdClose } from 'react-icons/md';
-import {
-  AnimatePresence,
-  ComponentStyles,
-  css,
-  fadeInDown,
-  listAnimation,
-  listChildAnimation,
-  motion,
-} from 'theme';
+import { ShrtSwal } from 'features/swal';
+import React, { useState } from 'react';
+import { ComponentStyles, css } from 'theme';
 import { FetchState } from 'types';
+import Form, { OnFormSubmit } from './form';
 
 const styles: ComponentStyles = {
   header: (theme) => css`
     margin-bottom: ${theme.space[8]};
-
-    button {
-      background-color: transparent;
-      color: ${theme.colors.text};
-      border-bottom: 2px solid ${theme.colors.primary};
-    }
   `,
   title: () => css``,
   error: (theme) => css`
@@ -72,190 +58,109 @@ const styles: ComponentStyles = {
   `,
 };
 
+const authFields = {
+  email: {
+    label: 'Email',
+    type: 'email',
+    width: 'small',
+    placeholder: "What's your email?",
+    config: {
+      pattern: {
+        value: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
+        message: "Hmm, that doesn't look like an email.",
+      },
+    },
+  },
+  password: {
+    label: 'Password',
+    type: 'password',
+    width: 'small',
+    placeholder: "What's your password?",
+    config: {
+      minLength: {
+        value: 6,
+        message: 'Too short (min 6).',
+      },
+      maxLength: {
+        value: 24,
+        message: 'Too long (min 24).',
+      },
+    },
+  },
+};
+
 export function AuthForm() {
-  const [state, setState] = useState<
-    FetchState<{ email: string; password: string; isNewUser: boolean }>
-  >({
+  const [state, setState] = useState<FetchState<{ isNewUser: boolean }>>({
     loading: false,
     data: {
-      email: '',
-      password: '',
       isNewUser: true,
     },
   });
-
-  const onError = (error: Error) =>
-    setState((prev) => ({ ...prev, loading: false, error }));
-  const onErrorClose = () =>
-    setState((prev) => ({ ...prev, loading: false, error: null }));
-
-  const onInputChange = ({
-    target: { name, value },
-  }: ChangeEvent<HTMLInputElement>) =>
-    setState((prev) => ({
-      ...prev,
-      data: {
-        ...prev.data,
-        [name]: value,
-      } as { email: string; password: string; isNewUser: boolean },
-    }));
 
   const toggleIsNewUser = () =>
     setState((prev) => ({
       ...prev,
       data: {
-        ...(prev.data as { email: string; password: string }),
+        ...prev.data,
         isNewUser: !prev.data?.isNewUser,
       },
     }));
 
-  const onFormSubmit = useCallback(
-    async (evt: FormEvent<HTMLFormElement>) => {
-      try {
-        evt.preventDefault();
-        setState((prev) => ({ ...prev, loading: true }));
-        const { email, password } = state.data || {};
+  const onAuthSubmit: OnFormSubmit = async ({ email, password }, setStatus) => {
+    try {
+      setStatus('authenticating...');
 
-        if (typeof email !== 'string') {
-          throw new Error('Email is incorrect');
-        }
-
-        if (typeof password !== 'string' || password.length < 6) {
-          throw new Error('Password is incorrect');
-        }
-
-        if (state.data?.isNewUser) {
-          await AuthService.signUp(email, password);
-        } else {
-          await AuthService.signIn(email, password);
-        }
-
-        setState((prev) => ({ ...prev, loading: false }));
-      } catch (error) {
-        onError(error);
+      if (state.data?.isNewUser) {
+        await AuthService.signUp(email, password);
+      } else {
+        await AuthService.signIn(email, password);
       }
-    },
-    [state.data],
-  );
 
-  return (
-    <AnimatePresence>
-      {state.data?.isNewUser ? (
-        <header css={styles.header} key="header">
-          <h1 css={styles.title} className="display">
-            Welcome to SHRT!
-          </h1>
+      setStatus('Authentication Complete!');
+      ShrtSwal.fire({ type: 'success', titleText: 'Success!' });
+    } catch (error) {
+      console.error(error);
+      setStatus(error.message);
+    }
+  };
 
-          <button onClick={toggleIsNewUser}>Need to sign-in?</button>
-        </header>
-      ) : (
-        <header css={styles.header} key="header">
-          <h1 css={styles.title} className="display">
-            Welcome Back!
-          </h1>
-          <button onClick={toggleIsNewUser}>Need to sign-up?</button>
-        </header>
-      )}
+  return state.data?.isNewUser ? (
+    <>
+      <header css={styles.header} key="header">
+        <h1 css={styles.title} className="display">
+          Welcome to SHRT!
+        </h1>
+        <button onClick={toggleIsNewUser} css={styles.button}>
+          Need to sign-up?
+        </button>
+      </header>
 
-      <motion.form
-        css={styles.form}
-        onSubmit={onFormSubmit}
-        variants={listAnimation}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        key="form"
-        className={`${state.loading ? 'disabled' : 'active'}`}
-      >
-        {!!state.loading ? (
-          <Loading key="loading-email" />
-        ) : (
-          <motion.label
-            htmlFor="email"
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="label-email"
-          >
-            Email
-          </motion.label>
-        )}
+      <Form
+        subtitle={'Sign-up to get all the greatest features.'}
+        key="shrt"
+        onFormSubmit={onAuthSubmit}
+        fields={authFields}
+        buttonText="Sign up"
+      />
+    </>
+  ) : (
+    <>
+      <header css={styles.header} key="header">
+        <h1 css={styles.title} className="display">
+          Welcome Back!
+        </h1>
+        <button onClick={toggleIsNewUser} css={styles.button}>
+          Need to sign-up?
+        </button>
+      </header>
 
-        <motion.input
-          id="email"
-          name="email"
-          placeholder="Enter your email..."
-          type="text"
-          css={styles.input}
-          onChange={onInputChange}
-          value={state.data?.email}
-          variants={listChildAnimation}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          key="input-email"
-        />
-
-        {!!state.loading ? (
-          <Loading key="loading-password" />
-        ) : (
-          <motion.label
-            htmlFor="password"
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="label-password"
-          >
-            Password
-          </motion.label>
-        )}
-
-        <motion.input
-          id="password"
-          name="password"
-          placeholder="Enter your password..."
-          type="password"
-          css={styles.input}
-          onChange={onInputChange}
-          value={state.data?.password}
-          variants={listChildAnimation}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          key="input-password"
-        />
-
-        <motion.button
-          type="submit"
-          css={styles.button}
-          variants={listChildAnimation}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          key="button-submit"
-        >
-          Submit
-        </motion.button>
-      </motion.form>
-
-      {!!state.error && (
-        <motion.section
-          variants={fadeInDown}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          css={styles.error}
-          key="error"
-        >
-          <h3>{state.error?.name}</h3>
-          <p>{state.error?.message}</p>
-          <button onClick={onErrorClose}>
-            <MdClose />
-          </button>
-        </motion.section>
-      )}
-    </AnimatePresence>
+      <Form
+        subtitle={"It's nice to see you again!"}
+        key="shrt"
+        onFormSubmit={onAuthSubmit}
+        fields={authFields}
+        buttonText="Login"
+      />
+    </>
   );
 }

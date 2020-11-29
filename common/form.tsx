@@ -2,7 +2,12 @@ import { css } from '@emotion/core';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { fadeInUp, listAnimation, listChildAnimation } from '../features/theme';
+import {
+  fadeInDown,
+  fadeInUp,
+  listAnimation,
+  listChildAnimation,
+} from '../features/theme';
 import { ComponentStyles } from './../features/theme/theme.d';
 import Loading from './loading';
 
@@ -43,10 +48,14 @@ const styles: ComponentStyles = {
   subtitle: () => css``,
 
   formErrors: (theme) => css`
-    flex: 1 1 100%;
-    padding-top: ${theme.space[4]};
     text-align: center;
     color: ${theme.colors.error};
+    position: relative;
+    background-color: ${theme.colors.whiteAlpha[300]};
+    border-radius: ${theme.radii['md']};
+    padding: ${theme.space[2]};
+    margin: ${theme.space[4]} 0;
+    display: inline-block;
   `,
 
   formActions: (theme) => css`
@@ -230,6 +239,8 @@ export const Form: React.FC<FormProps> = (props) => {
 
   const formFields = Object.entries(props.fields);
 
+  React.useEffect(() => {}, [errors]);
+
   /**
    * # onSubmit
    * prefaces a developers onFormSubmit to wrap in a try catch block
@@ -260,7 +271,7 @@ export const Form: React.FC<FormProps> = (props) => {
       css={styles.formWrapper}
       className={isSubmitting ? 'disabled' : ''}
     >
-      {(status || props.title) && (
+      {(status || props.title || props.subtitle) && (
         <motion.header
           css={styles.formHeader}
           data-testid="status"
@@ -270,7 +281,7 @@ export const Form: React.FC<FormProps> = (props) => {
           exit="exit"
         >
           <h3 css={styles.title}>{props.title}</h3>
-          <p css={styles.subtitle}>{status || props.subtitle}</p>
+          <p css={styles.subtitle}>{props.subtitle}</p>
           {isSubmitting && <Loading />}
         </motion.header>
       )}
@@ -283,7 +294,7 @@ export const Form: React.FC<FormProps> = (props) => {
             key={`form-input-${name}`}
             css={styles.formField}
             className={`${field.width} ${field.type}`}
-            variants={listAnimation}
+            variants={listChildAnimation}
             initial="initial"
             animate="animate"
             exit="exit"
@@ -385,6 +396,18 @@ export const Form: React.FC<FormProps> = (props) => {
           {props.buttonText || 'submit'}
         </button>
       </motion.div>
+
+      {status && (
+        <motion.p
+          variants={fadeInDown}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          css={styles.formErrors}
+        >
+          {status || props.subtitle}
+        </motion.p>
+      )}
     </motion.form>
   );
 };
