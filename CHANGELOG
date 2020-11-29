@@ -1,5 +1,9 @@
-* 41173a1 (HEAD -> main) gst
-* f9d6dab (tag: v0.0.7, origin/main) v0.0.7
+* eb603c5 (HEAD -> main) add avatar and background, and user profile page
+* a0d5fcb refactor dashboard
+* 6ba07b2 (tag: v0.0.8, origin/main) v0.0.8
+* 23229a1 update changelog
+* 41173a1 gst
+* f9d6dab (tag: v0.0.7) v0.0.7
 * 0450da5 update changelog
 * 17993d8 (tag: v0.0.6) v0.0.6
 * 609bb87 update changelog
