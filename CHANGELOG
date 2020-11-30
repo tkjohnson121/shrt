@@ -1,8 +1,11 @@
-* 5acd97d (HEAD -> main) refactor forms
+* 5504391 (HEAD -> main) yahhh
+* d8463e6 (tag: v0.0.10, origin/main) v0.0.10
+* dd75bed update changelog
+* 5acd97d refactor forms
 * 3ee8790 work on profile header and page
 * 47a76b8 start profile page
 * 2811c19 style avatar and header image
-* 14a57fd (tag: v0.0.9, origin/main) v0.0.9
+* 14a57fd (tag: v0.0.9) v0.0.9
 * 00c7f54 update changelog
 * eb603c5 add avatar and background, and user profile page
 * a0d5fcb refactor dashboard
