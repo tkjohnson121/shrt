@@ -10,21 +10,6 @@ on:
     branches: [main]
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup repo
-        uses: actions/checkout@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-
-      - name: Install deps
-        run: yarn
-
   test:
     runs-on: ubuntu-latest
 
@@ -54,6 +39,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+
+      - name: Install deps
+        run: yarn
 
       - name: Build Project
         run: yarn build
