@@ -15,8 +15,8 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "jsx": "react",
+    "lib": ["dom", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -29,7 +29,7 @@
     "target": "esnext",
     "types": ["node", "@emotion/core", "jest"]
   },
-  "exclude": ["node_modules/**", "**/*.test.ts"],
+  "exclude": ["node_modules/"],
   "include": ["**/*.ts", "**/*.tsx"],
   "typedocOptions": {
     "mode": "modules",

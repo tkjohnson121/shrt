@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '../../utils/setup-tests';
+import { fireEvent, render, waitFor } from 'utils/setup-tests';
 import { useTheme } from './context';
 
 const WithThemeProvider = () => {
