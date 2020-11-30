@@ -10,19 +10,53 @@ on:
     branches: [main]
 
 jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install deps
+      - run: yarn
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install deps
+      - run: yarn
+
+      - name: Run Tests
+      - run: yarn test
+
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
     steps:
+      - name: Setup repo
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn
+          node-version: 12.x
+
+      - name: Build Project
       - run: yarn build
-      - run: yarn test
+
+      - name: Build Docs
+      - run: yarn build:docs
