@@ -14,49 +14,49 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup repo
-      - uses: actions/checkout@v2
+    - name: Setup repo
+    - uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-      - name: Install deps
-      - run: yarn
+    - name: Install deps
+    - run: yarn
 
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup repo
-      - uses: actions/checkout@v2
+    - name: Setup repo
+    - uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-      - name: Install deps
-      - run: yarn
+    - name: Install deps
+    - run: yarn
 
-      - name: Run Tests
-      - run: yarn test
+    - name: Run Tests
+    - run: yarn test
 
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup repo
-      - uses: actions/checkout@v2
+    - name: Setup repo
+    - uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
 
-      - name: Build Project
-      - run: yarn build
+    - name: Build Project
+    - run: yarn build
 
-      - name: Build Docs
-      - run: yarn build:docs
+    - name: Build Docs
+    - run: yarn build:docs
