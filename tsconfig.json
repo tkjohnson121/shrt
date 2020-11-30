@@ -4,19 +4,36 @@
     "alwaysStrict": true,
     "baseUrl": ".",
     "paths": {
-      "common": ["common/"],
-      "features": ["features/"],
-      "theme": ["features/theme"],
-      "pages": ["pages/"],
-      "services": ["services/"],
-      "utils": ["utils/"],
-      "types": ["types/"]
+      "common": [
+        "common/"
+      ],
+      "features": [
+        "features/"
+      ],
+      "theme": [
+        "features/theme"
+      ],
+      "pages": [
+        "pages/"
+      ],
+      "services": [
+        "services/"
+      ],
+      "utils": [
+        "utils/"
+      ],
+      "types": [
+        "types/"
+      ]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "react",
-    "lib": ["dom", "esnext"],
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -27,10 +44,19 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "types": ["node", "@emotion/core", "jest"]
+    "types": [
+      "node",
+      "@emotion/core",
+      "jest"
+    ]
   },
-  "exclude": ["node_modules/"],
-  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules/"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "typedocOptions": {
     "mode": "modules",
     "out": "docs"
