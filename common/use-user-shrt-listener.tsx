@@ -7,7 +7,7 @@ export const useUserShrtListener = (uid?: string) => {
   const authState = useAuth();
 
   const [state, setState] = React.useState<
-    FetchState<{ shrts: Array<ShrtDocument & { uid: string }> }>
+    FetchState<{ shrts: Array<ShrtDocument> }>
   >({
     loading: true,
   });

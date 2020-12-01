@@ -85,13 +85,13 @@ const styles: ComponentStyles = {
       max-width: ${theme.space[32]};
     }
   `,
-  display_name: (theme) => css`
+  display_name: () => css`
     flex: 1 1 100%;
   `,
-  username: (theme) => css`
+  username: () => css`
     flex: 1 1 100%;
   `,
-  bio: (theme) => css`
+  bio: () => css`
     flex: 1 1 100%;
     max-width: 80ch;
     margin: 0 auto;

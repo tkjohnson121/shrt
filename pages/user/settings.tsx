@@ -93,7 +93,8 @@ export default function UserSettings() {
     }
   };
 
-  if (state.loading || userDocumentLoading) return <Loading />;
+  if (state.loading || (currentUser?.uid && userDocumentLoading))
+    return <Loading />;
   if (state.error || userDocumentError) {
     return <ErrorWrapper error={state.error || userDocumentError} />;
   }

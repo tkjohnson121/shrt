@@ -101,7 +101,7 @@ export function AuthForm() {
           Welcome to SHRT!
         </h1>
         <button onClick={toggleIsNewUser} css={styles.button}>
-          Need to sign-up?
+          Need to sign-in?
         </button>
       </header>
 

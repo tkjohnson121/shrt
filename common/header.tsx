@@ -81,11 +81,7 @@ export const Header: React.FC<{
   const { currentUser, isAuthenticated } = authState.data || {};
 
   const {
-    state: {
-      data: userDocument,
-      error: userDocumentError,
-      loading: userDocumentLoading,
-    },
+    state: { data: userDocument, error: userDocumentError },
   } = useUserDocumentListener(currentUser?.uid);
 
   const router = useRouter();
@@ -110,7 +106,7 @@ export const Header: React.FC<{
     }
   }, [isAuthenticated]);
 
-  if (state.loading || userDocumentLoading) return <Loading />;
+  if (state.loading) return <Loading />;
 
   if (state.error || userDocumentError) {
     return <ErrorWrapper error={state.error || userDocumentError} />;

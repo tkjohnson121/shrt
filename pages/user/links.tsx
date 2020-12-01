@@ -9,10 +9,7 @@ export default function PLPLinks() {
   const authState = useAuth();
   const currentUser = authState.data?.currentUser;
 
-  const [state, setState] = useState<FetchState>({ loading: false });
-
-  const onError = (error: Error) =>
-    setState((prev) => ({ ...prev, loading: false, error }));
+  const [state] = useState<FetchState>({ loading: false });
 
   const onFormSubmit: OnFormSubmit<LinkConfig> = async (
     linkConfig,
