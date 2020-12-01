@@ -39,7 +39,7 @@ export const Layout = ({
             css={css`
               min-height: 100vh;
               padding: 0 5%;
-              padding-top: ${menuRef.current?.clientHeight || 0 * 2}px;
+              padding-top: ${menuRef.current?.clientHeight || 15 * 2}px;
             `}
             initial={'initial'}
             animate={'animate'}

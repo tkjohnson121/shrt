@@ -49,13 +49,26 @@ const styles: ComponentStyles = {
 
   formErrors: (theme) => css`
     text-align: center;
-    color: ${theme.colors.error};
+    color: ${theme.colors['error']};
     position: relative;
     background-color: ${theme.colors.whiteAlpha[300]};
     border-radius: ${theme.radii['md']};
     padding: ${theme.space[2]};
-    margin: ${theme.space[4]} 0;
+    margin: ${theme.space[4]} ${theme.space[8]};
     display: inline-block;
+
+    &.info {
+      color: ${theme.colors['info']};
+    }
+    &.error {
+      color: ${theme.colors['error']};
+    }
+    &.warning {
+      color: ${theme.colors['warning']};
+    }
+    &.success {
+      color: ${theme.colors['success']};
+    }
   `,
 
   formActions: (theme) => css`
@@ -189,38 +202,42 @@ export interface FormFieldConfig extends React.HTMLProps<HTMLInputElement> {
   type: string;
   label?: string;
   placeholder?: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   width?: string;
   config?: FieldValues;
   /** Used for `select` elements */
   options?: (string | number)[];
 }
 
-export interface FormField {
-  [key: string]: FormFieldConfig | FormFieldComponent;
+export interface FormFields {
+  [key: string]: FormFieldConfig;
 }
 
-export interface FormFieldComponent {
-  isComponent: boolean;
-  component: React.ReactNode;
-}
-
-export type OnFormSubmit = (
+export type OnFormSubmit<T = {}> = (
   /** values from the input fields */
-  formData: FieldValues,
+  formData: FieldValues & T,
   /** hook into the form's status, useful for displaying error messages */
-  setStatus: (status: string) => void,
+  setStatus: React.Dispatch<
+    React.SetStateAction<
+      | {
+          message: string;
+          type: string;
+        }
+      | null
+      | undefined
+    >
+  >,
 ) => any;
 
 export interface FormProps {
   /** hooks into the submit function and runs the given function in a try/catch */
-  onFormSubmit: OnFormSubmit;
+  onFormSubmit: OnFormSubmit<any>;
   /** title of the form */
   title?: string | React.ReactNode;
   /** subtitle form the form, to be replaced with status when available */
   subtitle?: string | React.ReactNode;
   /** list of form fields or components to be used in the form.  */
-  fields: FormField;
+  fields: FormFields;
   /** the text od the submit button */
   buttonText?: string;
 }
@@ -234,7 +251,10 @@ export interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const { register, handleSubmit, errors } = useForm();
 
-  const [status, setStatus] = React.useState<string>('');
+  const [status, setStatus] = React.useState<{
+    message: string;
+    type: string;
+  } | null>();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const formFields = Object.entries(props.fields);
@@ -247,6 +267,7 @@ export const Form: React.FC<FormProps> = (props) => {
    */
   const onSubmit = React.useCallback(
     handleSubmit(async (formData) => {
+      setStatus(null);
       setIsSubmitting(true);
       try {
         await props.onFormSubmit(formData, setStatus);
@@ -254,7 +275,10 @@ export const Form: React.FC<FormProps> = (props) => {
       } catch (error) {
         console.error(error);
 
-        setStatus(JSON.stringify(error.message, null, 2));
+        setStatus({
+          message: JSON.stringify(error.message, null, 2),
+          type: 'error',
+        });
         return setIsSubmitting(false);
       }
     }),
@@ -286,103 +310,99 @@ export const Form: React.FC<FormProps> = (props) => {
         </motion.header>
       )}
 
-      {formFields.map(([name, field]) =>
-        'isComponent' in field ? (
-          field.component
-        ) : (
-          <motion.div
-            key={`form-input-${name}`}
-            css={styles.formField}
-            className={`${field.width} ${field.type}`}
-            variants={listChildAnimation}
-            initial="initial"
-            animate="animate"
-            exit="exit"
+      {formFields.map(([name, field]) => (
+        <motion.div
+          key={`form-input-${name}`}
+          css={styles.formField}
+          className={`${field.width} ${field.type}`}
+          variants={listChildAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <label
+            htmlFor={name}
+            css={styles.formLabel}
+            className={`${field.type} ${field.width}`}
           >
-            <label
-              htmlFor={name}
-              css={styles.formLabel}
-              className={`${field.type} ${field.width}`}
+            {field.label}
+          </label>
+
+          {[
+            'checkbox',
+            'url',
+            'number',
+            'text',
+            'tel',
+            'date',
+            'email',
+            'password',
+          ].includes(field.type) && (
+            <input
+              key={name}
+              id={name}
+              type={field.type}
+              name={name}
+              defaultValue={field.defaultValue || ''}
+              placeholder={field.placeholder || ''}
+              ref={register(field.config || {})}
+              css={styles.formInput}
+              className={`${errors[name] ? 'has-error' : null} ${field.type}`}
+            />
+          )}
+
+          {['file'].includes(field.type) && (
+            <input
+              key={name}
+              id={name}
+              type={field.type}
+              name={name}
+              defaultValue={field.defaultValue || ''}
+              placeholder={field.placeholder || ''}
+              ref={register(field.config || {})}
+              css={styles.formInput}
+              className={`${errors[name] ? 'has-error' : null} ${field.type}`}
+              accept={field?.config?.accept || '*'}
+              multiple={field?.config?.multiple || true}
+            />
+          )}
+
+          {['textarea'].includes(field.type) && (
+            <textarea
+              key={name}
+              id={name}
+              name={name}
+              rows={5}
+              defaultValue={field.defaultValue || ''}
+              placeholder={field.placeholder || ''}
+              ref={register(field.config || {})}
+              css={styles.formInput}
+              className={`${errors[name] ? 'has-error' : null} ${field.type}`}
+            />
+          )}
+
+          {['select'].includes(field.type) && (
+            <select
+              key={name}
+              id={name}
+              name={name}
+              defaultValue={field.defaultValue || ''}
+              placeholder={field.placeholder || ''}
+              ref={register(field.config || {})}
+              css={styles.formInput}
+              className={`${errors[name] ? 'has-error' : null} ${field.type}`}
             >
-              {field.label}
-            </label>
+              {field.options?.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          )}
 
-            {[
-              'checkbox',
-              'url',
-              'number',
-              'text',
-              'tel',
-              'date',
-              'email',
-              'password',
-            ].includes(field.type) && (
-              <input
-                key={name}
-                id={name}
-                type={field.type}
-                name={name}
-                defaultValue={field.defaultValue || ''}
-                placeholder={field.placeholder || ''}
-                ref={register(field.config || {})}
-                css={styles.formInput}
-                className={`${errors[name] ? 'has-error' : null} ${field.type}`}
-              />
-            )}
-
-            {['file'].includes(field.type) && (
-              <input
-                key={name}
-                id={name}
-                type={field.type}
-                name={name}
-                defaultValue={field.defaultValue || ''}
-                placeholder={field.placeholder || ''}
-                ref={register(field.config || {})}
-                css={styles.formInput}
-                className={`${errors[name] ? 'has-error' : null} ${field.type}`}
-                accept={field?.config?.accept || '*'}
-                multiple={field?.config?.multiple || true}
-              />
-            )}
-
-            {['textarea'].includes(field.type) && (
-              <textarea
-                key={name}
-                id={name}
-                name={name}
-                rows={5}
-                defaultValue={field.defaultValue || ''}
-                placeholder={field.placeholder || ''}
-                ref={register(field.config || {})}
-                css={styles.formInput}
-                className={`${errors[name] ? 'has-error' : null} ${field.type}`}
-              />
-            )}
-
-            {['select'].includes(field.type) && (
-              <select
-                key={name}
-                id={name}
-                name={name}
-                defaultValue={field.defaultValue || ''}
-                placeholder={field.placeholder || ''}
-                ref={register(field.config || {})}
-                css={styles.formInput}
-                className={`${errors[name] ? 'has-error' : null} ${field.type}`}
-              >
-                {field.options?.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            )}
-
-            {errors[name] && (
-              <span css={styles.formErrors}>{errors[name].message}</span>
-            )}
-          </motion.div>
-        ),
-      )}
+          {errors[name] && (
+            <span css={styles.formErrors}>{errors[name].message}</span>
+          )}
+        </motion.div>
+      ))}
 
       <motion.div
         css={styles.formActions}
@@ -392,22 +412,23 @@ export const Form: React.FC<FormProps> = (props) => {
         animate="animate"
         exit="exit"
       >
+        {status && (
+          <motion.p
+            variants={fadeInDown}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            css={styles.formErrors}
+            className={status.type}
+          >
+            {status.message || props.subtitle}
+          </motion.p>
+        )}
+
         <button type="submit" className="block">
           {props.buttonText || 'submit'}
         </button>
       </motion.div>
-
-      {status && (
-        <motion.p
-          variants={fadeInDown}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          css={styles.formErrors}
-        >
-          {status || props.subtitle}
-        </motion.p>
-      )}
     </motion.form>
   );
 };

@@ -1,8 +1,9 @@
-import { AuthForm, ErrorWrapper, Loading } from 'common';
+import { AuthForm, ErrorWrapper, Loading, useUserShrtListener } from 'common';
 import { ShrtForm } from 'common/shrt-form';
 import { useAuth } from 'features/authentication';
-import { ShrtService } from 'features/shrt';
-import React from 'react';
+import { ShrtSwal } from 'features/swal';
+import { UserService } from 'features/user';
+import React, { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import {
   addDelay,
@@ -15,7 +16,7 @@ import {
   listChildAnimation,
   motion,
 } from 'theme';
-import { FetchState, ShrtUrl } from 'types';
+import { FetchState, MotionTypes, ShrtDocument } from 'types';
 
 const styles: ComponentStyles = {
   listWrapper: (theme) => css`
@@ -80,43 +81,71 @@ const styles: ComponentStyles = {
   `,
 };
 
-export default function UserDashboard() {
+export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
+  as = 'li',
+  shrt,
+}) => {
   const authState = useAuth();
+  const uid = authState.data?.currentUser?.uid;
 
-  const [state, setState] = React.useState<
-    FetchState<{ links: Array<ShrtUrl & { uid: string }> }>
-  >({
-    loading: true,
+  const MotionComp = motion[as];
+
+  const [state, setState] = useState<FetchState>({
+    loading: shrt.shrt_url ? true : false,
   });
 
-  const onError = (error: Error) => setState({ loading: false, error });
-
-  const onLinkDelete = async (shrt: ShrtUrl & { uid: string }) => {
+  const onShrtArchive = async (shrt: ShrtDocument) => {
     try {
-      if (!authState.data?.currentUser) {
-        throw new Error('Please Login.');
+      setState({ loading: true });
+
+      if (uid === shrt.created_by) {
+        await UserService.archiveShrt(uid, shrt.shrt_id);
       }
 
-      await ShrtService.deleteShrt(authState.data?.currentUser, shrt.uid);
+      setState({ loading: false });
+      ShrtSwal.fire({ icon: 'success', title: 'Shrt Archived!' });
     } catch (error) {
-      onError(error);
+      setState({ loading: false, error });
     }
   };
 
-  React.useEffect(() => {
-    const currentUser = authState.data?.currentUser;
-    let unsubscribe: () => void;
+  if (state.loading) return <Loading />;
+  if (state.error) return <ErrorWrapper error={state.error} />;
 
-    if (currentUser) {
-      unsubscribe = ShrtService.openShrtListener(currentUser.uid, (documents) =>
-        setState({ loading: false, data: { links: documents } }),
-      );
-    }
+  return (
+    <MotionComp
+      key={shrt.shrt_url}
+      variants={addDelay(listChildAnimation, 0.5)}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      <pre>
+        URL:{' '}
+        <a href={shrt.url || ''} target="_new" rel="noreferrer noopener">
+          {shrt.url}
+        </a>
+      </pre>
 
-    return () => {
-      !!unsubscribe && unsubscribe();
-    };
-  }, [authState.data?.currentUser]);
+      <pre>
+        SHRT URL:{' '}
+        <a href={shrt.shrt_url || ''} target="_new" rel="noreferrer noopener">
+          {shrt.shrt_url}
+        </a>
+      </pre>
+
+      <pre>Created on: {new Date(shrt.created_on).toLocaleDateString()}</pre>
+
+      <button onClick={() => onShrtArchive(shrt)}>
+        <MdDelete />
+      </button>
+    </MotionComp>
+  );
+};
+
+export default function ShrtDashboard() {
+  const authState = useAuth();
+  const { state } = useUserShrtListener();
 
   if (state.loading) return <Loading />;
   if (state.error) return <ErrorWrapper error={state.error} />;
@@ -132,6 +161,7 @@ export default function UserDashboard() {
       >
         User Dashboard
       </motion.h1>
+
       <ShrtForm />
 
       <motion.ul
@@ -142,7 +172,7 @@ export default function UserDashboard() {
         exit="exit"
       >
         <AnimatePresence>
-          {state.data?.links
+          {state.data?.shrts
             .sort((a, b) =>
               new Date(a.created_on).getTime() >
               new Date(b.created_on).getTime()
@@ -150,43 +180,7 @@ export default function UserDashboard() {
                 : -1,
             )
             .map((shrt) => (
-              <motion.li
-                key={shrt.shrt_url}
-                variants={addDelay(listChildAnimation, 0.5)}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <pre>
-                  URL:{' '}
-                  <a
-                    href={shrt.url || ''}
-                    target="_new"
-                    rel="noreferrer noopener"
-                  >
-                    {shrt.url}
-                  </a>
-                </pre>
-
-                <pre>
-                  SHRT URL:{' '}
-                  <a
-                    href={shrt.shrt_url || ''}
-                    target="_new"
-                    rel="noreferrer noopener"
-                  >
-                    {shrt.shrt_url}
-                  </a>
-                </pre>
-
-                <pre>
-                  Created on: {new Date(shrt.created_on).toLocaleDateString()}
-                </pre>
-
-                <button onClick={() => onLinkDelete(shrt)}>
-                  <MdDelete />
-                </button>
-              </motion.li>
+              <ShrtCard key={shrt.shrt_id} as="li" shrt={shrt} />
             ))}
         </AnimatePresence>
       </motion.ul>

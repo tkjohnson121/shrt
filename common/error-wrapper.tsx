@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { slideInLeft } from '../features/theme';
-import { Theme } from '../features/theme/theme';
+import { easing, slideInLeft } from '../features/theme';
+import { ComponentStyles } from '../features/theme/theme';
 
-const styles = {
-  container: (theme: Theme) => css`
+const styles: ComponentStyles = {
+  container: (theme) => css`
     max-width: ${theme.space['2xl']};
     border-radius: ${theme.radii['lg']};
     margin: ${theme.space[16]} auto;
@@ -16,13 +16,48 @@ const styles = {
     background-color: ${theme.name === 'light'
       ? theme.colors.blackAlpha[300]
       : theme.colors.whiteAlpha[300]};
+
+    button {
+      background-color: ${theme.colors['primary']};
+      color: ${theme.colors.whiteAlpha[900]};
+      font-weight: ${theme.fontWeights['semibold']};
+      border-radius: ${theme.radii['md']};
+      padding: ${theme.space[2]};
+      margin-right: ${theme.space[2]};
+    }
+
+    a {
+      margin-right: ${theme.space[2]};
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: ${theme.space[2]} ${theme.space[4]};
+
+      &::after {
+        content: '';
+        transition: left 150ms cubic-bezier(${easing.join(',')});
+        position: absolute;
+        bottom: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background-color: ${theme.colors['primary']};
+      }
+
+      &.active::after,
+      &:hover::after {
+        left: 0;
+      }
+    }
   `,
-  code: (theme: Theme) => css`
+  code: (theme) => css`
     font-size: ${theme.fontSizes['sm']};
     font-family: ${theme.fonts['mono']};
   `,
-  message: () => css`
-    margin: 2rem auto;
+  message: (theme) => css`
+    margin-top: ${theme.space[2]};
+    margin-bottom: ${theme.space[4]};
   `,
 };
 
@@ -36,7 +71,7 @@ const styles = {
  */
 export const ErrorWrapper: React.FC<{
   title?: string;
-  error?: Error | { [key: string]: any };
+  error?: Error | { [key: string]: any } | null;
 }> = ({ title = 'Uh Oh!', error }) => {
   const router = useRouter();
 
@@ -46,10 +81,8 @@ export const ErrorWrapper: React.FC<{
 
       <p css={styles.message}>{error.message}</p>
 
-      <div css={{ display: 'flex', flexDirection: 'column' }}>
-        <button onClick={() => router.reload()} css={{ margin: '1rem auto' }}>
-          Refresh
-        </button>
+      <div css={{ display: 'flex', alignItems: 'center' }}>
+        <button onClick={() => router.reload()}>Refresh</button>
 
         <Link href="/">
           <a>Go Home</a>

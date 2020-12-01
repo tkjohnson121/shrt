@@ -14,13 +14,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { FetchState, ShrtUserDocument } from 'types';
+import { FetchState, UserDocument } from 'types';
 import ErrorWrapper from './error-wrapper';
 import Loading from './loading';
+import { useUserDocumentListener } from './use-user-document-listener';
 
 const styles: ComponentStyles = {
   headerWrapper: (theme) => css`
-    padding: ${theme.space[4]} ${theme.space[8]};
+    padding: ${theme.space[2]} ${theme.space[4]};
     position: fixed;
     top: 0;
     left: 0;
@@ -36,7 +37,7 @@ const styles: ComponentStyles = {
       overflow: hidden;
       display: flex;
       align-items: center;
-      padding: ${theme.space[2]} ${theme.space[4]};
+      padding: ${theme.space[1]} ${theme.space[2]};
 
       &::after {
         content: '';
@@ -77,55 +78,43 @@ export const Header: React.FC<{
   heightRef: React.RefObject<HTMLElement>;
 }> = ({ heightRef }) => {
   const authState = useAuth();
-  const router = useRouter();
+  const { currentUser, isAuthenticated } = authState.data || {};
 
+  const {
+    state: {
+      data: userDocument,
+      error: userDocumentError,
+      loading: userDocumentLoading,
+    },
+  } = useUserDocumentListener(currentUser?.uid);
+
+  const router = useRouter();
   const isLinkActive = (href: string) =>
     router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
 
   const [state, setState] = React.useState<
-    FetchState<{ userData?: ShrtUserDocument; avatar?: string }>
+    FetchState<{ userData?: UserDocument; avatar?: string }>
   >({ loading: false });
 
   React.useEffect(() => {
     const getAvatar = async () => {
       const avatar = (await UserService.getUserAvatarById(
-        authState.data?.currentUser?.uid,
+        currentUser?.uid,
       )) as string;
 
       setState((prev) => ({ loading: false, data: { ...prev.data, avatar } }));
     };
 
-    if (
-      authState.data?.isAuthenticated &&
-      authState.data?.currentUser &&
-      !state.data?.avatar
-    ) {
+    if (isAuthenticated && currentUser && !state.data?.avatar) {
       getAvatar();
     }
-  }, [authState.data?.isAuthenticated]);
+  }, [isAuthenticated]);
 
-  React.useEffect(() => {
-    let unsubscribe: () => void;
+  if (state.loading || userDocumentLoading) return <Loading />;
 
-    if (authState.data?.isAuthenticated && authState.data?.currentUser) {
-      unsubscribe = UserService.openUserDocumentListener(
-        authState.data?.currentUser?.uid,
-        (document) =>
-          setState((prev) => ({
-            loading: false,
-            data: { ...prev.data, userData: document },
-          })),
-      );
-    }
-
-    return () => {
-      !!unsubscribe && unsubscribe();
-    };
-  }, [authState.data?.isAuthenticated]);
-
-  if (state.loading) return <Loading />;
-
-  if (state.error) return <ErrorWrapper error={state.error} />;
+  if (state.error || userDocumentError) {
+    return <ErrorWrapper error={state.error || userDocumentError} />;
+  }
 
   return (
     <header ref={heightRef} css={styles.headerWrapper}>
@@ -154,27 +143,25 @@ export const Header: React.FC<{
         animate="animate"
         key="nav"
       >
-        {(authState.data?.isAuthenticated ? authLinks : defaultLinks).map(
-          (link) => (
-            <Link href={link.href} key={link.text}>
-              <motion.a
-                className={isLinkActive(link.href)}
-                variants={listChildAnimation}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                key={link.text}
-              >
-                {link.text}
-              </motion.a>
-            </Link>
-          ),
-        )}
+        {(isAuthenticated ? authLinks : defaultLinks).map((link) => (
+          <Link href={link.href} key={link.text}>
+            <motion.a
+              className={isLinkActive(link.href)}
+              variants={listChildAnimation}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              key={link.text}
+            >
+              {link.text}
+            </motion.a>
+          </Link>
+        ))}
 
         <Link
           href={
-            state.data?.userData?.username
-              ? `/user/${state.data?.userData?.username}`
+            userDocument?.username
+              ? `/user/${userDocument?.username}`
               : '/user/settings'
           }
         >
@@ -188,9 +175,7 @@ export const Header: React.FC<{
           >
             <img
               src={state.data?.avatar || '/gvempire-logo.png'}
-              alt={`${
-                authState.data?.currentUser?.displayName || 'GVEMPIRE.dev'
-              } logo`}
+              alt={`${userDocument?.username || 'GVEMPIRE.dev'} logo`}
               height="50px"
               width="50px"
             />

@@ -1,11 +1,12 @@
+import { ErrorWrapper } from 'common';
 import { useAuth } from 'features/authentication';
-import { FirebaseClient } from 'features/firebase-client';
+import { UserService } from 'features/user';
 import { NextApiRequest } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import {
-  FaBirthdayCake,
-  FaEnvelope,
+  FaCalendar,
   FaGithub,
   FaInstagram,
   FaLinkedin,
@@ -15,9 +16,26 @@ import {
   FaTwitter,
   FaYoutube,
 } from 'react-icons/fa';
-import { ComponentStyles, css, easing } from 'theme';
-import { ShrtUserDocument } from 'types';
+import { MdDelete, MdEmail } from 'react-icons/md';
+import {
+  addDelay,
+  ComponentStyles,
+  css,
+  easing,
+  fadeInDown,
+  fadeInUp,
+  listAnimation,
+  listChildAnimation,
+  motion,
+  slideInLeft,
+} from 'theme';
+import { PLPLinkDocument, UserDocument } from 'types';
 
+const contactItems = [
+  { key: 'email', href: 'mailto:', Icon: MdEmail },
+  { key: 'tel', href: 'telto:', Icon: FaPhone },
+  { key: 'date_of_birth', href: null, Icon: FaCalendar },
+];
 const smItems = [
   { key: 'twitter', href: 'https://twitter.com/', Icon: FaTwitter },
   { key: 'twitch', href: 'https://twitch.com/', Icon: FaTwitch },
@@ -37,8 +55,17 @@ const smItems = [
 ];
 
 const styles: ComponentStyles = {
-  profileWrapper: (theme) => css``,
+  profileWrapper: (theme) => css`
+    margin: 0 auto;
+
+    p {
+      line-height: ${theme.lineHeights['taller']};
+    }
+  `,
   edit: (theme) => css`
+    position: absolute;
+    top: 2vh;
+    right: 5vw;
     background-color: ${theme.colors['primary']};
     color: ${theme.colors.whiteAlpha[900]};
     font-weight: ${theme.fontWeights['semibold']};
@@ -46,25 +73,48 @@ const styles: ComponentStyles = {
     padding: ${theme.space[2]};
   `,
   header: (theme) => css`
+    position: relative;
     background-color: ${theme.colors.whiteAlpha[200]};
     padding: ${theme.space[4]};
+    text-align: center;
+  `,
+  headerImage: (theme) => css`
+    flex: 1 1 100%;
+
+    img {
+      max-width: ${theme.space[32]};
+    }
+  `,
+  display_name: (theme) => css`
+    flex: 1 1 100%;
+  `,
+  username: (theme) => css`
+    flex: 1 1 100%;
+  `,
+  bio: (theme) => css`
+    flex: 1 1 100%;
+    max-width: 80ch;
+    margin: 0 auto;
+  `,
+  statList: (theme) => css`
+    margin: ${theme.space[2]};
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+  `,
+  statItem: (theme) => css`
+    // min-width: ${theme.space[32]};
     text-align: center;
-
-    p {
-      line-height: ${theme.lineHeights['taller']};
-    }
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: ${theme.space[2]};
+    margin: ${theme.space[2]};
 
     a {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      padding: ${theme.space[2]} ${theme.space[4]} ${theme.space[2]} 0;
-
       &::after {
         content: '';
         transition: left 150ms cubic-bezier(${easing.join(',')});
@@ -81,37 +131,7 @@ const styles: ComponentStyles = {
         left: 0;
       }
     }
-
-    & > *:not(img) {
-      margin: ${theme.space[2]};
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-evenly;
-    }
-
-    @media (max-width: 420px) {
-      flex-direction: column;
-    }
   `,
-  headerImage: (theme) => css`
-    flex: 1 1 100%;
-
-    img {
-      max-width: ${theme.space[32]};
-    }
-  `,
-  display_name: (theme) => css`
-    flex: 1 1 100%;
-  `,
-  title: (theme) => css``,
-  company: (theme) => css``,
-  username: (theme) => css``,
-  bio: (theme) => css`
-    flex: 1 1 100%;
-  `,
-  email: (theme) => css``,
-  created: (theme) => css``,
-  dob: (theme) => css``,
   icon: (theme) => css`
     display: inline-flex;
     align-items: center;
@@ -124,101 +144,221 @@ const styles: ComponentStyles = {
       width: 100%;
     }
   `,
+
+  plpLinks: (theme) => css`
+    padding-top: ${theme.space[12]};
+  `,
+  plpLink: (theme) => css`
+    padding: ${theme.space[8]};
+    margin: ${theme.space[12]} 0;
+    border-radius: ${theme.radii['md']};
+    border: 2px solid ${theme.colors.secondary};
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  `,
 };
 
 export default function UserProfile({
   user,
+  plpLinks,
+  error,
 }: {
-  user: ShrtUserDocument | null;
+  user?: UserDocument;
+  plpLinks?: PLPLinkDocument[];
+  error: Error;
 }) {
   const authState = useAuth();
   const {
-    display_name,
-    username,
-    title,
-    company,
-    bio,
-    email,
-    date_of_birth,
-    phone,
-  } = user || {};
+    query: { username },
+  } = useRouter();
 
-  const isOwnUser = user?.uid && authState.data?.currentUser?.uid === user?.uid;
+  const { created_by, display_name, title, company, bio } = user || {};
+
+  const isOwnProfile =
+    !!created_by && authState.data?.currentUser?.uid === created_by;
+
+  if (error) {
+    return (
+      <ErrorWrapper
+        title="Server Error"
+        error={{
+          message: `User ${JSON.stringify(
+            user,
+          )} was not found in our servers or there was an error fetching their data`,
+        }}
+      />
+    );
+  }
 
   return !!user ? (
     <section css={styles.profileWrapper}>
       <header css={styles.header}>
-        <div css={styles.headerImage}>
+        <motion.div
+          css={styles.headerImage}
+          variants={addDelay(fadeInDown, 0.5)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
           <img
             src={'/gvempire-logo.png'}
             alt={display_name || `${username} from SHRT`}
           />
-        </div>
+        </motion.div>
 
-        <h1 className="display" css={styles.display_name}>
+        <motion.h1
+          className="display"
+          css={styles.display_name}
+          variants={addDelay(fadeInDown, 0.5)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
           {display_name || 'Display Name'}
-        </h1>
+        </motion.h1>
 
-        {username && <p css={styles.username}>@{username}</p>}
+        {username && (
+          <motion.p
+            css={styles.username}
+            variants={addDelay(fadeInDown, 0.5)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            @{username}
+          </motion.p>
+        )}
 
         {title && (
-          <p css={styles.title}>
+          <motion.p
+            variants={addDelay(fadeInUp, 0.5)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
             {title} {company && 'at ' + company}
-          </p>
+          </motion.p>
         )}
 
-        {bio && <p css={styles.bio}>{bio}</p>}
-
-        <p css={styles.email}>
-          <span role="img" css={styles.icon}>
-            <FaEnvelope />
-          </span>{' '}
-          <a href={`mailto:${email}`}>{email}</a>
-        </p>
-
-        {phone && (
-          <p css={styles.phone}>
-            <span role="img" css={styles.icon}>
-              <FaPhone />
-            </span>{' '}
-            {phone}
-          </p>
+        {bio && (
+          <motion.p
+            css={styles.bio}
+            variants={addDelay(slideInLeft, 0.5)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {bio}
+          </motion.p>
         )}
 
-        {date_of_birth && (
-          <p css={styles.dob}>
-            <span role="img" css={styles.icon}>
-              <FaBirthdayCake />
-            </span>{' '}
-            {new Date(date_of_birth).toLocaleDateString()}
-          </p>
-        )}
+        <motion.ul
+          css={styles.statList}
+          variants={addDelay(listAnimation, 0.5)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          {contactItems.map(
+            ({ key, href, Icon }) =>
+              key in user && (
+                <motion.li
+                  key={key}
+                  css={styles.statItem}
+                  variants={addDelay(listChildAnimation, 1)}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <span role="img" css={styles.icon}>
+                    <Icon />
+                  </span>
+                  <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
+                </motion.li>
+              ),
+          )}
+        </motion.ul>
 
-        {smItems.map(
-          ({ key, href, Icon }) =>
-            key in user && (
-              <p key={key} css={styles.smItem}>
-                <span role="img" css={styles.icon}>
-                  <Icon />
-                </span>
-                <a href={`${href}`}>{user[key as keyof ShrtUserDocument]}</a>
-              </p>
-            ),
+        <motion.ul
+          css={styles.statList}
+          variants={addDelay(listAnimation, 0.5)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          {smItems.map(
+            ({ key, href, Icon }) =>
+              key in user && (
+                <motion.li
+                  key={key}
+                  css={styles.statItem}
+                  variants={addDelay(listChildAnimation, 1)}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <span role="img" css={styles.icon}>
+                    <Icon />
+                  </span>
+                  <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
+                </motion.li>
+              ),
+          )}
+        </motion.ul>
+
+        {isOwnProfile && (
+          <Link href="/user/settings">
+            <motion.a
+              css={styles.edit}
+              variants={addDelay(fadeInDown, 2)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              Edit Profile
+            </motion.a>
+          </Link>
         )}
       </header>
 
-      {isOwnUser && (
-        <Link href="/user/settings">
-          <a css={styles.edit}>Edit</a>
-        </Link>
-      )}
+      <div css={{ position: 'relative' }}>
+        {isOwnProfile && (
+          <Link href="/user/links">
+            <motion.a
+              css={styles.edit}
+              variants={addDelay(fadeInDown, 2)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              Edit Links
+            </motion.a>
+          </Link>
+        )}
+
+        <nav css={styles.plpLinks}>
+          {plpLinks?.map((link) => (
+            <a key={link.link_id} href={link.url} css={styles.plpLink}>
+              {link.title}
+              <span>{link.description}</span>
+              <button>
+                <MdDelete />
+              </button>
+            </a>
+          ))}
+        </nav>
+      </div>
     </section>
   ) : (
     <section css={styles.profileWrapper}>
-      <h1 className="display">User Not Found</h1>
-      <Link href="/">
-        <a>Go Home</a>
-      </Link>
+      <ErrorWrapper
+        title="Server Error"
+        error={{
+          message: `User ${username} was not found in our servers or there was an error fetching their data`,
+        }}
+      />
     </section>
   );
 }
@@ -229,18 +369,15 @@ export async function getServerSideProps(req: NextApiRequest) {
   try {
     const { username } = req.query;
     const user =
-      (
-        await FirebaseClient.db
-          .collection('users')
-          .where('username', '==', username)
-          .get()
-      ).docs.map((doc) => ({ ...doc.data(), uid: doc.id }))[0] || null;
+      typeof username === 'string'
+        ? await UserService.getUserDocumentByUsername(username)
+        : await UserService.getUserDocumentByUsername(username[0]);
 
-    return {
-      props: { user },
-    };
+    const plpLinks = await UserService.getPLPLinksByUser(user.created_by);
+    return { props: { user, plpLinks } };
   } catch (error) {
     console.error(error);
-    throw new Error(error);
+
+    return { props: { error: true } };
   }
 }

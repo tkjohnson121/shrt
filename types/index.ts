@@ -22,23 +22,7 @@ export type ShrtUser =
     }
   | firebase.User;
 
-export interface FileUpload {
-  name: string;
-  timeCreated: string;
-  size: number;
-  contentDisposition: string;
-  metageneration: string;
-  fullPath: string;
-  updated: string;
-  md5Hash: string;
-  contentEncoding: string;
-  type: string;
-  generation: string;
-  contentType: string;
-  bucket: string;
-}
-
-export interface ShrtUserDocument {
+export interface UserDocument {
   /** Admin Data */
   uid?: string;
   created_on: number;
@@ -73,10 +57,212 @@ export interface ShrtUserDocument {
   website: string;
 }
 
-export interface ShrtUrl {
+export interface ShrtDocument {
+  shrt_id: string;
   created_by: string;
   created_on: number;
-  deleted: boolean;
+  isArchived: boolean;
   url: string;
   shrt_url: string | null;
 }
+
+export interface LinkConfig {
+  link_id: string;
+  url: string;
+  title: string;
+  description: string;
+  order: 'default' | number;
+}
+
+export interface PLPLinkDocument extends LinkConfig {
+  created_by: string;
+  created_on: number;
+  isArchived: boolean;
+}
+
+export interface FileUpload {
+  name: string;
+  timeCreated: string;
+  size: number;
+  contentDisposition: string;
+  metageneration: string;
+  fullPath: string;
+  updated: string;
+  md5Hash: string;
+  contentEncoding: string;
+  type: string;
+  generation: string;
+  contentType: string;
+  bucket: string;
+}
+
+export type MotionTypes =
+  | 'symbol'
+  | 'clipPath'
+  | 'filter'
+  | 'mask'
+  | 'marker'
+  | 'image'
+  | 'text'
+  | 'circle'
+  | 'svg'
+  | 'animate'
+  | 'defs'
+  | 'desc'
+  | 'ellipse'
+  | 'feBlend'
+  | 'feColorMatrix'
+  | 'feComponentTransfer'
+  | 'feComposite'
+  | 'feConvolveMatrix'
+  | 'feDiffuseLighting'
+  | 'feDisplacementMap'
+  | 'feDistantLight'
+  | 'feDropShadow'
+  | 'feFlood'
+  | 'feFuncA'
+  | 'feFuncB'
+  | 'feFuncG'
+  | 'feFuncR'
+  | 'feGaussianBlur'
+  | 'feImage'
+  | 'feMerge'
+  | 'feMergeNode'
+  | 'feMorphology'
+  | 'feOffset'
+  | 'fePointLight'
+  | 'feSpecularLighting'
+  | 'feSpotLight'
+  | 'feTile'
+  | 'feTurbulence'
+  | 'foreignObject'
+  | 'g'
+  | 'line'
+  | 'linearGradient'
+  | 'metadata'
+  | 'path'
+  | 'pattern'
+  | 'polygon'
+  | 'polyline'
+  | 'radialGradient'
+  | 'rect'
+  | 'stop'
+  | 'switch'
+  | 'textPath'
+  | 'tspan'
+  | 'use'
+  | 'view'
+  | 'object'
+  | 'style'
+  | 'progress'
+  | 'ruby'
+  | 'table'
+  | 'small'
+  | 'sub'
+  | 'embed'
+  | 'pre'
+  | 'caption'
+  | 'menu'
+  | 'button'
+  | 'menuitem'
+  | 'meter'
+  | 'textarea'
+  | 'time'
+  | 'link'
+  | 'dialog'
+  | 'a'
+  | 'abbr'
+  | 'address'
+  | 'area'
+  | 'article'
+  | 'aside'
+  | 'audio'
+  | 'b'
+  | 'base'
+  | 'bdi'
+  | 'bdo'
+  | 'big'
+  | 'blockquote'
+  | 'body'
+  | 'br'
+  | 'canvas'
+  | 'cite'
+  | 'code'
+  | 'col'
+  | 'colgroup'
+  | 'data'
+  | 'datalist'
+  | 'dd'
+  | 'del'
+  | 'details'
+  | 'dfn'
+  | 'div'
+  | 'dl'
+  | 'dt'
+  | 'em'
+  | 'fieldset'
+  | 'figcaption'
+  | 'figure'
+  | 'footer'
+  | 'form'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'head'
+  | 'header'
+  | 'hgroup'
+  | 'hr'
+  | 'html'
+  | 'i'
+  | 'iframe'
+  | 'img'
+  | 'input'
+  | 'ins'
+  | 'kbd'
+  | 'keygen'
+  | 'label'
+  | 'legend'
+  | 'li'
+  | 'main'
+  | 'map'
+  | 'mark'
+  | 'meta'
+  | 'nav'
+  | 'noscript'
+  | 'ol'
+  | 'optgroup'
+  | 'option'
+  | 'output'
+  | 'p'
+  | 'param'
+  | 'picture'
+  | 'q'
+  | 'rp'
+  | 'rt'
+  | 's'
+  | 'samp'
+  | 'script'
+  | 'section'
+  | 'select'
+  | 'source'
+  | 'span'
+  | 'strong'
+  | 'summary'
+  | 'sup'
+  | 'tbody'
+  | 'td'
+  | 'tfoot'
+  | 'th'
+  | 'thead'
+  | 'title'
+  | 'tr'
+  | 'track'
+  | 'u'
+  | 'ul'
+  | 'var'
+  | 'video'
+  | 'wbr'
+  | 'webview';

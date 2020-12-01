@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ComponentStyles, css } from 'theme';
 import { FetchState } from 'types';
 import Form, { OnFormSubmit } from './form';
+import { formFields } from './form-fields';
 
 const styles: ComponentStyles = {
   header: (theme) => css`
@@ -58,37 +59,6 @@ const styles: ComponentStyles = {
   `,
 };
 
-const authFields = {
-  email: {
-    label: 'Email',
-    type: 'email',
-    width: 'small',
-    placeholder: "What's your email?",
-    config: {
-      pattern: {
-        value: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-        message: "Hmm, that doesn't look like an email.",
-      },
-    },
-  },
-  password: {
-    label: 'Password',
-    type: 'password',
-    width: 'small',
-    placeholder: "What's your password?",
-    config: {
-      minLength: {
-        value: 6,
-        message: 'Too short (min 6).',
-      },
-      maxLength: {
-        value: 24,
-        message: 'Too long (min 24).',
-      },
-    },
-  },
-};
-
 export function AuthForm() {
   const [state, setState] = useState<FetchState<{ isNewUser: boolean }>>({
     loading: false,
@@ -108,7 +78,7 @@ export function AuthForm() {
 
   const onAuthSubmit: OnFormSubmit = async ({ email, password }, setStatus) => {
     try {
-      setStatus('authenticating...');
+      setStatus({ message: 'authenticating...', type: 'info' });
 
       if (state.data?.isNewUser) {
         await AuthService.signUp(email, password);
@@ -116,11 +86,11 @@ export function AuthForm() {
         await AuthService.signIn(email, password);
       }
 
-      setStatus('Authentication Complete!');
-      ShrtSwal.fire({ type: 'success', titleText: 'Success!' });
+      setStatus(null);
+      ShrtSwal.fire({ icon: 'success', titleText: 'Success!' });
     } catch (error) {
       console.error(error);
-      setStatus(error.message);
+      setStatus({ message: error.message, type: 'error' });
     }
   };
 
@@ -139,7 +109,7 @@ export function AuthForm() {
         subtitle={'Sign-up to get all the greatest features.'}
         key="shrt"
         onFormSubmit={onAuthSubmit}
-        fields={authFields}
+        fields={formFields.authFields}
         buttonText="Sign up"
       />
     </>
@@ -158,7 +128,7 @@ export function AuthForm() {
         subtitle={"It's nice to see you again!"}
         key="shrt"
         onFormSubmit={onAuthSubmit}
-        fields={authFields}
+        fields={formFields.authFields}
         buttonText="Login"
       />
     </>
