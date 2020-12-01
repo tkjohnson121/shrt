@@ -116,7 +116,6 @@ export const Header: React.FC<{
     <header ref={heightRef} css={styles.headerWrapper}>
       <Link href="/">
         <motion.a
-          className={isLinkActive('/')}
           variants={addDelay(fadeInUp, 0.5)}
           initial="initial"
           animate="animate"
