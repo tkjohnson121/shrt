@@ -1,5 +1,8 @@
-* fb4f374 (HEAD -> main) add plp_links
-* 201db69 (tag: v0.0.15, origin/main) v0.0.15
+* 75f9ac4 (HEAD -> main, origin/staging, staging) prepare for deploy
+* a840f1f (tag: v0.0.16, origin/main) v0.0.16
+* 2538717 update changelog
+* fb4f374 add plp_links
+* 201db69 (tag: v0.0.15) v0.0.15
 * 1cea9b0 update changelog
 * b0213a5 update ci
 * 58026f6 (tag: v0.0.14) v0.0.14
