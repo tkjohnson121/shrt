@@ -1,6 +1,6 @@
 {
   "name": "@gvempire/shrt",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "scripts": {
     "start": "next",
     "build": "next build",
