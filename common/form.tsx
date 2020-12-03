@@ -249,7 +249,7 @@ export interface FormProps {
  * Takes in default values and builds a standard form.
  */
 export const Form: React.FC<FormProps> = (props) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, formState } = useForm();
 
   const [status, setStatus] = React.useState<{
     message: string;
@@ -259,7 +259,9 @@ export const Form: React.FC<FormProps> = (props) => {
 
   const formFields = Object.entries(props.fields);
 
-  React.useEffect(() => {}, [errors]);
+  React.useEffect(() => {
+    console.log(formState);
+  }, [errors]);
 
   /**
    * # onSubmit
@@ -282,7 +284,7 @@ export const Form: React.FC<FormProps> = (props) => {
         return setIsSubmitting(false);
       }
     }),
-    [isSubmitting],
+    [formState.submitCount],
   );
 
   return (

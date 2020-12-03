@@ -51,7 +51,8 @@ const styles: ComponentStyles = {
     padding: ${theme.space[2]};
   `,
   button: (theme) => css`
-    background-color: ${theme.colors['primary']};
+    border-bottom: 2px solid ${theme.colors['primary']};
+    background-color: transparent;
     color: ${theme.colors.whiteAlpha[900]};
     font-weight: ${theme.fontWeights['semibold']};
     border-radius: ${theme.radii['md']};
@@ -106,7 +107,6 @@ export function AuthForm() {
       </header>
 
       <Form
-        subtitle={'Sign-up to get all the greatest features.'}
         key="shrt"
         onFormSubmit={onAuthSubmit}
         fields={formFields.authFields}
@@ -125,7 +125,6 @@ export function AuthForm() {
       </header>
 
       <Form
-        subtitle={"It's nice to see you again!"}
         key="shrt"
         onFormSubmit={onAuthSubmit}
         fields={formFields.authFields}

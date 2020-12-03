@@ -7,7 +7,7 @@ const dark: Theme = {
   colors: {
     ...theme.colors,
     text: '#FAFAFF',
-    background: '#111111',
+    background: 'hsl(254, 25%, 15%)',
     primary: '#7928CA',
     secondary: '#79FFE1',
     highlight: '#FF0080',

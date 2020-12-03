@@ -12,9 +12,9 @@ import {
 import { UserService } from 'features/user';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
-import { FetchState, UserDocument } from 'types';
+import { FetchState } from 'types';
 import ErrorWrapper from './error-wrapper';
 import Loading from './loading';
 import { useUserDocumentListener } from './use-user-document-listener';
@@ -27,10 +27,12 @@ const styles: ComponentStyles = {
     left: 0;
     right: 0;
     width: 100%;
-    background-color: ${theme.colors.blackAlpha[700]};
+    background-color: ${theme.colors.background};
+    box-shadow: ${theme.shadows['md']};
     display: flex;
     align-items: stretch;
     justify-content: space-between;
+    z-index: 9999;
 
     a {
       position: relative;
@@ -68,34 +70,27 @@ const styles: ComponentStyles = {
   `,
 };
 
-const defaultLinks = [{ text: 'Home', href: '/' }];
-const authLinks = [
-  { text: 'Home', href: '/' },
-  { text: 'Dashboard', href: '/user/dashboard' },
-];
+const isLinkActive = (href: string, router: NextRouter) =>
+  router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
 
-export const Header: React.FC<{
-  heightRef: React.RefObject<HTMLElement>;
-}> = ({ heightRef }) => {
-  const authState = useAuth();
-  const { currentUser, isAuthenticated } = authState.data || {};
-
-  const {
-    state: { data: userDocument, error: userDocumentError },
-  } = useUserDocumentListener(currentUser?.uid);
-
+export const Avatar: React.FC<{
+  uid?: string;
+  username?: string;
+  css?: ComponentStyles;
+}> = ({ username, uid }) => {
   const router = useRouter();
-  const isLinkActive = (href: string) =>
-    router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
 
-  const [state, setState] = React.useState<
-    FetchState<{ userData?: UserDocument; avatar?: string }>
-  >({ loading: false });
+  const { data } = useAuth();
+
+  const [state, setState] = React.useState<FetchState<{ url?: string }>>({
+    loading: false,
+    data: { url: '/gvempire-logo.png' },
+  });
 
   React.useEffect(() => {
     const getAvatar = async () => {
-      if (isAuthenticated && currentUser && !state.data?.avatar) {
-        const avatar = await UserService.getUserAvatarById(currentUser.uid);
+      if (uid && !state.data?.url) {
+        const avatar = await UserService.getUserAvatarById(uid);
 
         setState((prev) => ({
           loading: false,
@@ -105,13 +100,60 @@ export const Header: React.FC<{
     };
 
     getAvatar();
-  }, [isAuthenticated]);
+  }, [data?.isAuthenticated, data?.currentUser]);
 
   if (state.loading) return <Loading />;
 
-  if (state.error || userDocumentError) {
-    return <ErrorWrapper error={state.error || userDocumentError} />;
+  if (state.error) {
+    return <ErrorWrapper error={state.error} />;
   }
+
+  return (
+    <Link href={username ? `/${username}` : '/user/settings'}>
+      <motion.a
+        className={
+          isLinkActive('/user/settings', router) ||
+          isLinkActive(`/${username}`, router)
+        }
+        css={css}
+        variants={addDelay(fadeInUp, 0.7)}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        key="profile"
+      >
+        {username && state.data?.url ? (
+          <img
+            src={'/gvempire-logo.png'}
+            alt={`${'GVEMPIRE.dev'} logo`}
+            height="50px"
+            width="50px"
+          />
+        ) : (
+          'Profile'
+        )}
+      </motion.a>
+    </Link>
+  );
+};
+
+const defaultLinks = [{ text: 'Home', href: '/' }];
+const authLinks = [
+  { text: 'Home', href: '/' },
+  { text: 'Dashboard', href: '/user/dashboard' },
+];
+
+export const Header: React.FC<{
+  heightRef: React.RefObject<HTMLElement>;
+}> = ({ heightRef }) => {
+  const router = useRouter();
+
+  const authState = useAuth();
+  const { currentUser, isAuthenticated } = authState.data || {};
+
+  const {
+    state: { data: userDocument },
+  } = useUserDocumentListener(currentUser?.uid);
 
   return (
     <header ref={heightRef} css={styles.headerWrapper}>
@@ -142,7 +184,7 @@ export const Header: React.FC<{
         {(isAuthenticated ? authLinks : defaultLinks).map((link) => (
           <Link href={link.href} key={link.text}>
             <motion.a
-              className={isLinkActive(link.href)}
+              className={isLinkActive(link.href, router)}
               variants={listChildAnimation}
               initial="initial"
               animate="animate"
@@ -154,29 +196,7 @@ export const Header: React.FC<{
           </Link>
         ))}
 
-        <Link
-          href={
-            userDocument?.username
-              ? `/${userDocument?.username}`
-              : '/user/settings'
-          }
-        >
-          <motion.a
-            className={isLinkActive('/user/settings')}
-            variants={addDelay(fadeInUp, 0.7)}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            key="profile"
-          >
-            <img
-              src={state.data?.avatar || '/gvempire-logo.png'}
-              alt={`${userDocument?.username || 'GVEMPIRE.dev'} logo`}
-              height="50px"
-              width="50px"
-            />
-          </motion.a>
-        </Link>
+        <Avatar username={userDocument?.username} uid={currentUser?.uid} />
       </motion.nav>
     </header>
   );

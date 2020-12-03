@@ -11,12 +11,11 @@ import {
   FaInstagram,
   FaLinkedin,
   FaPhone,
-  FaPortrait,
   FaTwitch,
   FaTwitter,
   FaYoutube,
 } from 'react-icons/fa';
-import { MdDelete, MdEmail } from 'react-icons/md';
+import { MdEmail } from 'react-icons/md';
 import {
   addDelay,
   ComponentStyles,
@@ -33,7 +32,7 @@ import { PLPLinkDocument, UserDocument } from 'types';
 
 const contactItems = [
   { key: 'email', href: 'mailto:', Icon: MdEmail },
-  { key: 'tel', href: 'telto:', Icon: FaPhone },
+  { key: 'phone', href: 'telto:', Icon: FaPhone },
   { key: 'date_of_birth', href: null, Icon: FaCalendar },
 ];
 const smItems = [
@@ -51,7 +50,6 @@ const smItems = [
     Icon: FaLinkedin,
   },
   { key: 'github', href: 'https://github.com/', Icon: FaGithub },
-  { key: 'website', href: 'https://website.com/', Icon: FaPortrait },
 ];
 
 const styles: ComponentStyles = {
@@ -77,6 +75,7 @@ const styles: ComponentStyles = {
     background-color: ${theme.colors.whiteAlpha[200]};
     padding: ${theme.space[4]};
     text-align: center;
+    box-shadow: ${theme.shadows['lg']};
   `,
   headerImage: (theme) => css`
     flex: 1 1 100%;
@@ -149,14 +148,45 @@ const styles: ComponentStyles = {
     padding-top: ${theme.space[12]};
   `,
   plpLink: (theme) => css`
-    padding: ${theme.space[8]};
-    margin: ${theme.space[12]} 0;
-    border-radius: ${theme.radii['md']};
-    border: 2px solid ${theme.colors.secondary};
+    z-index: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    padding: ${theme.space[8]};
+    margin: ${theme.space[12]} 0;
+    border-radius: ${theme.radii['md']};
+    border: 2px solid ${theme.colors.secondary};
+    box-shadow: ${theme.shadows['md']};
+
+    span:first-of-type {
+      display: block;
+      width: 100%;
+      height: 100%;
+      font-size: ${theme.fontSizes['3xl']};
+      z-index: -1;
+    }
+
+    span:nth-of-type(0n + 2) {
+      line-height: ${theme.lineHeights['taller']};
+      z-index: -1;
+    }
+
+    button {
+      position: absolute;
+      top: 50%;
+      right: 2vw;
+      padding: ${theme.space[2]};
+      border-radius: ${theme.radii['md']};
+      font-weight: ${theme.fontWeights['semibold']};
+      font-size: ${theme.fontSizes['xl']};
+      background-color: ${theme.colors['error']};
+      color: ${theme.colors.whiteAlpha[900]};
+      z-index: 5;
+      transform: translate3d(0, -50%, 0);
+      pointer-events: all;
+    }
   `,
 };
 
@@ -174,7 +204,8 @@ export default function UserProfile({
     query: { username },
   } = useRouter();
 
-  const { created_by, display_name, title, company, bio } = user || {};
+  const { created_by, display_name, title, company, bio, city, state } =
+    user || {};
 
   const isOwnProfile =
     !!created_by && authState.data?.currentUser?.uid === created_by;
@@ -240,8 +271,26 @@ export default function UserProfile({
             animate="animate"
             exit="exit"
           >
-            {title} {company && 'at ' + company}
+            {title} {company && 'at ' + company}{' '}
+            {city &&
+              ' in ' +
+                city +
+                (state && ', ') +
+                (city
+                  ? state?.slice(0, 2)
+                  : state
+                  ? ' in ' + state?.slice(0, 2)
+                  : null)}
           </motion.p>
+        )}
+
+        {(city || state) && (
+          <motion.p
+            variants={addDelay(fadeInUp, 0.5)}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          ></motion.p>
         )}
 
         {bio && (
@@ -277,7 +326,12 @@ export default function UserProfile({
                   <span role="img" css={styles.icon}>
                     <Icon />
                   </span>
-                  <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
+
+                  {href ? (
+                    <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
+                  ) : (
+                    <span>{user[key as keyof UserDocument]}</span>
+                  )}
                 </motion.li>
               ),
           )}
@@ -292,7 +346,8 @@ export default function UserProfile({
         >
           {smItems.map(
             ({ key, href, Icon }) =>
-              key in user && (
+              key in user &&
+              !!user[key as keyof UserDocument] && (
                 <motion.li
                   key={key}
                   css={styles.statItem}
@@ -304,6 +359,7 @@ export default function UserProfile({
                   <span role="img" css={styles.icon}>
                     <Icon />
                   </span>
+
                   <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
                 </motion.li>
               ),
@@ -340,17 +396,29 @@ export default function UserProfile({
           </Link>
         )}
 
-        <nav css={styles.plpLinks}>
+        <motion.nav
+          css={styles.plpLinks}
+          variants={addDelay(listAnimation, 0.9)}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
           {plpLinks?.map((link) => (
-            <a key={link.link_id} href={link.url} css={styles.plpLink}>
-              {link.title}
-              <span>{link.description}</span>
-              <button>
-                <MdDelete />
-              </button>
-            </a>
+            <motion.a
+              key={link.link_id}
+              href={link.url}
+              css={styles.plpLink}
+              variants={addDelay(listChildAnimation, 1.2)}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <span>{link.name}</span>
+              {link.description && <span>{link.description}</span>}
+              {isOwnProfile && <button>X</button>}
+            </motion.a>
           ))}
-        </nav>
+        </motion.nav>
       </div>
     </section>
   ) : (

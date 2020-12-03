@@ -32,11 +32,17 @@ class Authentication {
   async signUp(email: string, password: string) {
     try {
       FirebaseClient.analytics?.logEvent('register');
+
       return await FirebaseClient.auth.createUserWithEmailAndPassword(
         email,
         password,
       );
     } catch (error) {
+      // Account already exists with given email
+      if (error.code === 'auth/email-already-in-use') {
+        await AuthService.signIn(email, password);
+      }
+
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);
     }

@@ -1,14 +1,16 @@
-✅ Authentication
+✅ General
  - Add loading on sign-up while document is creating
- - refactor setting page to be more tablike
+ - refactor setting page to be tabbed
  - add tooltip for new users
+ - add client-side rate limiting
+ - create common button component
 - Shrts
-  - url shortner api function
-    - lookup url in shrts db
-    - redirect, add view and related data
+  ✅ url shortner api function
+    ✅ lookup url in shrts db
+    ✅ redirect, add view and related data
   - custom link
   - edit link
-  -  view analytics
+  - view analytics for link
   ✅ add link
   ✅ remove link
 - PLP
@@ -26,5 +28,6 @@
   - add/edit profile image and background
     - color
     - image
-  - style PLP links
+  ✅ style PLP links
   - add SHRTs display
+  - Embedded WebView

@@ -70,7 +70,7 @@ export interface ShrtDocument {
 export interface LinkConfig {
   link_id: string;
   url: string;
-  title: string;
+  name: string;
   description: string;
   order: 'default' | number;
 }

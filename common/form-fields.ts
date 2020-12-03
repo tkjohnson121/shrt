@@ -48,13 +48,13 @@ export const formFields: { [key: string]: FormFields } = {
   },
 
   plpLinkFields: {
-    title: {
-      label: 'Title',
+    name: {
+      label: 'Name',
       type: 'text',
       width: 'small',
       placeholder: "What's this called?",
       config: {
-        required: 'Title is required',
+        required: 'Name is required',
         minLength: {
           value: 2,
           message: 'Too short (min 2).',

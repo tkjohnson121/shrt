@@ -46,7 +46,7 @@ export default function PLPLinks() {
 
   return currentUser ? (
     <section css={{ maxWidth: '50rem', margin: '0 auto' }}>
-      <h1 className="display">User Settings</h1>
+      <h1 className="display">Personal Landing Page</h1>
 
       <Form
         title={'Add a link to your PLP'}

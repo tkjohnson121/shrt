@@ -207,7 +207,7 @@ class User {
   async addShrt(uid: string, url: string) {
     try {
       FirebaseClient.analytics?.logEvent('add_shrt', {
-        uid: uid,
+        uid,
         url,
       });
 
@@ -266,7 +266,7 @@ class User {
   async archiveShrt(uid: string, shrtID: string) {
     try {
       FirebaseClient.analytics?.logEvent('delete_shrt', {
-        uid: uid,
+        uid,
         shrtID,
       });
 
@@ -283,11 +283,11 @@ class User {
   async addPLPLink(uid: string, linkConfig: LinkConfig) {
     try {
       FirebaseClient.analytics?.logEvent('add_link_to_plp', {
-        uid: uid,
+        uid,
         linkConfig,
       });
 
-      return await FirebaseClient.db.collection('plp_links').add({
+      return await FirebaseClient.db.collection('plps').add({
         ...linkConfig,
         created_by: uid,
         created_on: Date.now(),
@@ -300,10 +300,36 @@ class User {
     }
   }
 
+  async updatePLPLink(
+    uid: string,
+    link_id: string,
+    update: {
+      updated_by?: string;
+      updated_on?: number;
+      isArchived?: boolean;
+      order?: number;
+    } & { [key: string]: any },
+  ) {
+    try {
+      FirebaseClient.analytics?.logEvent('update_link_on_plp', {
+        uid,
+        link_id,
+      });
+
+      return await FirebaseClient.db
+        .collection('plps')
+        .doc(link_id)
+        .update(update);
+    } catch (error) {
+      FirebaseClient.analytics?.logEvent('exception', error);
+      throw new Error(error);
+    }
+  }
+
   async archivePLPLink(uid: string, link_id: string) {
     try {
       FirebaseClient.analytics?.logEvent('remove_link_from_plp', {
-        uid: uid,
+        uid,
         link_id,
       });
 
@@ -319,7 +345,7 @@ class User {
   async getPLPLinksByUser(uid: string) {
     try {
       FirebaseClient.analytics?.logEvent('get_plp_link_by_user', {
-        uid: uid,
+        uid,
       });
 
       const documents = await FirebaseClient.db
