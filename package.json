@@ -18,7 +18,7 @@
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "predeploy": "npm-run-all -l -s format lint type-check test",
-    "changelog": "git log --all --graph --decorate --oneline > CHANGELOG; git add .; git commit -m \"update changelog\"; yarn version --patch; git push --follow-tags; echo \"Released $npm_package_version\"",
+    "changelog": "git log --all --graph --decorate --oneline > CHANGELOG; git add .; git commit -m \"update changelog\"; yarn version; git push --follow-tags; echo \"Released $npm_package_version\"",
     "preview": "vercel"
   },
   "dependencies": {
