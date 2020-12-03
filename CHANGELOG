@@ -1,5 +1,8 @@
-* 6bf83ba (HEAD -> staging) add custom url shrtner
-* 09218f8 (origin/staging) update changelog
+* 9806164 (HEAD -> staging) add custom url-shortner
+* c676e72 (tag: v0.1.1, origin/staging) v0.1.1
+* b877cda update changelog
+* 6bf83ba add custom url shrtner
+* 09218f8 update changelog
 * 8850e77 (origin/main, main) update changelog
 *   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
 |\  
