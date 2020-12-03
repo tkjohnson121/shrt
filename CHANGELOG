@@ -1,4 +1,8 @@
-* b5035b2 (HEAD -> main, tag: v0.1.5, origin/staging, staging) v0.1.5
+* 5f884cd (HEAD -> staging) update git templates
+* d0ae8e6 (main) refactor url-shortner to work on the main page as well
+* 085eabd (tag: v0.2.0, origin/main) v0.2.0
+* cd152c2 update changelog
+* b5035b2 (tag: v0.1.5, origin/staging) v0.1.5
 * 9940fd2 update changelog
 * 3068729 late nights wow
 * a8df52e fix: add auth-form to plp edit page
@@ -15,7 +19,7 @@
 * b877cda update changelog
 * 6bf83ba add custom url shrtner
 * 09218f8 update changelog
-* 8850e77 (origin/main) update changelog
+* 8850e77 update changelog
 *   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
 |\  
 | * d2abb84 Update issue templates
