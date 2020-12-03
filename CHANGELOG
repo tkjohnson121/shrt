@@ -1,4 +1,6 @@
-* 8850e77 (HEAD -> staging, origin/main, main) update changelog
+* 6bf83ba (HEAD -> staging) add custom url shrtner
+* 09218f8 (origin/staging) update changelog
+* 8850e77 (origin/main, main) update changelog
 *   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
 |\  
 | * d2abb84 Update issue templates
@@ -10,7 +12,7 @@
 * d6fd005 update changelog
 * c737e6f (tag: v0.0.17) v0.0.17
 * 4c30ccf update changelog
-* 75f9ac4 (origin/staging) prepare for deploy
+* 75f9ac4 prepare for deploy
 * a840f1f (tag: v0.0.16) v0.0.16
 * 2538717 update changelog
 * fb4f374 add plp_links
