@@ -98,8 +98,10 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
     try {
       setState({ loading: true });
 
-      if (uid === shrt.created_by) {
+      if (uid === shrt.created_by && shrt.shrt_id) {
         await UserService.archiveShrt(uid, shrt.shrt_id);
+      } else {
+        throw new Error('ShrtId not found.');
       }
 
       setState({ loading: false });
@@ -108,6 +110,10 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
       setState({ loading: false, error });
     }
   };
+
+  React.useEffect(() => {
+    setState((prev) => ({ ...prev, loading: shrt.shrt_url ? false : true }));
+  }, [shrt.shrt_url]);
 
   if (state.loading) return <Loading />;
   if (state.error) return <ErrorWrapper error={state.error} />;

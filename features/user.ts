@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { customRandom, random, urlAlphabet } from 'nanoid';
 import {
   LinkConfig,
   PLPLinkDocument,
@@ -8,6 +9,8 @@ import {
 import { FirebaseClient } from './firebase-client';
 
 class User {
+  getURLSafeRandomString = customRandom(urlAlphabet, 6, random);
+
   openUserDocumentListener(
     uid: string,
     onSnapshotChange: (document: UserDocument) => any,
@@ -194,7 +197,7 @@ class User {
       .onSnapshot((snapshot) => {
         const documents = snapshot.docs.map((doc) => ({
           ...(doc.data() as ShrtDocument),
-          shirt_id: doc.id,
+          shrt_id: doc.id,
         })) as Array<ShrtDocument>;
 
         onSnapshotChange(documents);
@@ -208,49 +211,50 @@ class User {
         url,
       });
 
-      return await FirebaseClient.db.collection('shrts').add({
-        created_by: uid,
-        created_on: Date.now(),
-        isArchived: false,
-        shrt_url: null,
-        url,
-      });
+      const shrt_id = this.getURLSafeRandomString();
+
+      return await FirebaseClient.db
+        .collection('shrts')
+        .doc(shrt_id)
+        .set({
+          created_by: uid,
+          created_on: Date.now(),
+          isArchived: false,
+          shrt_id: shrt_id,
+          shrt_url: 'https://shrtme.app/api/' + shrt_id,
+          url,
+          clicks: 0,
+        });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);
     }
   }
 
-  async getShrtByUserID(uid: string) {
+  async updateShrtAfterView(shrt: ShrtDocument) {
     try {
-      FirebaseClient.analytics?.logEvent('get_shrt_by_user_id');
+      FirebaseClient.analytics?.logEvent('update_shrt_doc_after_view', shrt);
 
-      const documents = await FirebaseClient.db
+      // update view count
+      return await FirebaseClient.db
         .collection('shrts')
-        .where('created_by', '==', uid)
-        .get();
-
-      return Promise.all(
-        documents.docs.map(async (document) => document.data()),
-      );
+        .doc(shrt.shrt_id)
+        .update({
+          clicks: (shrt.clicks || 0) + 1,
+        });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);
     }
   }
 
-  async getShrtByURL(url: string) {
+  async getShrtById(shrtId: string) {
     try {
-      FirebaseClient.analytics?.logEvent('get_shrt_by_url');
+      FirebaseClient.analytics?.logEvent('get_shrt_by_id');
 
-      const documents = await FirebaseClient.db
-        .collection('shrts')
-        .where('url', '==', url)
-        .get();
+      const doc = await FirebaseClient.db.collection('shrts').doc(shrtId).get();
 
-      return Promise.all(
-        documents.docs.map(async (document) => document.data() as ShrtDocument),
-      );
+      return { ...doc.data(), shrt_id: doc.id } as ShrtDocument;
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);

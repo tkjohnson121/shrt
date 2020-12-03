@@ -1,5 +1,8 @@
 ✅ Authentication
 - Shrts
+  - url shortner api function
+    - lookup url in shrts db
+    - redirect, add view and related data
   - custom link
   - edit link
   -  view analytics
@@ -20,3 +23,5 @@
   - add/edit profile image and background
     - color
     - image
+  - style PLP links
+  - add SHRTs display
