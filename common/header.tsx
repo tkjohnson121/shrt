@@ -94,16 +94,17 @@ export const Header: React.FC<{
 
   React.useEffect(() => {
     const getAvatar = async () => {
-      const avatar = (await UserService.getUserAvatarById(
-        currentUser?.uid,
-      )) as string;
+      if (isAuthenticated && currentUser && !state.data?.avatar) {
+        const avatar = await UserService.getUserAvatarById(currentUser.uid);
 
-      setState((prev) => ({ loading: false, data: { ...prev.data, avatar } }));
+        setState((prev) => ({
+          loading: false,
+          data: { ...prev.data, avatar },
+        }));
+      }
     };
 
-    if (isAuthenticated && currentUser && !state.data?.avatar) {
-      getAvatar();
-    }
+    getAvatar();
   }, [isAuthenticated]);
 
   if (state.loading) return <Loading />;
@@ -156,7 +157,7 @@ export const Header: React.FC<{
         <Link
           href={
             userDocument?.username
-              ? `/user/${userDocument?.username}`
+              ? `/${userDocument?.username}`
               : '/user/settings'
           }
         >

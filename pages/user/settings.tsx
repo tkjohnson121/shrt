@@ -55,7 +55,7 @@ export default function UserSettings() {
   };
 
   const onFormSubmit: OnFormSubmit = async (
-    { avatar, header, ...args },
+    { avatar, background, ...args },
     setStatus,
   ) => {
     try {
@@ -69,15 +69,15 @@ export default function UserSettings() {
         setStatus({ message: 'uploading avatar...', type: 'info' });
 
         await UserService.uploadUserFile(currentUser.uid, avatar[0], {
-          name: 'avatar',
+          name: 'profile/avatar',
         });
       }
 
-      if (!!header && !!header[0]) {
-        setStatus({ message: 'uploading header...', type: 'info' });
+      if (!!background && !!background[0]) {
+        setStatus({ message: 'uploading background...', type: 'info' });
 
-        await UserService.uploadUserFile(currentUser.uid, avatar[0], {
-          name: 'avatar',
+        await UserService.uploadUserFile(currentUser.uid, background[0], {
+          name: 'profile/background',
         });
       }
 

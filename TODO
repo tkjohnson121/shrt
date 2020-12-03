@@ -1,21 +1,22 @@
 ✅ Authentication
-- User dashboard
+- Shrts
   - custom link
   - edit link
+  -  view analytics
   ✅ add link
   ✅ remove link
-  -  view analytics
-- User profile page
-  - ensure unique username per user
-  - add/edit username, name, title, and bio
-  - add/edit/delete link(s)
-  - add/edit/delete social media link(s)
-    - twitter
-    - instagram
-    - linkedin
-    - youtube
-    - github
-    - website
-    - ??
+- PLP
+  ✅ ensure unique username per user
+  ✅ add/edit username, name, title, and bio
+  ✅ add/edit/delete link(s)
+  ✅ add/edit/delete social media link(s)
+    ✅ twitter
+    ✅ instagram
+    ✅ linkedin
+    ✅ youtube
+    ✅ github
+    ✅ website
+    ✅ ??
   - add/edit profile image and background
-    - color or image
+    - color
+    - image

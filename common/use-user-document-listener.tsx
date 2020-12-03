@@ -1,9 +1,11 @@
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { FetchState, UserDocument } from 'types';
 
 export const useUserDocumentListener = (uid?: string) => {
+  const router = useRouter();
   const authState = useAuth();
 
   const [state, setState] = React.useState<FetchState<UserDocument>>({
@@ -29,6 +31,17 @@ export const useUserDocumentListener = (uid?: string) => {
       !!unsubscribe && unsubscribe();
     };
   }, [authState.data?.currentUser]);
+
+  React.useEffect(() => {
+    if (
+      !state.loading &&
+      !!state.data &&
+      !state.data?.username &&
+      !router.pathname.startsWith('/user/settings')
+    ) {
+      router.replace('/user/settings');
+    }
+  }, [router.pathname]);
 
   return { state, onUserDocumentError };
 };

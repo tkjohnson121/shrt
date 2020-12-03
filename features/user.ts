@@ -57,16 +57,28 @@ class User {
     }
   }
 
-  async getUserAvatarById(uid?: string) {
+  async getUserAvatarById(uid: string) {
     try {
-      if (!uid) throw new Error();
-
       FirebaseClient.analytics?.logEvent('get_user_avatar');
 
-      return await FirebaseClient.storage
+      return (await FirebaseClient.storage
         .ref()
-        .child(`users/${uid}/avatar`)
-        .getDownloadURL();
+        .child(`users/${uid}/profile/avatar`)
+        .getDownloadURL()) as string;
+    } catch (error) {
+      FirebaseClient.analytics?.logEvent('exception', error);
+
+      return '/gvempire-logo.png';
+    }
+  }
+  async getUserBackgroundById(uid: string) {
+    try {
+      FirebaseClient.analytics?.logEvent('get_user_background');
+
+      return (await FirebaseClient.storage
+        .ref()
+        .child(`users/${uid}/profile/background`)
+        .getDownloadURL()) as string;
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
 

@@ -1,6 +1,9 @@
 [
   {
-    "origin": ["https://staging.Shrt.gvempire.dev"],
+    "origin": [
+      "https://staging.shrt.gvempire.dev",
+      "https://staging.shrtme.app"
+    ],
     "method": ["GET"],
     "maxAgeSeconds": 3600000
   }

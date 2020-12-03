@@ -80,6 +80,11 @@ export interface PLPLinkDocument extends LinkConfig {
   isArchived: boolean;
 }
 
+export interface UsernameDocument {
+  created_by: string;
+  created_on: number;
+}
+
 export interface FileUpload {
   name: string;
   timeCreated: string;

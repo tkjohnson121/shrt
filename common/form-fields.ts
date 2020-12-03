@@ -139,7 +139,7 @@ export const formFields: { [key: string]: FormFields } = {
         multiple: false,
       },
     },
-    header: {
+    background: {
       label: 'Background',
       type: 'file',
       config: {
@@ -158,7 +158,7 @@ export const formFields: { [key: string]: FormFields } = {
       config: {
         required: 'Username is required',
         pattern: {
-          value: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
+          value: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{3,29}$/,
           message: "Hmm, that doesn't seem quite right.",
         },
         maxLength: {
