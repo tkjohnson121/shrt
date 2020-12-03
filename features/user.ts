@@ -307,12 +307,9 @@ class User {
         link_id,
       });
 
-      return await FirebaseClient.db
-        .collection('plp_links')
-        .doc(link_id)
-        .update({
-          isArchived: true,
-        });
+      return await FirebaseClient.db.collection('plps').doc(link_id).update({
+        isArchived: true,
+      });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);
@@ -326,7 +323,7 @@ class User {
       });
 
       const documents = await FirebaseClient.db
-        .collection('plp_links')
+        .collection('plps')
         .where('created_by', '==', uid)
         .where('isArchived', '!=', 'true')
         .get();
