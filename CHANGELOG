@@ -1,7 +1,9 @@
-* 3e561c7 (HEAD -> staging, tag: v0.2.1, origin/staging) v0.2.1
+* 92a197a (HEAD -> main, tag: v0.2.2, origin/staging, staging) v0.2.2
+* f08c476 update changelog
+* 3e561c7 (tag: v0.2.1) v0.2.1
 * 9bae55a update changelog
 * 5f884cd update git templates
-* d0ae8e6 (main) refactor url-shortner to work on the main page as well
+* d0ae8e6 refactor url-shortner to work on the main page as well
 * 085eabd (tag: v0.2.0, origin/main) v0.2.0
 * cd152c2 update changelog
 * b5035b2 (tag: v0.1.5) v0.1.5
