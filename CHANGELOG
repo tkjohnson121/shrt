@@ -1,5 +1,11 @@
-* f844a00 (HEAD -> main) add second firebase project
-* 116df88 (tag: v0.0.18, origin/main) v0.0.18
+*   c56a409 (HEAD -> main) Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
+|\  
+| * d2abb84 (origin/main) Update issue templates
+* | f81d2ec (tag: v0.1.0) v0.1.0
+* | 225b6fd update changelog
+* | f844a00 add second firebase project
+|/  
+* 116df88 (tag: v0.0.18) v0.0.18
 * d6fd005 update changelog
 * c737e6f (tag: v0.0.17) v0.0.17
 * 4c30ccf update changelog
