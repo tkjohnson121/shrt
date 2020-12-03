@@ -7,9 +7,9 @@
  * The admin tools below have no regard for the {@link firestore.rules}.
  * @note Be careful!
  */
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
 import 'firebase-functions';
-import * as functions from 'firebase-functions';
+import functions from 'firebase-functions';
 import { defaultConfig } from './firebase-client';
 
 class Firebase {

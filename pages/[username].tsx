@@ -1,7 +1,7 @@
-import { ErrorWrapper } from 'common';
+import { ErrorWrapper, Loading } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -194,10 +194,12 @@ export default function UserProfile({
   user,
   plpLinks,
   error,
+  url,
 }: {
   user?: UserDocument;
   plpLinks?: PLPLinkDocument[];
-  error: Error;
+  error?: Error;
+  url?: string;
 }) {
   const authState = useAuth();
   const {
@@ -210,22 +212,26 @@ export default function UserProfile({
   const isOwnProfile =
     !!created_by && authState.data?.currentUser?.uid === created_by;
 
-  if (error) {
+  if (typeof url === 'string' && typeof window !== 'undefined') {
+    window.location.replace(url);
+
+    return <Loading />;
+  }
+
+  if (error || typeof user === 'undefined') {
     return (
       <ErrorWrapper
-        title="Server Error"
+        title="404: Not Found"
         error={{
           message:
-            error.message ||
-            `User ${JSON.stringify(
-              user,
-            )} was not found in our servers or there was an error fetching their data`,
+            error?.message ||
+            `There was an error fetching data for ${username}`,
         }}
       />
     );
   }
 
-  return !!user ? (
+  return (
     <section css={styles.profileWrapper}>
       <header css={styles.header}>
         <motion.div
@@ -360,7 +366,9 @@ export default function UserProfile({
                     <Icon />
                   </span>
 
-                  <a href={`${href}`}>{user[key as keyof UserDocument]}</a>
+                  <a href={`${href}`} target="_new" rel="noreferrer noopener">
+                    {user[key as keyof UserDocument]}
+                  </a>
                 </motion.li>
               ),
           )}
@@ -407,6 +415,8 @@ export default function UserProfile({
             <motion.a
               key={link.link_id}
               href={link.url}
+              target="_new"
+              rel="noreferrer noopener"
               css={styles.plpLink}
               variants={addDelay(listChildAnimation, 1.2)}
               initial="initial"
@@ -421,21 +431,49 @@ export default function UserProfile({
         </motion.nav>
       </div>
     </section>
-  ) : (
-    <section css={styles.profileWrapper}>
-      <ErrorWrapper
-        title="Server Error"
-        error={{
-          message: `User ${username} was not found in our servers or there was an error fetching their data`,
-        }}
-      />
-    </section>
   );
+}
+
+export async function redirect(req: NextApiRequest, res: NextApiResponse) {
+  const { username, shrt_query } = req.query;
+  const query = username || shrt_query;
+  const shrt_id = typeof query === 'string' ? query : query[0];
+
+  if (typeof shrt_id === 'undefined') {
+    throw new Error('Shrt ID is required');
+  }
+
+  // - lookup shrt in shrts collection
+  const shrt = await UserService.getShrtById(shrt_id);
+
+  if (typeof shrt.url === 'undefined') {
+    throw new Error('Shrt not Found');
+  }
+
+  // - add view and related data
+  if (typeof window === 'undefined' && !!shrt) {
+    await require('../features/user').UserService.updateShrtAfterView(shrt);
+  }
+
+  // redirect
+  if (typeof window === 'undefined' && !!shrt.url) {
+    res?.writeHead(301, {
+      Location: shrt.url,
+    });
+    res?.end();
+
+    return { props: { url: shrt.url } };
+  } else {
+    window.location.replace(shrt.url);
+  }
 }
 
 // server-side function calls firestore to match the username and
 //  grab data corresponding to the username
-export async function getServerSideProps(req: NextApiRequest) {
+export async function getServerSideProps(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     const { username } = req.query;
     const user =
@@ -443,11 +481,20 @@ export async function getServerSideProps(req: NextApiRequest) {
         ? await UserService.getUserDocumentByUsername(username)
         : await UserService.getUserDocumentByUsername(username[0]);
 
+    if (typeof user === 'undefined') {
+      return await redirect(req, res);
+    }
+
     const plpLinks = await UserService.getPLPLinksByUser(user.created_by);
     return { props: { user, plpLinks } };
   } catch (error) {
-    console.error(error);
-
-    return { props: { error: true } };
+    return {
+      props: {
+        error: {
+          message:
+            error.message || 'There was an error fetching data for' + req.query,
+        },
+      },
+    };
   }
 }

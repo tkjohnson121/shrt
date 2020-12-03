@@ -221,26 +221,9 @@ class User {
           created_on: Date.now(),
           isArchived: false,
           shrt_id: shrt_id,
-          shrt_url: 'https://shrtme.app/api/' + shrt_id,
+          shrt_url: 'https://shrtme.app/' + shrt_id,
           url,
           clicks: 0,
-        });
-    } catch (error) {
-      FirebaseClient.analytics?.logEvent('exception', error);
-      throw new Error(error);
-    }
-  }
-
-  async updateShrtAfterView(shrt: ShrtDocument) {
-    try {
-      FirebaseClient.analytics?.logEvent('update_shrt_doc_after_view', shrt);
-
-      // update view count
-      return await FirebaseClient.db
-        .collection('shrts')
-        .doc(shrt.shrt_id)
-        .update({
-          clicks: (shrt.clicks || 0) + 1,
         });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
@@ -257,6 +240,7 @@ class User {
       return { ...doc.data(), shrt_id: doc.id } as ShrtDocument;
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
+
       throw new Error(error);
     }
   }
@@ -276,6 +260,20 @@ class User {
         .update({ isArchived: true });
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
+      throw new Error(error);
+    }
+  }
+
+  async updateShrtAfterView(shrt: ShrtDocument) {
+    try {
+      // update view count
+      return await FirebaseClient.db
+        .collection('shrts')
+        .doc(shrt.shrt_id)
+        .update({
+          clicks: (shrt.clicks || 0) + 1,
+        });
+    } catch (error) {
       throw new Error(error);
     }
   }

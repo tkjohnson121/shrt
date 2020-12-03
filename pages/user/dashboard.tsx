@@ -28,7 +28,7 @@ const styles: ComponentStyles = {
     li {
       position: relative;
       flex: 0 1 10%;
-      border: 2px solid ${theme.colors.whiteAlpha[700]};
+      border: 2px solid ${theme.colors['secondary']};
       border-radius: ${theme.radii['md']};
       padding: ${theme.space[6]};
       padding-bottom: ${theme.space[8]}
@@ -64,11 +64,9 @@ const styles: ComponentStyles = {
 
       button {
         position: absolute;
-        bottom: 0;
-        right: 0;
-        border-top-right-radius: ${theme.radii['md']};
-        border-top-left-radius: ${theme.radii['md']};
-        border-bottom-left-radius: ${theme.radii['md']};
+        bottom: 10%;
+        right: 5%;
+        border-radius: ${theme.radii['md']};
         background-color: ${theme.colors['error']};
         color: ${theme.colors.whiteAlpha[900]};
         font-size: ${theme.fontSizes.xl};
@@ -88,11 +86,16 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
   const authState = useAuth();
   const uid = authState.data?.currentUser?.uid;
 
-  const MotionComp = motion[as];
-
   const [state, setState] = useState<FetchState>({
     loading: shrt.shrt_url ? true : false,
   });
+
+  const appUrl = /staging/gi.test(process.env.APP_NAME || '')
+    ? 'https://staging.shrtme.app/'
+    : process.env.NODE_ENV === 'production'
+    ? 'https://shrtme.app/'
+    : 'http://localhost:3000/';
+  const MotionComp = motion[as];
 
   const onShrtArchive = async (shrt: ShrtDocument) => {
     try {
@@ -137,8 +140,12 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
 
       <pre>
         SHRT URL:{' '}
-        <a href={shrt.shrt_url || ''} target="_new" rel="noreferrer noopener">
-          {shrt.shrt_url}
+        <a
+          href={appUrl + shrt.shrt_id || ''}
+          target="_new"
+          rel="noreferrer noopener"
+        >
+          {appUrl + shrt.shrt_id}
         </a>
       </pre>
 
