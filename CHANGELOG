@@ -1,8 +1,10 @@
-* 5f884cd (HEAD -> staging) update git templates
+* 3e561c7 (HEAD -> staging, tag: v0.2.1, origin/staging) v0.2.1
+* 9bae55a update changelog
+* 5f884cd update git templates
 * d0ae8e6 (main) refactor url-shortner to work on the main page as well
 * 085eabd (tag: v0.2.0, origin/main) v0.2.0
 * cd152c2 update changelog
-* b5035b2 (tag: v0.1.5, origin/staging) v0.1.5
+* b5035b2 (tag: v0.1.5) v0.1.5
 * 9940fd2 update changelog
 * 3068729 late nights wow
 * a8df52e fix: add auth-form to plp edit page
