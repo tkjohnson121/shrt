@@ -1,6 +1,12 @@
 {
   "version": 2,
-  "alias": ["shrt.gvempire.dev"],
+  "alias": [
+    "shrt.gvempire.dev",
+    "shrtme.app",
+    "staging.shrtme.app",
+    "shrtme.vercel.app",
+    "shrt-git-staging.vercel.app"
+  ],
   "trailingSlash": false,
   "rewrites": [
     {
