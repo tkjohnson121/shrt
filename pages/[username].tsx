@@ -184,9 +184,11 @@ export default function UserProfile({
       <ErrorWrapper
         title="Server Error"
         error={{
-          message: `User ${JSON.stringify(
-            user,
-          )} was not found in our servers or there was an error fetching their data`,
+          message:
+            error.message ||
+            `User ${JSON.stringify(
+              user,
+            )} was not found in our servers or there was an error fetching their data`,
         }}
       />
     );

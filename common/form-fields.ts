@@ -245,6 +245,37 @@ export const formFields: { [key: string]: FormFields } = {
       },
       width: 'medium',
     },
+
+    street: {
+      label: 'Street Address',
+      type: 'text',
+      placeholder: 'Where do you live?',
+      config: {
+        maxLength: {
+          value: 320,
+          message: 'Address is too long (max: 320).',
+        },
+      },
+      width: 'full',
+    },
+
+    city: {
+      label: 'City',
+      type: 'text',
+      placeholder: 'What city?',
+      config: {
+        minLength: {
+          value: 2,
+          message: 'City is too short (max: 2).',
+        },
+        maxLength: {
+          value: 244,
+          message: 'City is too long (max: 244).',
+        },
+      },
+      width: 'small',
+    },
+
     state: {
       label: 'State',
       type: 'select',
@@ -306,20 +337,9 @@ export const formFields: { [key: string]: FormFields } = {
         'WV - West Virginia',
         'WY - Wyoming',
       ],
-      width: 'medium',
+      width: 'small',
     },
-    street: {
-      label: 'Street Address',
-      type: 'text',
-      placeholder: 'Where do you live?',
-      config: {
-        maxLength: {
-          value: 320,
-          message: 'Address is too long (max: 320).',
-        },
-      },
-      width: 'medium',
-    },
+
     zip: {
       label: 'ZIP',
       type: 'number',

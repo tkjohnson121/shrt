@@ -1,4 +1,7 @@
 ✅ Authentication
+ - Add loading on sign-up while document is creating
+ - refactor setting page to be more tablike
+ - add tooltip for new users
 - Shrts
   - url shortner api function
     - lookup url in shrts db
