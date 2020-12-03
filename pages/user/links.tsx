@@ -1,4 +1,11 @@
-import { ErrorWrapper, Form, formFields, Loading, OnFormSubmit } from 'common';
+import {
+  AuthForm,
+  ErrorWrapper,
+  Form,
+  formFields,
+  Loading,
+  OnFormSubmit,
+} from 'common';
 import { useAuth } from 'features/authentication';
 import { ShrtSwal } from 'features/swal';
 import { UserService } from 'features/user';
@@ -50,10 +57,6 @@ export default function PLPLinks() {
       />
     </section>
   ) : (
-    <section css={{ maxWidth: '50rem', margin: '0 auto' }}>
-      <h1 className="display">User Settings</h1>
-
-      <p>User Document not Available</p>
-    </section>
+    <AuthForm />
   );
 }
