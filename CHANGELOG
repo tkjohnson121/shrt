@@ -1,6 +1,7 @@
-*   c56a409 (HEAD -> main) Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
+* 8850e77 (HEAD -> staging, origin/main, main) update changelog
+*   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
 |\  
-| * d2abb84 (origin/main) Update issue templates
+| * d2abb84 Update issue templates
 * | f81d2ec (tag: v0.1.0) v0.1.0
 * | 225b6fd update changelog
 * | f844a00 add second firebase project
@@ -9,7 +10,7 @@
 * d6fd005 update changelog
 * c737e6f (tag: v0.0.17) v0.0.17
 * 4c30ccf update changelog
-* 75f9ac4 (origin/staging, staging) prepare for deploy
+* 75f9ac4 (origin/staging) prepare for deploy
 * a840f1f (tag: v0.0.16) v0.0.16
 * 2538717 update changelog
 * fb4f374 add plp_links
