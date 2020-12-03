@@ -1,6 +1,8 @@
-* 3068729 (HEAD -> staging) late nights wow
+* b5035b2 (HEAD -> main, tag: v0.1.5, origin/staging, staging) v0.1.5
+* 9940fd2 update changelog
+* 3068729 late nights wow
 * a8df52e fix: add auth-form to plp edit page
-* 137a510 (origin/staging) update changelog
+* 137a510 update changelog
 * f57b4e2 update vercel config
 * 7793d65 (tag: v0.1.4) v0.1.4
 * 4bd76ec update changelog
@@ -13,7 +15,7 @@
 * b877cda update changelog
 * 6bf83ba add custom url shrtner
 * 09218f8 update changelog
-* 8850e77 (origin/main, main) update changelog
+* 8850e77 (origin/main) update changelog
 *   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
 |\  
 | * d2abb84 Update issue templates
