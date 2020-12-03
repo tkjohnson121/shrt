@@ -23,6 +23,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   } catch (error) {
     console.error(error);
 
-    res.status(404).send({ code: 404, message: 'Link not found' });
+    res
+      .status(error.code || error.status || 404)
+      .send({ code: 404, message: error.message || 'Link not found' });
   }
 }

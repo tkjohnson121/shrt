@@ -126,6 +126,8 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
       animate="animate"
       exit="exit"
     >
+      <pre>Clicks: {shrt.clicks}</pre>
+
       <pre>
         URL:{' '}
         <a href={shrt.url || ''} target="_new" rel="noreferrer noopener">
