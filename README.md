@@ -8,9 +8,9 @@
   <p align="center">
     Shrt is a URL-Shortner and Personal Landing Page (PLP) that allows marketers, influencers, and regular people to connect faster and more efficiently.
     <br>
-    <a href="https://reponame/issues/new?template=bug.md">Report bug</a>
+    <a href="https://github.com/tkjohnson121/shrt/issues/new?template=bug.md">Report bug</a>
     ·
-    <a href="https://reponame/issues/new?template=feature.md&labels=feature">Request feature</a>
+    <a href="https://github.com/tkjohnson121/shrt/issues/new?template=feature.md&labels=feature">Request feature</a>
   </p>
 </p>
 
