@@ -70,8 +70,11 @@ const styles: ComponentStyles = {
   `,
 };
 
-const isLinkActive = (href: string, router: NextRouter) =>
-  router?.pathname === href.toLowerCase() ? 'active' : 'inactive';
+const isLinkActive = (href: string, router: NextRouter, username?: string) =>
+  router?.pathname === href.toLowerCase() ||
+  router?.pathname.startsWith(`/${username}`)
+    ? 'active'
+    : 'inactive';
 
 export const Avatar: React.FC<{
   uid?: string;
@@ -184,7 +187,11 @@ export const Header: React.FC<{
         {(isAuthenticated ? authLinks : defaultLinks).map((link) => (
           <Link href={link.href} key={link.text}>
             <motion.a
-              className={isLinkActive(link.href, router)}
+              className={isLinkActive(
+                link.href,
+                router,
+                userDocument?.username,
+              )}
               variants={listChildAnimation}
               initial="initial"
               animate="animate"
