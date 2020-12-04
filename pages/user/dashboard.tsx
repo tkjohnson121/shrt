@@ -19,63 +19,51 @@ import {
 import { FetchState, MotionTypes, ShrtDocument } from 'types';
 
 const styles: ComponentStyles = {
-  listWrapper: (theme) => css`
+  listWrapper: () => css`
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-evenly;
+  `,
+  shrtCard: (theme) => css`
+    position: relative;
+    flex: 0 1 10%;
+    border: 2px solid ${theme.colors['secondary']};
+    border-radius: ${theme.radii['md']};
+    padding: ${theme.space[6]};
+    margin-bottom: ${theme.space[12]};
 
-    li {
+    & > * {
+      line-height: ${theme.lineHeights['taller']};
+    }
+
+    a {
       position: relative;
-      flex: 0 1 10%;
-      border: 2px solid ${theme.colors['secondary']};
-      border-radius: ${theme.radii['md']};
-      padding: ${theme.space[6]};
-      padding-bottom: ${theme.space[8]}
-      margin: ${theme.space[8]};
+      overflow: hidden;
+      display: inline-flex;
+      align-items: start;
+      padding: ${theme.space[1]} ${theme.space[2]};
+      max-width: ${theme.space[64]};
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: '...';
 
-      & > * {
-        line-height: ${theme.lineHeights['taller']};
-      }
-
-      a {
-        position: relative;
-        overflow: hidden;
-        display: inline-flex;
-        align-items: start;
-        padding: ${theme.space[1]} ${theme.space[2]};
-
-        &::after {
-          content: '';
-          transition: left 150ms cubic-bezier(${easing.join(',')});
-          position: absolute;
-          bottom: 0;
-          left: -100%;
-          width: 100%;
-          height: 2px;
-          background-color: ${theme.colors['primary']};
-        }
-
-        &.active::after,
-        &:hover::after {
-          left: 0;
-        }
-      }
-
-      button {
+      &::after {
+        content: '';
+        transition: left 150ms cubic-bezier(${easing.join(',')});
         position: absolute;
-        bottom: 10%;
-        right: 5%;
-        border-radius: ${theme.radii['md']};
-        background-color: ${theme.colors['error']};
-        color: ${theme.colors.whiteAlpha[900]};
-        font-size: ${theme.fontSizes.xl};
-        margin: 0;
-        padding: 0;
-        display: flex;
-        align-items: stretch;
-        justify-content: center;
+        bottom: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background-color: ${theme.colors['primary']};
       }
+
+      &.active::after,
+      &:hover::after {
+        left: 0;
+      }
+    }
   `,
 };
 
@@ -124,6 +112,7 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
   return (
     <MotionComp
       key={shrt.shrt_url}
+      css={styles.shrtCard}
       variants={addDelay(listChildAnimation, 0.5)}
       initial="initial"
       animate="animate"
