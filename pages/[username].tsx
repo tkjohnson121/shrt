@@ -51,6 +51,9 @@ const styles: ComponentStyles = {
     padding: ${theme.space[4]};
     text-align: center;
     box-shadow: ${theme.shadows['lg']};
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   `,
   headerImage: (theme) => css`
     flex: 1 1 100%;
