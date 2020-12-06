@@ -1,5 +1,10 @@
-* 6f5abcd (HEAD -> staging) feat: add custom ids to shrts
-* f6e5f8e (tag: v0.3.4, origin/staging) v0.3.4
+* 62f60a6 (HEAD -> staging) fix: archiving plp links
+* 63084f0 fix: remove username from plp
+* 0e27d35 add withId to ShrtForm
+* d9acf89 (tag: v0.3.5, origin/staging) v0.3.5
+* 860d7d9 update changelog
+* 6f5abcd feat: add custom ids to shrts
+* f6e5f8e (tag: v0.3.4) v0.3.4
 * 47b253f update changelog
 * 7888085 feat: add pinterest and soundcloud support to PLP
 * 5161f72 (tag: v0.3.3) v0.3.3
