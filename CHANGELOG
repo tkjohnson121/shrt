@@ -1,27 +1,35 @@
-* 62f60a6 (HEAD -> staging) fix: archiving plp links
-* 63084f0 fix: remove username from plp
-* 0e27d35 add withId to ShrtForm
-* d9acf89 (tag: v0.3.5, origin/staging) v0.3.5
-* 860d7d9 update changelog
-* 6f5abcd feat: add custom ids to shrts
-* f6e5f8e (tag: v0.3.4) v0.3.4
-* 47b253f update changelog
-* 7888085 feat: add pinterest and soundcloud support to PLP
-* 5161f72 (tag: v0.3.3) v0.3.3
-* 9a2946f update changelog
-* 50d1e83 add title to shrts
-*   ac3fab5 merge latest changes from 0.2.2
+*   7ff8a1c (HEAD -> main) merge staging
 |\  
-| * 238a6bd (tag: v0.3.2, origin/main, main) v0.3.2
-| * 5674706 update changelog
-| * f2044f5 update changelog
-| * 65736da fix: shrt spacing and landing page form
-| * fb3ad8f (tag: v0.3.1) v0.3.1
-| * d756302 update changelog
-| * a3fc5d1 (tag: v0.3.0) v0.3.0
-| * 1f61a78 update changelog
-* | 7bc652a staging changes
-* | 084b1ae add marketing image
+| * ae8f102 (staging) add
+| * 3b05cd9 (tag: v0.3.6, origin/staging) v0.3.6
+| * 9966aac update changelog
+| * 62f60a6 fix: archiving plp links
+| * 63084f0 fix: remove username from plp
+| * 0e27d35 add withId to ShrtForm
+| * d9acf89 (tag: v0.3.5) v0.3.5
+| * 860d7d9 update changelog
+| * 6f5abcd feat: add custom ids to shrts
+| * f6e5f8e (tag: v0.3.4) v0.3.4
+| * 47b253f update changelog
+| * 7888085 feat: add pinterest and soundcloud support to PLP
+| * 5161f72 (tag: v0.3.3) v0.3.3
+| * 9a2946f update changelog
+| * 50d1e83 add title to shrts
+| *   ac3fab5 merge latest changes from 0.2.2
+| |\  
+| * | 7bc652a staging changes
+| * | 084b1ae add marketing image
+* | | 4b37d59 (origin/main) Staging - v0.3.5 (#10)
+| |/  
+|/|   
+* | 238a6bd (tag: v0.3.2) v0.3.2
+* | 5674706 update changelog
+* | f2044f5 update changelog
+* | 65736da fix: shrt spacing and landing page form
+* | fb3ad8f (tag: v0.3.1) v0.3.1
+* | d756302 update changelog
+* | a3fc5d1 (tag: v0.3.0) v0.3.0
+* | 1f61a78 update changelog
 |/  
 * 92a197a (tag: v0.2.2) v0.2.2
 * f08c476 update changelog
