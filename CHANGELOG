@@ -1,5 +1,8 @@
-* 7888085 (HEAD -> staging) feat: add pinterest and soundcloud support to PLP
-* 5161f72 (tag: v0.3.3, origin/staging) v0.3.3
+* 6f5abcd (HEAD -> staging) feat: add custom ids to shrts
+* f6e5f8e (tag: v0.3.4, origin/staging) v0.3.4
+* 47b253f update changelog
+* 7888085 feat: add pinterest and soundcloud support to PLP
+* 5161f72 (tag: v0.3.3) v0.3.3
 * 9a2946f update changelog
 * 50d1e83 add title to shrts
 *   ac3fab5 merge latest changes from 0.2.2
