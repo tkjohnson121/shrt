@@ -1,4 +1,7 @@
-* 50d1e83 (HEAD -> staging) add title to shrts
+* 7888085 (HEAD -> staging) feat: add pinterest and soundcloud support to PLP
+* 5161f72 (tag: v0.3.3, origin/staging) v0.3.3
+* 9a2946f update changelog
+* 50d1e83 add title to shrts
 *   ac3fab5 merge latest changes from 0.2.2
 |\  
 | * 238a6bd (tag: v0.3.2, origin/main, main) v0.3.2
@@ -12,7 +15,7 @@
 * | 7bc652a staging changes
 * | 084b1ae add marketing image
 |/  
-* 92a197a (tag: v0.2.2, origin/staging) v0.2.2
+* 92a197a (tag: v0.2.2) v0.2.2
 * f08c476 update changelog
 * 3e561c7 (tag: v0.2.1) v0.2.1
 * 9bae55a update changelog
