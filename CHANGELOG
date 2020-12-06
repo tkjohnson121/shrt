@@ -1,10 +1,18 @@
-* f2044f5 (HEAD -> main) update changelog
-* 65736da fix: shrt spacing and landing page form
-* fb3ad8f (tag: v0.3.1, origin/main) v0.3.1
-* d756302 update changelog
-* a3fc5d1 (tag: v0.3.0) v0.3.0
-* 1f61a78 update changelog
-* 92a197a (tag: v0.2.2, origin/staging, staging) v0.2.2
+* 50d1e83 (HEAD -> staging) add title to shrts
+*   ac3fab5 merge latest changes from 0.2.2
+|\  
+| * 238a6bd (tag: v0.3.2, origin/main, main) v0.3.2
+| * 5674706 update changelog
+| * f2044f5 update changelog
+| * 65736da fix: shrt spacing and landing page form
+| * fb3ad8f (tag: v0.3.1) v0.3.1
+| * d756302 update changelog
+| * a3fc5d1 (tag: v0.3.0) v0.3.0
+| * 1f61a78 update changelog
+* | 7bc652a staging changes
+* | 084b1ae add marketing image
+|/  
+* 92a197a (tag: v0.2.2, origin/staging) v0.2.2
 * f08c476 update changelog
 * 3e561c7 (tag: v0.2.1) v0.2.1
 * 9bae55a update changelog
