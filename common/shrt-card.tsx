@@ -82,7 +82,7 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
   const uid = authState.data?.currentUser?.uid;
 
   const [state, setState] = useState<FetchState>({
-    loading: shrt.shrt_url ? true : false,
+    loading: false,
   });
 
   const MotionComp = motion[as];
@@ -102,10 +102,6 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
       setState({ loading: false, error });
     }
   };
-
-  React.useEffect(() => {
-    setState((prev) => ({ ...prev, loading: shrt.shrt_url ? false : true }));
-  }, [shrt.shrt_url]);
 
   if (state.loading) return <Loading />;
   if (state.error) return <ErrorWrapper error={state.error} />;

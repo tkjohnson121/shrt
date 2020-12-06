@@ -382,7 +382,6 @@ class User {
             ({
               ...document.data(),
               link_id: document.id,
-              isArchived: false,
             } as PLPLinkDocument),
         ),
       );
