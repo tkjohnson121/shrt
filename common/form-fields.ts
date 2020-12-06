@@ -107,10 +107,23 @@ export const formFields: { [key: string]: FormFields } = {
   },
 
   shrtFields: {
+    title: {
+      label: 'Title',
+      type: 'text',
+      width: 'small',
+      placeholder: "What's this shrt called?",
+      config: {
+        maxLength: {
+          value: 64,
+          message: 'Too long: (max: 64)',
+        },
+      },
+    },
     url: {
+      label: 'URL',
       type: 'url',
-      width: 'full',
-      placeholder: 'Enter a url to SHRT',
+      width: 'large',
+      placeholder: 'https://this.is.long.com/that?that=we&need=shrtened',
       config: {
         minLength: {
           value: 2,

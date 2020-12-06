@@ -8,7 +8,7 @@ import { formFields } from './form-fields';
 export function ShrtForm() {
   const authState = useAuth();
 
-  const onShrtSubmit: OnFormSubmit = async ({ url }, setStatus) => {
+  const onShrtSubmit: OnFormSubmit = async ({ url, title }, setStatus) => {
     try {
       setStatus({ message: 'adding shrt', type: 'info' });
 
@@ -16,11 +16,15 @@ export function ShrtForm() {
         throw new Error('Please login to Shrten a link');
       }
 
+      if (!!title && typeof title !== 'string') {
+        throw new Error('Invalid Title');
+      }
+
       if (typeof url !== 'string' || url.length < 1) {
         throw new Error('Invalid URL');
       }
 
-      await UserService.addShrt(authState.data.currentUser.uid, url);
+      await UserService.addShrt(authState.data.currentUser.uid, { url, title });
 
       setStatus(null);
       ShrtSwal.fire({ icon: 'success', title: 'Update Complete!' });

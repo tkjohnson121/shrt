@@ -19,63 +19,65 @@ import {
 import { FetchState, MotionTypes, ShrtDocument } from 'types';
 
 const styles: ComponentStyles = {
-  listWrapper: (theme) => css`
+  listWrapper: () => css`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
+  `,
+  shrtCard: (theme) => css`
+    position: relative;
+    flex: 0 1 10%;
+    border: 2px solid ${theme.colors['secondary']};
+    border-radius: ${theme.radii['md']};
+    padding: ${theme.space[6]};
+    padding-bottom: ${theme.space[8]};
+    margin: ${theme.space[8]};
 
-    li {
+    & > * {
+      line-height: ${theme.lineHeights['taller']};
+    }
+
+    // links
+    a {
       position: relative;
-      flex: 0 1 10%;
-      border: 2px solid ${theme.colors['secondary']};
-      border-radius: ${theme.radii['md']};
-      padding: ${theme.space[6]};
-      padding-bottom: ${theme.space[8]}
-      margin: ${theme.space[8]};
+      overflow: hidden;
+      display: inline-flex;
+      align-items: start;
+      padding: ${theme.space[1]} ${theme.space[2]};
 
-      & > * {
-        line-height: ${theme.lineHeights['taller']};
-      }
-
-      a {
-        position: relative;
-        overflow: hidden;
-        display: inline-flex;
-        align-items: start;
-        padding: ${theme.space[1]} ${theme.space[2]};
-
-        &::after {
-          content: '';
-          transition: left 150ms cubic-bezier(${easing.join(',')});
-          position: absolute;
-          bottom: 0;
-          left: -100%;
-          width: 100%;
-          height: 2px;
-          background-color: ${theme.colors['primary']};
-        }
-
-        &.active::after,
-        &:hover::after {
-          left: 0;
-        }
-      }
-
-      button {
+      &::after {
+        content: '';
+        transition: left 150ms cubic-bezier(${easing.join(',')});
         position: absolute;
-        bottom: 10%;
-        right: 5%;
-        border-radius: ${theme.radii['md']};
-        background-color: ${theme.colors['error']};
-        color: ${theme.colors.whiteAlpha[900]};
-        font-size: ${theme.fontSizes.xl};
-        margin: 0;
-        padding: 0;
-        display: flex;
-        align-items: stretch;
-        justify-content: center;
+        bottom: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background-color: ${theme.colors['primary']};
       }
+
+      &.active::after,
+      &:hover::after {
+        left: 0;
+      }
+    }
+
+    // delete button
+    button {
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      border-radius: ${theme.radii['md']};
+      background-color: ${theme.colors['error']};
+      color: ${theme.colors.whiteAlpha[900]};
+      font-size: ${theme.fontSizes.xl};
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
   `,
 };
 
@@ -90,11 +92,6 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
     loading: shrt.shrt_url ? true : false,
   });
 
-  const appUrl = /staging/gi.test(process.env.APP_NAME || '')
-    ? 'https://staging.shrtme.app/'
-    : process.env.NODE_ENV === 'production'
-    ? 'https://shrtme.app/'
-    : 'http://localhost:3000/';
   const MotionComp = motion[as];
 
   const onShrtArchive = async (shrt: ShrtDocument) => {
@@ -125,10 +122,12 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
     <MotionComp
       key={shrt.shrt_url}
       variants={addDelay(listChildAnimation, 0.5)}
+      css={styles.shrtCard}
       initial="initial"
       animate="animate"
       exit="exit"
     >
+      <h3>{shrt.title}</h3>
       <pre>Clicks: {shrt.clicks}</pre>
 
       <pre>
@@ -140,12 +139,8 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
 
       <pre>
         SHRT URL:{' '}
-        <a
-          href={appUrl + shrt.shrt_id || ''}
-          target="_new"
-          rel="noreferrer noopener"
-        >
-          {appUrl + shrt.shrt_id}
+        <a href={shrt.shrt_url || ''} target="_new" rel="noreferrer noopener">
+          {shrt.shrt_url}
         </a>
       </pre>
 

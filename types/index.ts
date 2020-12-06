@@ -64,6 +64,7 @@ export interface ShrtDocument {
   isArchived: boolean;
   url: string;
   shrt_url: string | null;
+  title?: string;
   clicks?: number;
 }
 

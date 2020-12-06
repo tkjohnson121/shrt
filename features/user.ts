@@ -204,11 +204,17 @@ class User {
       }, onSnapshotError);
   }
 
-  async addShrt(uid: string, url: string) {
+  async addShrt(uid: string, config: { url: string; title?: string }) {
+    const appUrl = /staging/gi.test(process.env.APP_NAME || '')
+      ? 'https://staging.shrtme.app/'
+      : process.env.NODE_ENV === 'production'
+      ? 'https://shrtme.app/'
+      : 'http://localhost:3000/';
+
     try {
       FirebaseClient.analytics?.logEvent('add_shrt', {
         uid,
-        url,
+        config,
       });
 
       const shrt_id = this.getURLSafeRandomString();
@@ -221,8 +227,9 @@ class User {
           created_on: Date.now(),
           isArchived: false,
           shrt_id: shrt_id,
-          shrt_url: 'https://shrtme.app/' + shrt_id,
-          url,
+          shrt_url: appUrl + shrt_id,
+          url: config.url,
+          title: config.title,
           clicks: 0,
         });
     } catch (error) {
