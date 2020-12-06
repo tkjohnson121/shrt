@@ -1,6 +1,8 @@
-*   7ff8a1c (HEAD -> main) merge staging
+* f011bd1 (HEAD -> staging, tag: v0.3.7, origin/main, main) v0.3.7
+* d4ee672 update changelog
+*   7ff8a1c merge staging
 |\  
-| * ae8f102 (staging) add
+| * ae8f102 add
 | * 3b05cd9 (tag: v0.3.6, origin/staging) v0.3.6
 | * 9966aac update changelog
 | * 62f60a6 fix: archiving plp links
@@ -19,7 +21,7 @@
 | |\  
 | * | 7bc652a staging changes
 | * | 084b1ae add marketing image
-* | | 4b37d59 (origin/main) Staging - v0.3.5 (#10)
+* | | 4b37d59 Staging - v0.3.5 (#10)
 | |/  
 |/|   
 * | 238a6bd (tag: v0.3.2) v0.3.2
