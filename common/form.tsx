@@ -207,6 +207,8 @@ export interface FormFieldConfig extends React.HTMLProps<HTMLInputElement> {
   config?: FieldValues;
   /** Used for `select` elements */
   options?: (string | number)[];
+  /** Used for social media edits */
+  smLink?: string | ((username: string | number) => any);
 }
 
 export interface FormFields {

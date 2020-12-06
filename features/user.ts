@@ -193,7 +193,7 @@ class User {
     return FirebaseClient.db
       .collection('shrts')
       .where('created_by', '==', uid)
-      .where('isArchived', '!=', 'true')
+      .where('isArchived', '!=', true)
       .onSnapshot((snapshot) => {
         const documents = snapshot.docs.map((doc) => ({
           ...(doc.data() as ShrtDocument),
@@ -204,14 +204,38 @@ class User {
       }, onSnapshotError);
   }
 
-  async addShrt(uid: string, url: string) {
+  async addShrt(uid: string, config: { url: string; id?: string }) {
+    const appUrl = /staging/gi.test(process.env.APP_NAME || '')
+      ? 'https://staging.shrtme.app/'
+      : process.env.NODE_ENV === 'production'
+      ? 'https://shrtme.app/'
+      : 'http://localhost:3000/';
+
     try {
       FirebaseClient.analytics?.logEvent('add_shrt', {
         uid,
-        url,
+        config,
       });
 
-      const shrt_id = this.getURLSafeRandomString();
+      if (
+        !!config.id &&
+        (typeof config.id !== 'string' ||
+          !/^([a-zA-Z0-9_-]){2,30}$/.test(config.id))
+      ) {
+        throw new Error('Invalid ID');
+      }
+
+      if (
+        typeof config.url !== 'string' ||
+        !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(
+          config.url,
+        )
+      ) {
+        throw new Error('Invalid URL');
+      }
+
+      const shrt_id =
+        config.id?.replace(' ', '').trim() || this.getURLSafeRandomString();
 
       return await FirebaseClient.db
         .collection('shrts')
@@ -221,8 +245,8 @@ class User {
           created_on: Date.now(),
           isArchived: false,
           shrt_id: shrt_id,
-          shrt_url: 'https://shrtme.app/' + shrt_id,
-          url,
+          shrt_url: appUrl + shrt_id,
+          url: config.url,
           clicks: 0,
         });
     } catch (error) {
@@ -349,7 +373,7 @@ class User {
       const documents = await FirebaseClient.db
         .collection('plps')
         .where('created_by', '==', uid)
-        .where('isArchived', '!=', 'true')
+        .where('isArchived', '!=', true)
         .get();
 
       return Promise.all(
@@ -358,7 +382,6 @@ class User {
             ({
               ...document.data(),
               link_id: document.id,
-              isArchived: false,
             } as PLPLinkDocument),
         ),
       );

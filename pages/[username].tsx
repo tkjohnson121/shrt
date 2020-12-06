@@ -1,20 +1,11 @@
-import { ErrorWrapper, Loading } from 'common';
+import { ErrorWrapper, Loading, PLPCard, smItems } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import {
-  FaCalendar,
-  FaGithub,
-  FaInstagram,
-  FaLinkedin,
-  FaPhone,
-  FaTwitch,
-  FaTwitter,
-  FaYoutube,
-} from 'react-icons/fa';
+import { FaCalendar, FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import {
   addDelay,
@@ -34,22 +25,6 @@ const contactItems = [
   { key: 'email', href: 'mailto:', Icon: MdEmail },
   { key: 'phone', href: 'telto:', Icon: FaPhone },
   { key: 'date_of_birth', href: null, Icon: FaCalendar },
-];
-const smItems = [
-  { key: 'twitter', href: 'https://twitter.com/', Icon: FaTwitter },
-  { key: 'twitch', href: 'https://twitch.com/', Icon: FaTwitch },
-  { key: 'youtube', href: 'https://youtube.com/', Icon: FaYoutube },
-  {
-    key: 'instagram',
-    href: 'https://instagram.com/',
-    Icon: FaInstagram,
-  },
-  {
-    key: 'linkedin',
-    href: 'https://linkedin.com/',
-    Icon: FaLinkedin,
-  },
-  { key: 'github', href: 'https://github.com/', Icon: FaGithub },
 ];
 
 const styles: ComponentStyles = {
@@ -103,17 +78,20 @@ const styles: ComponentStyles = {
     justify-content: center;
   `,
   statItem: (theme) => css`
-    // min-width: ${theme.space[32]};
     text-align: center;
     position: relative;
     overflow: hidden;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: ${theme.space[2]};
     margin: ${theme.space[2]};
 
     a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
       &::after {
         content: '';
         transition: left 150ms cubic-bezier(${easing.join(',')});
@@ -135,7 +113,6 @@ const styles: ComponentStyles = {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-right: ${theme.space[1]};
 
     svg {
       color: ${theme.colors.secondary};
@@ -146,47 +123,6 @@ const styles: ComponentStyles = {
 
   plpLinks: (theme) => css`
     padding-top: ${theme.space[12]};
-  `,
-  plpLink: (theme) => css`
-    z-index: 0;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: ${theme.space[8]};
-    margin: ${theme.space[12]} 0;
-    border-radius: ${theme.radii['md']};
-    border: 2px solid ${theme.colors.secondary};
-    box-shadow: ${theme.shadows['md']};
-
-    span:first-of-type {
-      display: block;
-      width: 100%;
-      height: 100%;
-      font-size: ${theme.fontSizes['3xl']};
-      z-index: -1;
-    }
-
-    span:nth-of-type(0n + 2) {
-      line-height: ${theme.lineHeights['taller']};
-      z-index: -1;
-    }
-
-    button {
-      position: absolute;
-      top: 50%;
-      right: 2vw;
-      padding: ${theme.space[2]};
-      border-radius: ${theme.radii['md']};
-      font-weight: ${theme.fontWeights['semibold']};
-      font-size: ${theme.fontSizes['xl']};
-      background-color: ${theme.colors['error']};
-      color: ${theme.colors.whiteAlpha[900]};
-      z-index: 5;
-      transform: translate3d(0, -50%, 0);
-      pointer-events: all;
-    }
   `,
 };
 
@@ -257,18 +193,6 @@ export default function UserProfile({
         >
           {display_name || 'Display Name'}
         </motion.h1>
-
-        {username && (
-          <motion.p
-            css={styles.username}
-            variants={addDelay(fadeInDown, 0.5)}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            @{username}
-          </motion.p>
-        )}
 
         {title && (
           <motion.p
@@ -362,12 +286,18 @@ export default function UserProfile({
                   animate="animate"
                   exit="exit"
                 >
-                  <span role="img" css={styles.icon}>
-                    <Icon />
-                  </span>
-
-                  <a href={`${href}`} target="_new" rel="noreferrer noopener">
-                    {user[key as keyof UserDocument]}
+                  <a
+                    href={
+                      typeof href === 'string'
+                        ? href + user[key as keyof UserDocument]
+                        : href(user[key as keyof UserDocument])
+                    }
+                    target="_new"
+                    rel="noreferrer noopener"
+                  >
+                    <span role="img" css={styles.icon}>
+                      <Icon />
+                    </span>
                   </a>
                 </motion.li>
               ),
@@ -411,23 +341,16 @@ export default function UserProfile({
           animate="animate"
           exit="exit"
         >
-          {plpLinks?.map((link) => (
-            <motion.a
-              key={link.link_id}
-              href={link.url}
-              target="_new"
-              rel="noreferrer noopener"
-              css={styles.plpLink}
-              variants={addDelay(listChildAnimation, 1.2)}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <span>{link.name}</span>
-              {link.description && <span>{link.description}</span>}
-              {isOwnProfile && <button>X</button>}
-            </motion.a>
-          ))}
+          {plpLinks
+            ?.sort((a, b) =>
+              new Date(a.created_on).getTime() <
+              new Date(b.created_on).getTime()
+                ? 1
+                : -1,
+            )
+            .map((link) => (
+              <PLPCard link={link} isOwnProfile={isOwnProfile} />
+            ))}
         </motion.nav>
       </div>
     </section>
