@@ -60,13 +60,13 @@ class User {
     }
   }
 
-  async getUserAvatarById(uid: string) {
+  async getUserFileByPath(uid: string, path: string) {
     try {
-      FirebaseClient.analytics?.logEvent('get_user_avatar');
+      FirebaseClient.analytics?.logEvent('get_user_file');
 
       return (await FirebaseClient.storage
         .ref()
-        .child(`users/${uid}/profile/avatar`)
+        .child('users/' + uid + '/' + path)
         .getDownloadURL()) as string;
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);

@@ -85,19 +85,22 @@ export const Avatar: React.FC<{
 
   const { data } = useAuth();
 
-  const [state, setState] = React.useState<FetchState<{ url?: string }>>({
+  const [state, setState] = React.useState<FetchState<{ avatar?: string }>>({
     loading: false,
-    data: { url: '/gvempire-logo.png' },
+    data: { avatar: '/gvempire-logo.png' },
   });
 
   React.useEffect(() => {
     const getAvatar = async () => {
-      if (uid && !state.data?.url) {
-        const avatar = await UserService.getUserAvatarById(uid);
+      if (uid && !state.data?.avatar) {
+        const avatar = await UserService.getUserFileByPath(
+          uid,
+          'profile/avatar',
+        );
 
-        setState((prev) => ({
+        setState(() => ({
           loading: false,
-          data: { ...prev.data, avatar },
+          data: { avatar },
         }));
       }
     };
@@ -125,10 +128,10 @@ export const Avatar: React.FC<{
         exit="exit"
         key="profile"
       >
-        {username && state.data?.url ? (
+        {username && state.data?.avatar ? (
           <img
             src={'/gvempire-logo.png'}
-            alt={`${'GVEMPIRE.dev'} logo`}
+            alt={`${username} profile picture`}
             height="50px"
             width="50px"
           />

@@ -19,7 +19,7 @@ import {
   motion,
   slideInLeft,
 } from 'theme';
-import { PLPLinkDocument, UserDocument } from 'types';
+import { FetchState, PLPLinkDocument, UserDocument } from 'types';
 
 const contactItems = [
   { key: 'email', href: 'mailto:', Icon: MdEmail },
@@ -57,6 +57,7 @@ const styles: ComponentStyles = {
 
     img {
       max-width: ${theme.space[32]};
+      border-radius: ${theme.radii['full']};
     }
   `,
   display_name: () => css`
@@ -132,12 +133,13 @@ export default function UserProfile({
   error,
   url,
 }: {
-  user?: UserDocument;
+  user?: UserDocument & { avatar: string; header: string };
   plpLinks?: PLPLinkDocument[];
   error?: Error;
   url?: string;
 }) {
   const authState = useAuth();
+
   const {
     query: { username },
   } = useRouter();
@@ -154,13 +156,47 @@ export default function UserProfile({
     return <Loading />;
   }
 
-  if (error || typeof user === 'undefined') {
+  const [imgState, setState] = React.useState<
+    FetchState<{ avatar?: string | null; background?: string | null }>
+  >({ loading: true });
+
+  React.useEffect(() => {
+    const getImages = async () => {
+      let avatar: string | null = null;
+      let background: string | null = null;
+
+      try {
+        if (!!user) {
+          avatar = await UserService.getUserFileByPath(
+            user?.created_by,
+            'profile/avatar',
+          );
+
+          background = await UserService.getUserFileByPath(
+            user?.created_by,
+            'profile/background',
+          );
+        }
+
+        setState({ loading: false, data: { avatar, background } });
+      } catch (error) {
+        setState({ loading: false, error });
+      }
+    };
+
+    if (!!user?.created_by) {
+      getImages();
+    }
+  }, [user?.created_by]);
+
+  if (error || typeof user === 'undefined' || imgState.error) {
     return (
       <ErrorWrapper
         title="404: Not Found"
         error={{
           message:
             error?.message ||
+            imgState.error ||
             `There was an error fetching data for ${username}`,
         }}
       />
@@ -169,7 +205,12 @@ export default function UserProfile({
 
   return (
     <section css={styles.profileWrapper}>
-      <header css={styles.header}>
+      <header
+        css={styles.header}
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(33,29,48,0.75) 0%, rgba(33,29,48,0.75) 100%), url(${imgState.data?.background})`,
+        }}
+      >
         <motion.div
           css={styles.headerImage}
           variants={addDelay(fadeInDown, 0.5)}
@@ -178,8 +219,8 @@ export default function UserProfile({
           exit="exit"
         >
           <img
-            src={'/gvempire-logo.png'}
-            alt={display_name || `${username} from SHRT`}
+            src={imgState.data?.avatar || '/gvempire-logo.png'}
+            alt={(display_name || username) + 'from SHRT'}
           />
         </motion.div>
 
@@ -349,7 +390,11 @@ export default function UserProfile({
                 : -1,
             )
             .map((link) => (
-              <PLPCard link={link} isOwnProfile={isOwnProfile} />
+              <PLPCard
+                key={link.link_id}
+                link={link}
+                isOwnProfile={isOwnProfile}
+              />
             ))}
         </motion.nav>
       </div>
@@ -399,7 +444,11 @@ export async function getServerSideProps(
 ) {
   try {
     const { username } = req.query;
-    const user =
+    let user: UserDocument;
+    let avatar: string | null = null;
+    let background: string | null = null;
+
+    user =
       typeof username === 'string'
         ? await UserService.getUserDocumentByUsername(username)
         : await UserService.getUserDocumentByUsername(username[0]);
@@ -409,7 +458,7 @@ export async function getServerSideProps(
     }
 
     const plpLinks = await UserService.getPLPLinksByUser(user.created_by);
-    return { props: { user, plpLinks } };
+    return { props: { user: { ...user, avatar, background }, plpLinks } };
   } catch (error) {
     return {
       props: {
