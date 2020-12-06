@@ -235,18 +235,6 @@ export default function UserProfile({
           {display_name || 'Display Name'}
         </motion.h1>
 
-        {username && (
-          <motion.p
-            css={styles.username}
-            variants={addDelay(fadeInDown, 0.5)}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            @{username}
-          </motion.p>
-        )}
-
         {title && (
           <motion.p
             variants={addDelay(fadeInUp, 0.5)}
