@@ -9,7 +9,6 @@ import {
   listChildAnimation,
 } from '../features/theme';
 import { ComponentStyles } from './../features/theme/theme.d';
-import Loading from './loading';
 
 const styles: ComponentStyles = {
   formWrapper: (theme) => css`
@@ -310,7 +309,6 @@ export const Form: React.FC<FormProps> = (props) => {
         >
           <h3 css={styles.title}>{props.title}</h3>
           <p css={styles.subtitle}>{props.subtitle}</p>
-          {isSubmitting && <Loading />}
         </motion.header>
       )}
 
