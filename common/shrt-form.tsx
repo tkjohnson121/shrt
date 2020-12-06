@@ -4,7 +4,7 @@ import React from 'react';
 import Form, { OnFormSubmit } from './form';
 import { formFields } from './form-fields';
 
-export function ShrtForm() {
+export function ShrtForm({ withId }: { withId?: boolean }) {
   const authState = useAuth();
 
   const onShrtSubmit: OnFormSubmit = async ({ url, id }, setStatus) => {
@@ -24,11 +24,15 @@ export function ShrtForm() {
     }
   };
 
+  const shrtFormfields = withId
+    ? formFields.shrtFields
+    : { url: { ...formFields.shrtFields.url, label: undefined } };
+
   return (
     <Form
       key="shrt"
       onFormSubmit={onShrtSubmit}
-      fields={formFields.shrtFields}
+      fields={shrtFormfields}
       buttonText="ShrtenURL"
     />
   );

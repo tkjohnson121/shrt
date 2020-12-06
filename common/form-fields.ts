@@ -160,7 +160,7 @@ export const formFields: { [key: string]: FormFields } = {
     url: {
       label: 'URL',
       type: 'url',
-      width: 'large',
+      width: 'medium',
       placeholder: 'https://this.is.long.com/that?that=we&need=shrtened',
       config: {
         minLength: {

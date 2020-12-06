@@ -45,7 +45,7 @@ export default function ShrtDashboard() {
         User Dashboard
       </motion.h1>
 
-      <ShrtForm />
+      <ShrtForm withId />
 
       <motion.ul
         css={styles.listWrapper}
