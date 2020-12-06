@@ -58,12 +58,20 @@ const styles: ComponentStyles = {
         height: 2px;
         background-color: ${theme.colors['primary']};
       }
-    }
 
       &.active::after,
       &:hover::after {
         left: 0;
       }
+    }
+
+    button {
+      margin-left: 90%;
+      background-color: ${theme.colors['error']};
+      color: ${theme.colors.whiteAlpha[900]};
+      font-weight: ${theme.fontWeights['semibold']};
+      border-radius: ${theme.radii['md']};
+      font-size: ${theme.fontSizes['xl']};
     }
   `,
 };
@@ -171,7 +179,7 @@ export default function ShrtDashboard() {
         <AnimatePresence>
           {state.data?.shrts
             .sort((a, b) =>
-              new Date(a.created_on).getTime() >
+              new Date(a.created_on).getTime() <
               new Date(b.created_on).getTime()
                 ? 1
                 : -1,
