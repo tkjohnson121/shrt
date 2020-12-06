@@ -21,6 +21,8 @@ export const getDefaultValues = (
   const formKeys = Object.keys(formFields);
   const fieldsWithDefaultValues = { ...formFields };
 
+  console.log(formFields);
+
   formKeys.forEach((key) => {
     fieldsWithDefaultValues[key].defaultValue =
       key in userData ? userData[key as keyof UserDocument] : '';
@@ -42,8 +44,10 @@ export default function UserSettings() {
   } = useUserDocumentListener();
 
   const [state, setState] = useState<FetchState>({ loading: false });
+
   const onError = (error: Error) =>
     setState((prev) => ({ ...prev, loading: false, error }));
+
   const onLogout = async () => {
     try {
       setState({ loading: true });

@@ -1,4 +1,42 @@
+import {
+  FaDev,
+  FaGithub,
+  FaGitlab,
+  FaInstagram,
+  FaLinkedin,
+  FaPinterest,
+  FaSoundcloud,
+  FaTwitch,
+  FaTwitter,
+  FaYoutube,
+} from 'react-icons/fa';
 import { FormFields } from './form';
+
+export const smItems = [
+  { key: 'twitter', href: 'https://twitter.com/', Icon: FaTwitter },
+  { key: 'twitch', href: 'https://twitch.tv/', Icon: FaTwitch },
+  { key: 'youtube', href: 'https://youtube.com/channel/', Icon: FaYoutube },
+  {
+    key: 'instagram',
+    href: 'https://instagram.com/',
+    Icon: FaInstagram,
+  },
+  {
+    key: 'linkedin',
+    href: 'https://linkedin.com/in/',
+    Icon: FaLinkedin,
+  },
+  { key: 'github', href: 'https://github.com/', Icon: FaGithub },
+  { key: 'gitlab', href: 'https://gitlab.com/', Icon: FaGitlab },
+  { key: 'DEV', href: 'https://dev.to/', Icon: FaDev },
+  {
+    key: 'pinterest',
+    href: (username?: string | number) =>
+      'https://pinterest.com/' + username + '/_created',
+    Icon: FaPinterest,
+  },
+  { key: 'soundcloud', href: 'https://soundcloud.com/', Icon: FaSoundcloud },
+];
 
 const baseSMF = {
   type: 'text',
@@ -368,41 +406,17 @@ export const formFields: { [key: string]: FormFields } = {
   },
 
   socialMediaFields: {
-    twitter: {
-      ...baseSMF,
-      label: 'Twitter',
-      placeholder: 'Enter your Twitter @',
-    },
-    twitch: {
-      ...baseSMF,
-      label: 'Twitch',
-      placeholder: 'Enter your Twitch @',
-    },
-    youtube: {
-      ...baseSMF,
-      label: 'YouTube',
-      placeholder: 'Enter your YouTube @',
-    },
-    instagram: {
-      ...baseSMF,
-      label: 'Instagram',
-      placeholder: 'Enter your Instagram @',
-    },
-    linkedin: {
-      ...baseSMF,
-      label: 'LinkedIn',
-      placeholder: 'Enter your LinkedIn @',
-    },
-    github: {
-      ...baseSMF,
-      label: 'Github',
-      placeholder: 'Enter your Github @',
-    },
-    website: {
-      ...baseSMF,
-      label: 'Website / Portfolio',
-      placeholder: 'Enter your Website / Portfolio URL',
-      type: 'url',
-    },
+    ...Object.fromEntries(
+      smItems.map((item) => [
+        item.key,
+        {
+          ...baseSMF,
+          label: item.key,
+          placeholder: `Enter your ${item.key} @`,
+          smLink: item.href,
+          Icon: item.Icon,
+        },
+      ]),
+    ),
   },
 };

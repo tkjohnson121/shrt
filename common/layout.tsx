@@ -51,9 +51,13 @@ export const Layout = ({
         </AnimatePresence>
       )}
 
-      <footer>
-        <hr />
-        <span>I'm here to stay (Footer)</span>
+      <footer css={{ margin: '2rem auto', textAlign: 'center' }}>
+        <span>
+          Built with 💜 by{' '}
+          <a href="https://gvempire.dev" target="_new">
+            GVEMPIRE
+          </a>{' '}
+        </span>
       </footer>
     </>
   );
