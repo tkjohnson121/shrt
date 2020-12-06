@@ -1,4 +1,5 @@
 import { css } from '@emotion/core';
+import { ShrtForm } from 'common';
 import { Theme } from 'features/theme';
 import React from 'react';
 
@@ -13,7 +14,7 @@ const styles = {
       font-weight: ${theme.fontWeights['light']};
       font-size: ${theme.fontSizes['2xl']};
       max-width: 50ch;
-      margin: 0 auto ${theme.space[8]};
+      margin: 0 auto;
     }
   `,
 };
@@ -27,6 +28,8 @@ export default function LandingPage() {
           Personal Landing Page (PLP) and URL-Shortner that allows you to
           connect faster and network more efficiently.
         </p>
+
+        <ShrtForm />
       </section>
     </>
   );
