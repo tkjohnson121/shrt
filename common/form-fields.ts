@@ -145,8 +145,8 @@ export const formFields: { [key: string]: FormFields } = {
   },
 
   shrtFields: {
-    title: {
-      label: 'Title',
+    id: {
+      label: 'ID',
       type: 'text',
       width: 'small',
       placeholder: "What's this shrt called?",

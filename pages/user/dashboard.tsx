@@ -1,151 +1,29 @@
-import { AuthForm, ErrorWrapper, Loading, useUserShrtListener } from 'common';
+import {
+  AuthForm,
+  ErrorWrapper,
+  Loading,
+  ShrtCard,
+  useUserShrtListener,
+} from 'common';
 import { ShrtForm } from 'common/shrt-form';
 import { useAuth } from 'features/authentication';
-import { ShrtSwal } from 'features/swal';
-import { UserService } from 'features/user';
-import React, { useState } from 'react';
-import { MdDelete } from 'react-icons/md';
+import React from 'react';
 import {
-  addDelay,
   AnimatePresence,
   ComponentStyles,
   css,
-  easing,
   fadeInDown,
   listAnimation,
-  listChildAnimation,
   motion,
 } from 'theme';
-import { FetchState, MotionTypes, ShrtDocument } from 'types';
 
 const styles: ComponentStyles = {
   listWrapper: () => css`
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    justify-content: space-evenly;
+    justify-content: space-around;
   `,
-  shrtCard: (theme) => css`
-    position: relative;
-    flex: 0 1 10%;
-    border: 2px solid ${theme.colors['secondary']};
-    border-radius: ${theme.radii['md']};
-    padding: ${theme.space[6]};
-    margin-bottom: ${theme.space[12]};
-
-    & > * {
-      line-height: ${theme.lineHeights['taller']};
-    }
-
-    a {
-      position: relative;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: start;
-      padding: ${theme.space[1]} ${theme.space[2]};
-      max-width: ${theme.space[64]};
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: '...';
-
-      &::after {
-        content: '';
-        transition: left 150ms cubic-bezier(${easing.join(',')});
-        position: absolute;
-        bottom: 0;
-        left: -100%;
-        width: 100%;
-        height: 2px;
-        background-color: ${theme.colors['primary']};
-      }
-
-      &.active::after,
-      &:hover::after {
-        left: 0;
-      }
-    }
-
-    button {
-      margin-left: 90%;
-      background-color: ${theme.colors['error']};
-      color: ${theme.colors.whiteAlpha[900]};
-      font-weight: ${theme.fontWeights['semibold']};
-      border-radius: ${theme.radii['md']};
-      font-size: ${theme.fontSizes['xl']};
-    }
-  `,
-};
-
-export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
-  as = 'li',
-  shrt,
-}) => {
-  const authState = useAuth();
-  const uid = authState.data?.currentUser?.uid;
-
-  const [state, setState] = useState<FetchState>({
-    loading: shrt.shrt_url ? true : false,
-  });
-
-  const MotionComp = motion[as];
-
-  const onShrtArchive = async (shrt: ShrtDocument) => {
-    try {
-      setState({ loading: true });
-
-      if (uid === shrt.created_by && shrt.shrt_id) {
-        await UserService.archiveShrt(uid, shrt.shrt_id);
-      } else {
-        throw new Error('ShrtId not found.');
-      }
-
-      setState({ loading: false });
-      ShrtSwal.fire({ icon: 'success', title: 'Shrt Archived!' });
-    } catch (error) {
-      setState({ loading: false, error });
-    }
-  };
-
-  React.useEffect(() => {
-    setState((prev) => ({ ...prev, loading: shrt.shrt_url ? false : true }));
-  }, [shrt.shrt_url]);
-
-  if (state.loading) return <Loading />;
-  if (state.error) return <ErrorWrapper error={state.error} />;
-
-  return (
-    <MotionComp
-      key={shrt.shrt_url}
-      css={styles.shrtCard}
-      variants={addDelay(listChildAnimation, 0.5)}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-    >
-      <h3>{shrt.title}</h3>
-      <pre>Clicks: {shrt.clicks}</pre>
-
-      <pre>
-        URL:{' '}
-        <a href={shrt.url || ''} target="_new" rel="noreferrer noopener">
-          {shrt.url}
-        </a>
-      </pre>
-
-      <pre>
-        SHRT URL:{' '}
-        <a href={shrt.shrt_url || ''} target="_new" rel="noreferrer noopener">
-          {shrt.shrt_url}
-        </a>
-      </pre>
-
-      <pre>Created on: {new Date(shrt.created_on).toLocaleDateString()}</pre>
-
-      <button onClick={() => onShrtArchive(shrt)}>
-        <MdDelete />
-      </button>
-    </MotionComp>
-  );
 };
 
 export default function ShrtDashboard() {

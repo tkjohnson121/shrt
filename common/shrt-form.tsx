@@ -1,5 +1,4 @@
 import { useAuth } from 'features/authentication';
-import { ShrtSwal } from 'features/swal';
 import { UserService } from 'features/user';
 import React from 'react';
 import Form, { OnFormSubmit } from './form';
@@ -8,26 +7,17 @@ import { formFields } from './form-fields';
 export function ShrtForm() {
   const authState = useAuth();
 
-  const onShrtSubmit: OnFormSubmit = async ({ url, title }, setStatus) => {
+  const onShrtSubmit: OnFormSubmit = async ({ url, id }, setStatus) => {
     try {
       setStatus({ message: 'adding shrt', type: 'info' });
 
       if (!authState.data?.currentUser) {
         throw new Error('Please login to Shrten a link');
       }
-
-      if (!!title && typeof title !== 'string') {
-        throw new Error('Invalid Title');
-      }
-
-      if (typeof url !== 'string' || url.length < 1) {
-        throw new Error('Invalid URL');
-      }
-
-      await UserService.addShrt(authState.data.currentUser.uid, { url, title });
+      await UserService.addShrt(authState.data.currentUser.uid, { url, id });
 
       setStatus(null);
-      ShrtSwal.fire({ icon: 'success', title: 'Update Complete!' });
+      // ShrtSwal.fire({ icon: 'success', title: 'Shrt Added!' });
     } catch (error) {
       console.error(error);
       setStatus({ message: error.message, type: 'error' });
