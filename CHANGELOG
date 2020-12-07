@@ -1,9 +1,14 @@
-* f011bd1 (HEAD -> staging, tag: v0.3.7, origin/main, main) v0.3.7
+* c510a59 (HEAD -> staging) add SEO and marketing images
+* c6fb2ba (origin/staging, origin/main, main) change header bg styles'
+* 58a656f remove form
+* 97a9c3f (tag: v0.3.8) v0.3.8
+* 109f707 update changelog
+* f011bd1 (tag: v0.3.7) v0.3.7
 * d4ee672 update changelog
 *   7ff8a1c merge staging
 |\  
 | * ae8f102 add
-| * 3b05cd9 (tag: v0.3.6, origin/staging) v0.3.6
+| * 3b05cd9 (tag: v0.3.6) v0.3.6
 | * 9966aac update changelog
 | * 62f60a6 fix: archiving plp links
 | * 63084f0 fix: remove username from plp
