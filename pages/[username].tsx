@@ -1,4 +1,4 @@
-import { ErrorWrapper, Loading, PLPCard, smItems } from 'common';
+import { ErrorWrapper, Loading, PLPCard, PLPForm, smItems } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -364,19 +364,7 @@ export default function UserProfile({
       </header>
 
       <div css={{ position: 'relative' }}>
-        {isOwnProfile && (
-          <Link href="/user/links">
-            <motion.a
-              css={styles.edit}
-              variants={addDelay(fadeInDown, 2)}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              Edit Links
-            </motion.a>
-          </Link>
-        )}
+        {isOwnProfile && <PLPForm />}
 
         <motion.nav
           css={styles.plpLinks}

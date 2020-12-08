@@ -21,8 +21,6 @@ export const getDefaultValues = (
   const formKeys = Object.keys(formFields);
   const fieldsWithDefaultValues = { ...formFields };
 
-  console.log(formFields);
-
   formKeys.forEach((key) => {
     fieldsWithDefaultValues[key].defaultValue =
       key in userData ? userData[key as keyof UserDocument] : '';
@@ -99,6 +97,7 @@ export default function UserSettings() {
 
   if (state.loading || (currentUser?.uid && userDocumentLoading))
     return <Loading />;
+
   if (state.error || userDocumentError) {
     return <ErrorWrapper error={state.error || userDocumentError} />;
   }
@@ -149,7 +148,7 @@ export default function UserSettings() {
       <section css={{ maxWidth: '50rem', margin: '0 auto' }}>
         <h1 className="display">User Settings</h1>
         <button onClick={onLogout}>Logout</button>
-        <p>User Document not Available</p>
+        <Loading>Loading User Data</Loading>
       </section>
     )
   ) : (
