@@ -1,6 +1,6 @@
 {
   "name": "@gvempire/shrt",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Shrt is a URL-Shortner and Personal Landing Page (PLP) that allows marketers, influencers, and regular people to connect faster and more efficiently.",
   "scripts": {
     "start": "next",
