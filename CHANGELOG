@@ -1,5 +1,11 @@
-* c510a59 (HEAD -> staging) add SEO and marketing images
-* c6fb2ba (origin/staging, origin/main, main) change header bg styles'
+* d7521bc (HEAD -> staging) move plp-form to plp
+* 9d4b816 renamed smIcons to be uppercase
+| * e13e0ce (tag: v0.3.9, origin/main, main) v0.3.9
+| * 5f883c6 update changelog
+|/  
+* 490adff (origin/staging) update changelog
+* c510a59 add SEO and marketing images
+* c6fb2ba change header bg styles'
 * 58a656f remove form
 * 97a9c3f (tag: v0.3.8) v0.3.8
 * 109f707 update changelog
