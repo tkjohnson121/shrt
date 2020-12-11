@@ -1,15 +1,20 @@
-* 9276080 (HEAD -> staging) feat: open shrts to public
-* e11a830 (tag: v0.4.1, origin/staging) v0.4.1
-* c9f1f60 update changelog
-* 784d590 (tag: v0.4.0) v0.4.0
-* 8622dce (tag: v1.0.0) v1.0.0
-* cd7926b v0.3.9
-* f1817d0 update changelog
-* d7521bc move plp-form to plp
-* 9d4b816 renamed smIcons to be uppercase
-| * e13e0ce (tag: v0.3.9, origin/main, main) v0.3.9
-| * 5f883c6 update changelog
-|/
+*   233f4a7 (HEAD -> main) Merge branch 'staging' into main
+|\  
+| * b75966c (origin/staging, staging) --not-edit
+| * 7bab774 (tag: v0.4.2) v0.4.2
+| * 6516202 update changelog
+| * 9276080 feat: open shrts to public
+| * e11a830 (tag: v0.4.1) v0.4.1
+| * c9f1f60 update changelog
+| * 784d590 (tag: v0.4.0) v0.4.0
+| * 8622dce (tag: v1.0.0) v1.0.0
+| * cd7926b v0.3.9
+| * f1817d0 update changelog
+| * d7521bc move plp-form to plp
+| * 9d4b816 renamed smIcons to be uppercase
+* | e13e0ce (tag: v0.3.9, origin/main) v0.3.9
+* | 5f883c6 update changelog
+|/  
 * 490adff update changelog
 * c510a59 add SEO and marketing images
 * c6fb2ba change header bg styles'
@@ -19,7 +24,7 @@
 * f011bd1 (tag: v0.3.7) v0.3.7
 * d4ee672 update changelog
 *   7ff8a1c merge staging
-|\
+|\  
 | * ae8f102 add
 | * 3b05cd9 (tag: v0.3.6) v0.3.6
 | * 9966aac update changelog
@@ -36,12 +41,12 @@
 | * 9a2946f update changelog
 | * 50d1e83 add title to shrts
 | *   ac3fab5 merge latest changes from 0.2.2
-| |\
+| |\  
 | * | 7bc652a staging changes
 | * | 084b1ae add marketing image
 * | | 4b37d59 Staging - v0.3.5 (#10)
-| |/
-|/|
+| |/  
+|/|   
 * | 238a6bd (tag: v0.3.2) v0.3.2
 * | 5674706 update changelog
 * | f2044f5 update changelog
@@ -50,7 +55,7 @@
 * | d756302 update changelog
 * | a3fc5d1 (tag: v0.3.0) v0.3.0
 * | 1f61a78 update changelog
-|/
+|/  
 * 92a197a (tag: v0.2.2) v0.2.2
 * f08c476 update changelog
 * 3e561c7 (tag: v0.2.1) v0.2.1
@@ -78,12 +83,12 @@
 * 09218f8 update changelog
 * 8850e77 update changelog
 *   c56a409 Merge branch 'main' of https://github.com/tkjohnson121/shrt into main
-|\
+|\  
 | * d2abb84 Update issue templates
 * | f81d2ec (tag: v0.1.0) v0.1.0
 * | 225b6fd update changelog
 * | f844a00 add second firebase project
-|/
+|/  
 * 116df88 (tag: v0.0.18) v0.0.18
 * d6fd005 update changelog
 * c737e6f (tag: v0.0.17) v0.0.17
