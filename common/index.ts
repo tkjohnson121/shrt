@@ -6,6 +6,7 @@ export * from './header';
 export * from './layout';
 export * from './loading';
 export * from './plp-card';
+export * from './plp-form';
 export * from './shrt-card';
 export * from './shrt-form';
 export * from './use-user-document-listener';

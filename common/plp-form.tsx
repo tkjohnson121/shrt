@@ -12,7 +12,7 @@ import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState, LinkConfig } from 'types';
 
-export default function PLPLinks() {
+export function PLPForm() {
   const authState = useAuth();
   const currentUser = authState.data?.currentUser;
 
@@ -45,9 +45,7 @@ export default function PLPLinks() {
   }
 
   return currentUser ? (
-    <section css={{ maxWidth: '50rem', margin: '0 auto' }}>
-      <h1 className="display">Personal Landing Page</h1>
-
+    <section css={{ margin: '2rem auto 1rem' }}>
       <Form
         title={'Add a link to your PLP'}
         key="plp"
@@ -60,3 +58,5 @@ export default function PLPLinks() {
     <AuthForm />
   );
 }
+
+export default PLPForm;

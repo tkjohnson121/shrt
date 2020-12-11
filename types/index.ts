@@ -24,37 +24,40 @@ export type ShrtUser =
 
 export interface UserDocument {
   /** Admin Data */
-  uid?: string;
+  uid?: string; // inserted client-side, references document id in `users` collection
   created_on: number;
   created_by: string;
-  updated_on: number;
-  updated_by: string;
+  updated_on?: number;
+  updated_by?: string;
 
   /** User Profile */
   username: string;
-  display_name: string;
-  title: string;
-  company: string;
-  bio: string;
-  date_of_birth: string;
+  display_name?: string;
+  title?: string;
+  company?: string;
+  bio?: string;
+  date_of_birth?: string;
 
   /** User Contact */
   email: string;
-  phone: string;
+  phone?: string;
 
   /** User Location */
-  state: string;
-  city: string;
-  street: string;
+  state?: string;
+  city?: string;
+  street?: string;
 
   /** Social Media */
-  twitter: string;
-  twitch: string;
-  youtube: string;
-  instagram: string;
-  linkedin: string;
-  github: string;
-  website: string;
+  Twitter?: string;
+  Twitch?: string;
+  Youtube?: string;
+  Instagram?: string;
+  LinkedIn?: string;
+  Github?: string;
+  Gitlab?: string;
+  DEV?: string;
+  Pinterest?: string;
+  Soundcloud?: string;
 }
 
 export interface ShrtDocument {

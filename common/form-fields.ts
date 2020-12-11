@@ -13,29 +13,29 @@ import {
 import { FormFields } from './form';
 
 export const smItems = [
-  { key: 'twitter', href: 'https://twitter.com/', Icon: FaTwitter },
-  { key: 'twitch', href: 'https://twitch.tv/', Icon: FaTwitch },
-  { key: 'youtube', href: 'https://youtube.com/channel/', Icon: FaYoutube },
+  { key: 'Twitter', href: 'https://twitter.com/', Icon: FaTwitter },
+  { key: 'Twitch', href: 'https://twitch.tv/', Icon: FaTwitch },
+  { key: 'Youtube', href: 'https://youtube.com/channel/', Icon: FaYoutube },
   {
-    key: 'instagram',
+    key: 'Instagram',
     href: 'https://instagram.com/',
     Icon: FaInstagram,
   },
   {
-    key: 'linkedin',
+    key: 'LinkedIn',
     href: 'https://linkedin.com/in/',
     Icon: FaLinkedin,
   },
-  { key: 'github', href: 'https://github.com/', Icon: FaGithub },
-  { key: 'gitlab', href: 'https://gitlab.com/', Icon: FaGitlab },
+  { key: 'Github', href: 'https://github.com/', Icon: FaGithub },
+  { key: 'Gitlab', href: 'https://gitlab.com/', Icon: FaGitlab },
   { key: 'DEV', href: 'https://dev.to/', Icon: FaDev },
   {
-    key: 'pinterest',
+    key: 'Pinterest',
     href: (username?: string | number) =>
       'https://pinterest.com/' + username + '/_created',
     Icon: FaPinterest,
   },
-  { key: 'soundcloud', href: 'https://soundcloud.com/', Icon: FaSoundcloud },
+  { key: 'Soundcloud', href: 'https://soundcloud.com/', Icon: FaSoundcloud },
 ];
 
 const baseSMF = {

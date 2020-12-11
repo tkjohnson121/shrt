@@ -221,7 +221,7 @@ export type OnFormSubmit<T = {}> = (
   setStatus: React.Dispatch<
     React.SetStateAction<
       | {
-          message: string;
+          message: string | React.ReactNode;
           type: string;
         }
       | null
@@ -253,7 +253,7 @@ export const Form: React.FC<FormProps> = (props) => {
   const { register, handleSubmit, errors, formState } = useForm();
 
   const [status, setStatus] = React.useState<{
-    message: string;
+    message: string | React.ReactNode;
     type: string;
   } | null>();
   const [isSubmitting, setIsSubmitting] = React.useState(false);

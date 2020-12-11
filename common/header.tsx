@@ -72,7 +72,7 @@ const styles: ComponentStyles = {
 
 const isLinkActive = (href: string, router: NextRouter, username?: string) =>
   router?.pathname === href.toLowerCase() ||
-  router?.pathname.startsWith(`/${username}`)
+  router?.pathname.startsWith(`/user/${username}`)
     ? 'active'
     : 'inactive';
 
@@ -115,11 +115,11 @@ export const Avatar: React.FC<{
   }
 
   return (
-    <Link href={username ? `/${username}` : '/user/settings'}>
+    <Link href={username ? `/user/${username}` : '/user/settings'}>
       <motion.a
         className={
           isLinkActive('/user/settings', router) ||
-          isLinkActive(`/${username}`, router)
+          isLinkActive(`/user/${username}`, router)
         }
         css={css}
         variants={addDelay(fadeInUp, 0.7)}
