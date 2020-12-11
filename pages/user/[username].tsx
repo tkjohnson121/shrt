@@ -1,7 +1,7 @@
 import { ErrorWrapper, Loading, PLPCard, PLPForm, smItems } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -393,46 +393,9 @@ export default function UserProfile({
   );
 }
 
-export async function redirect(req: NextApiRequest, res: NextApiResponse) {
-  const { username, shrt_query } = req.query;
-  const query = username || shrt_query;
-  const shrt_id = typeof query === 'string' ? query : query[0];
-
-  if (typeof shrt_id === 'undefined') {
-    throw new Error('Shrt ID is required');
-  }
-
-  // - lookup shrt in shrts collection
-  const shrt = await UserService.getShrtById(shrt_id);
-
-  if (typeof shrt.url === 'undefined') {
-    throw new Error('Shrt not Found');
-  }
-
-  // - add view and related data
-  if (typeof window === 'undefined' && !!shrt) {
-    await require('../features/user').UserService.updateShrtAfterView(shrt);
-  }
-
-  // redirect
-  if (typeof window === 'undefined' && !!shrt.url) {
-    res?.writeHead(301, {
-      Location: shrt.url,
-    });
-    res?.end();
-
-    return { props: { url: shrt.url } };
-  } else {
-    window.location.replace(shrt.url);
-  }
-}
-
 // server-side function calls firestore to match the username and
 //  grab data corresponding to the username
-export async function getServerSideProps(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export async function getServerSideProps(req: NextApiRequest) {
   try {
     const { username } = req.query;
     let user: UserDocument;
@@ -444,16 +407,9 @@ export async function getServerSideProps(
         ? await UserService.getUserDocumentByUsername(username)
         : await UserService.getUserDocumentByUsername(username[0]);
 
-    if (typeof user === 'undefined') {
-      return await redirect(req, res);
-    }
-
     const plpLinks = await UserService.getPLPLinksByUser(user.created_by);
     return { props: { user: { ...user, avatar, background }, plpLinks } };
   } catch (error) {
-    if (/PERMISSION_DENIED/.test(error.message)) {
-      return await redirect(req, res);
-    }
     return {
       props: {
         error: {
