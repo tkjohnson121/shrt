@@ -204,7 +204,9 @@ class User {
       }, onSnapshotError);
   }
 
-  async addShrt(uid: string, config: { url: string; id?: string }) {
+  async addShrt(url: string, id?: string) {
+    const uid = FirebaseClient.auth.currentUser?.uid || 'unathenticated';
+
     const appUrl = /staging/gi.test(process.env.APP_NAME || '')
       ? 'https://staging.shrtme.app/'
       : process.env.NODE_ENV === 'production'
@@ -214,41 +216,45 @@ class User {
     try {
       FirebaseClient.analytics?.logEvent('add_shrt', {
         uid,
-        config,
+        url,
+        id,
       });
 
       if (
-        !!config.id &&
-        (typeof config.id !== 'string' ||
-          !/^([a-zA-Z0-9_-]){2,30}$/.test(config.id))
+        !!id &&
+        (typeof id !== 'string' || !/^([a-zA-Z0-9_-]){2,30}$/.test(id))
       ) {
         throw new Error('Invalid ID');
       }
 
       if (
-        typeof config.url !== 'string' ||
+        typeof url !== 'string' ||
         !/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/.test(
-          config.url,
+          url,
         )
       ) {
         throw new Error('Invalid URL');
       }
 
       const shrt_id =
-        config.id?.replace(' ', '').trim() || this.getURLSafeRandomString();
+        id?.replace(' ', '').trim() || this.getURLSafeRandomString();
 
-      return await FirebaseClient.db
+      const newShrtDocument = {
+        created_by: uid,
+        created_on: Date.now(),
+        isArchived: false,
+        shrt_id: shrt_id,
+        shrt_url: appUrl + shrt_id,
+        url: url,
+        clicks: 0,
+      };
+
+      await FirebaseClient.db
         .collection('shrts')
         .doc(shrt_id)
-        .set({
-          created_by: uid,
-          created_on: Date.now(),
-          isArchived: false,
-          shrt_id: shrt_id,
-          shrt_url: appUrl + shrt_id,
-          url: config.url,
-          clicks: 0,
-        });
+        .set(newShrtDocument);
+
+      return newShrtDocument;
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
       throw new Error(error);

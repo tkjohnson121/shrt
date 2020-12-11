@@ -451,6 +451,9 @@ export async function getServerSideProps(
     const plpLinks = await UserService.getPLPLinksByUser(user.created_by);
     return { props: { user: { ...user, avatar, background }, plpLinks } };
   } catch (error) {
+    if (/PERMISSION_DENIED/.test(error.message)) {
+      return await redirect(req, res);
+    }
     return {
       props: {
         error: {

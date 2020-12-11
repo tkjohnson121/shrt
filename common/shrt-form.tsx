@@ -1,23 +1,29 @@
-import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
 import React from 'react';
 import Form, { OnFormSubmit } from './form';
 import { formFields } from './form-fields';
 
 export function ShrtForm({ withId }: { withId?: boolean }) {
-  const authState = useAuth();
-
   const onShrtSubmit: OnFormSubmit = async ({ url, id }, setStatus) => {
     try {
       setStatus({ message: 'adding shrt', type: 'info' });
 
-      if (!authState.data?.currentUser) {
-        throw new Error('Please login to Shrten a link');
-      }
-      await UserService.addShrt(authState.data.currentUser.uid, { url, id });
+      const { shrt_url, shrt_id } = await UserService.addShrt(url, id);
 
-      setStatus(null);
-      // ShrtSwal.fire({ icon: 'success', title: 'Shrt Added!' });
+      // copy to clipboard
+      // https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard
+      navigator?.clipboard.writeText(shrt_url);
+      setStatus({
+        type: 'success',
+        message: (
+          <p>
+            Copied Shrt:{' '}
+            <a href={shrt_url} target="_new">
+              {shrt_id}
+            </a>
+          </p>
+        ),
+      });
     } catch (error) {
       console.error(error);
       setStatus({ message: error.message, type: 'error' });
