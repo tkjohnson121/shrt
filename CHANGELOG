@@ -1,6 +1,9 @@
-* 784d590 (HEAD -> staging, tag: v0.4.0) v0.4.0
+* 9276080 (HEAD -> staging) feat: open shrts to public
+* e11a830 (tag: v0.4.1, origin/staging) v0.4.1
+* c9f1f60 update changelog
+* 784d590 (tag: v0.4.0) v0.4.0
 * 8622dce (tag: v1.0.0) v1.0.0
-* cd7926b (origin/staging) v0.3.9
+* cd7926b v0.3.9
 * f1817d0 update changelog
 * d7521bc move plp-form to plp
 * 9d4b816 renamed smIcons to be uppercase
