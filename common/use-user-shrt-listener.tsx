@@ -24,6 +24,8 @@ export const useUserShrtListener = (uid?: string) => {
         (documents) => setState({ loading: false, data: { shrts: documents } }),
         (error) => onUserShrtError(error),
       );
+    } else {
+      setState({ loading: false, error: new Error('Please Login.') });
     }
 
     return () => {

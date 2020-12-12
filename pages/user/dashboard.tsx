@@ -31,7 +31,9 @@ export default function ShrtDashboard() {
   const { state } = useUserShrtListener();
 
   if (state.loading) return <Loading />;
-  if (state.error) return <ErrorWrapper error={state.error} />;
+
+  if (/login/gi.test(state.error?.message)) return <AuthForm />;
+  else if (state.error) return <ErrorWrapper error={state.error} />;
 
   return authState.data?.isAuthenticated ? (
     <>
