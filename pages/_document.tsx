@@ -30,16 +30,9 @@ export default class MyDocument extends Document {
             content="default"
           />
           <meta name="apple-mobile-web-app-title" content="Shrt" />
-          <meta
-            name="description"
-            content="URL Shortener and Personal Landing Page by GVEMPIRE"
-          />
+          <meta name="description" content="Your Main Link, Forever" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta
-            name="msapplication-config"
-            content="/icons/browserconfig.xml"
-          />
           <meta name="msapplication-TileColor" content="#2B5797" />
           <meta name="msapplication-tap-highlight" content="no" />
           <meta name="theme-color" content="#000000" />
@@ -47,27 +40,18 @@ export default class MyDocument extends Document {
           <meta name="twitter:card" content="summary" />
           <meta name="twitter:url" content="https://shrtme.app" />
           <meta name="twitter:title" content="Shrt" />
-          <meta
-            name="twitter:description"
-            content="URL Shortener and Personal Landing Page by GVEMPIRE"
-          />
+          <meta name="twitter:description" content="Your Main Link, Forever" />
           <meta
             name="twitter:image"
-            content="https://shrtme.app/icons/android-chrome-192x192.png"
+            content="/icons/android-chrome-192x192.png"
           />
           <meta name="twitter:creator" content="@tkjohnson121" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Shrt" />
-          <meta
-            property="og:description"
-            content="URL Shortener and Personal Landing Page by GVEMPIRE"
-          />
+          <meta property="og:description" content="Your Main Link, Forever" />
           <meta property="og:site_name" content="Shrt" />
           <meta property="og:url" content="https://shrtme.app" />
-          <meta
-            property="og:image"
-            content="https://shrtme.app/icons/apple-touch-icon.png"
-          />
+          <meta property="og:image" content="/icons/apple-touch-icon.png" />
 
           <link
             rel="apple-touch-icon"

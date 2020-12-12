@@ -10,7 +10,7 @@ import Header from './header';
 
 export const Layout = ({
   children,
-  title = 'Shrt | A GVEMPIRE Product',
+  title = 'Shrt, Your Main Link',
 }: {
   children?: ReactNode;
   title?: string;

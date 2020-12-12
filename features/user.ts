@@ -71,7 +71,7 @@ class User {
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
 
-      return '/gvempire-logo.png';
+      return '/logo.svg';
     }
   }
   async getUserBackgroundById(uid: string) {
@@ -85,7 +85,7 @@ class User {
     } catch (error) {
       FirebaseClient.analytics?.logEvent('exception', error);
 
-      return '/gvempire-logo.png';
+      return '/logo.svg';
     }
   }
 

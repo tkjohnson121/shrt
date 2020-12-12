@@ -222,7 +222,7 @@ export default function UserProfile({
           exit="exit"
         >
           <img
-            src={imgState.data?.avatar || '/gvempire-logo.png'}
+            src={imgState.data?.avatar || '/logo.svg'}
             alt={(display_name || username) + 'from SHRT'}
           />
         </motion.div>
