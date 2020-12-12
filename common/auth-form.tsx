@@ -80,7 +80,12 @@ export function AuthForm() {
   const onAuthSubmit: OnFormSubmit = async ({ email, password }, setStatus) => {
     try {
       setStatus({ message: 'authenticating...', type: 'info' });
-      await AuthService.signIn(email, password);
+
+      if (state.data?.isNewUser) {
+        await AuthService.signUp(email, password);
+      } else {
+        await AuthService.signIn(email, password);
+      }
 
       setStatus(null);
       ShrtSwal.fire({ icon: 'success', titleText: 'Success!' });
@@ -90,7 +95,25 @@ export function AuthForm() {
     }
   };
 
-  return (
+  return state.data?.isNewUser ? (
+    <>
+      <header css={styles.header} key="header">
+        <h1 css={styles.title} className="display">
+          Welcome to SHRT!
+        </h1>
+        <button onClick={toggleIsNewUser} css={styles.button}>
+          Need to sign-in?
+        </button>
+      </header>
+
+      <Form
+        key="shrt"
+        onFormSubmit={onAuthSubmit}
+        fields={formFields.authFields}
+        buttonText="Sign up"
+      />
+    </>
+  ) : (
     <>
       <header css={styles.header} key="header">
         <h1 css={styles.title} className="display">
