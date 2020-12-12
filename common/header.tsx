@@ -16,7 +16,6 @@ import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { FetchState } from 'types';
 import ErrorWrapper from './error-wrapper';
-import Loading from './loading';
 import { useUserDocumentListener } from './use-user-document-listener';
 
 const styles: ComponentStyles = {
@@ -77,38 +76,40 @@ const isLinkActive = (href: string, router: NextRouter, username?: string) =>
     : 'inactive';
 
 export const Avatar: React.FC<{
-  uid?: string;
   username?: string;
   css?: ComponentStyles;
-}> = ({ username, uid }) => {
+}> = ({ username }) => {
   const router = useRouter();
 
   const { data } = useAuth();
 
-  const [state, setState] = React.useState<FetchState<{ avatar?: string }>>({
-    loading: false,
-    data: { avatar: '/gvempire-logo.png' },
+  const [state, setState] = React.useState<FetchState<{ avatar: string }>>({
+    loading: true,
+    data: { avatar: '/logo.svg' },
   });
 
   React.useEffect(() => {
     const getAvatar = async () => {
-      if (uid && !state.data?.avatar) {
-        const avatar = await UserService.getUserFileByPath(
-          uid,
-          'profile/avatar',
-        );
+      if (data?.currentUser && state.loading === true) {
+        try {
+          const avatar = await UserService.getUserFileByPath(
+            data.currentUser.uid,
+            'profile/avatar',
+          );
 
-        setState(() => ({
-          loading: false,
-          data: { avatar },
-        }));
+          setState((prev) => ({
+            ...prev,
+            loading: false,
+            data: { avatar },
+          }));
+        } catch (error) {
+          setState({ loading: false, error });
+        }
       }
     };
 
     getAvatar();
-  }, [data?.isAuthenticated, data?.currentUser]);
-
-  if (state.loading) return <Loading />;
+  }, [data?.currentUser]);
 
   if (state.error) {
     return <ErrorWrapper error={state.error} />;
@@ -128,16 +129,12 @@ export const Avatar: React.FC<{
         exit="exit"
         key="profile"
       >
-        {username && state.data?.avatar ? (
-          <img
-            src={'/gvempire-logo.png'}
-            alt={`${username} profile picture`}
-            height="50px"
-            width="50px"
-          />
-        ) : (
-          'Profile'
-        )}
+        <img
+          src={state.data?.avatar}
+          alt={`${username} user avatar`}
+          height="50px"
+          width="50px"
+        />
       </motion.a>
     </Link>
   );
@@ -172,7 +169,7 @@ export const Header: React.FC<{
           key="home"
         >
           <Image
-            src={'/gvempire-logo.png'}
+            src={'/logo.svg'}
             alt="GVEMPIRE.dev logo"
             height="50px"
             width="50px"
@@ -206,7 +203,7 @@ export const Header: React.FC<{
           </Link>
         ))}
 
-        <Avatar username={userDocument?.username} uid={currentUser?.uid} />
+        <Avatar username={userDocument?.username} />
       </motion.nav>
     </header>
   );
