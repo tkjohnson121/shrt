@@ -1,5 +1,11 @@
-* 599eb24 (HEAD -> staging) fix: remove legacy code from shrt_id
-* 46b17da (tag: v0.5.1, origin/staging, origin/main, main) v0.5.1
+* dda796c (HEAD -> staging) add instructions to settings and username
+* 3059c5a update landing page
+* 6e388bf sike
+* dd44074 fix: close sign-ups for beta
+* 5699b95 (tag: v0.5.2, origin/staging, origin/main, main) v0.5.2
+* e19136e update changelog
+* 599eb24 fix: remove legacy code from shrt_id
+* 46b17da (tag: v0.5.1) v0.5.1
 * 78284bc update changelog
 *   feb808d Merge branch 'main' of https://github.com/tkjohnson121/shrt into staging
 |\  
