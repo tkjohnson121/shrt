@@ -105,11 +105,32 @@ export default function UserSettings() {
   return currentUser ? (
     userDocument ? (
       <section css={{ maxWidth: '50rem', margin: '0 auto' }}>
-        <h1 className="display">User Settings</h1>
-        <button onClick={onLogout}>Logout</button>
+        <header>
+          <button onClick={onLogout}>Logout</button>
+          <h1 className="display">User Settings</h1>
+          <p>Your PLP info is split into 4 different sections.</p>
+          <ul css={{ listStyleType: 'circle', marginLeft: '2rem' }}>
+            <li>
+              <p>Media</p>
+            </li>
+            <li>
+              <p>Profile</p>
+            </li>
+            <li>
+              <p>Social Media</p>
+            </li>
+            <li>
+              <p>Contact</p>
+            </li>
+          </ul>
+          <p css={{ marginTop: '1rem' }}>
+            P.S. Make sure to save after editing each section.
+          </p>
+        </header>
 
         <Form
           title={'Media'}
+          subtitle={"Add media to your PLP so people know that it's you."}
           key="media"
           onFormSubmit={onFormSubmit}
           fields={formFields.mediaFormFields}
@@ -128,19 +149,22 @@ export default function UserSettings() {
         />
 
         <Form
-          title={'User Profile Cont.'}
-          subtitle={'More miscelleaneous setting to display on your PLP'}
-          key="profile-cont"
+          title={'Social Media'}
+          subtitle={
+            'We currently support the following social media fields. Enter your username or @ and the icon will appear on your PLP.'
+          }
+          key="social-media"
           onFormSubmit={onFormSubmit}
-          fields={getDefaultValues(userDocument, formFields.profileContFields)}
+          fields={getDefaultValues(userDocument, formFields.socialMediaFields)}
           buttonText="Save"
         />
 
         <Form
-          title={'Social Media'}
-          key="social-media"
+          title={'Contact Information'}
+          subtitle={'This information will not be displayed on your PLP.'}
+          key="profile-cont"
           onFormSubmit={onFormSubmit}
-          fields={getDefaultValues(userDocument, formFields.socialMediaFields)}
+          fields={getDefaultValues(userDocument, formFields.profileContFields)}
           buttonText="Save"
         />
       </section>

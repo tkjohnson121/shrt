@@ -5,7 +5,7 @@ import { NextApiRequest } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { FaCalendar, FaPhone } from 'react-icons/fa';
+import { FaPhone } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import {
   addDelay,
@@ -24,7 +24,6 @@ import { FetchState, PLPLinkDocument, UserDocument } from 'types';
 const contactItems = [
   { key: 'email', href: 'mailto:', Icon: MdEmail },
   { key: 'phone', href: 'telto:', Icon: FaPhone },
-  { key: 'date_of_birth', href: null, Icon: FaCalendar },
 ];
 
 const styles: ComponentStyles = {
@@ -256,15 +255,6 @@ export default function UserProfile({
                   ? ' in ' + state?.slice(0, 2)
                   : null)}
           </motion.p>
-        )}
-
-        {(city || state) && (
-          <motion.p
-            variants={addDelay(fadeInUp, 0.5)}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          ></motion.p>
         )}
 
         {bio && (
