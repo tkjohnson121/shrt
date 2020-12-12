@@ -1,13 +1,24 @@
-* 9276080 (HEAD -> staging) feat: open shrts to public
-* e11a830 (tag: v0.4.1, origin/staging) v0.4.1
-* c9f1f60 update changelog
-* 784d590 (tag: v0.4.0) v0.4.0
-* 8622dce (tag: v1.0.0) v1.0.0
-* cd7926b v0.3.9
-* f1817d0 update changelog
-* d7521bc move plp-form to plp
-* 9d4b816 renamed smIcons to be uppercase
-| * e13e0ce (tag: v0.3.9, origin/main, main) v0.3.9
+* d9c08b3 (HEAD -> staging) chore: add icons, SEO titles and descriptions, logos
+* 506b49b refactor header to include user avatar
+| * c0c2434 (tag: v0.5.0, origin/main, main) v0.5.0
+| * 6ca70e9 update changelog
+| *   233f4a7 Merge branch 'staging' into main
+| |\  
+| |/  
+|/|   
+* | b75966c (origin/staging) --not-edit
+* | 7bab774 (tag: v0.4.2) v0.4.2
+* | 6516202 update changelog
+* | 9276080 feat: open shrts to public
+* | e11a830 (tag: v0.4.1) v0.4.1
+* | c9f1f60 update changelog
+* | 784d590 (tag: v0.4.0) v0.4.0
+* | 8622dce (tag: v1.0.0) v1.0.0
+* | cd7926b v0.3.9
+* | f1817d0 update changelog
+* | d7521bc move plp-form to plp
+* | 9d4b816 renamed smIcons to be uppercase
+| * e13e0ce (tag: v0.3.9) v0.3.9
 | * 5f883c6 update changelog
 |/  
 * 490adff update changelog
