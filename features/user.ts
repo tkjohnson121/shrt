@@ -239,6 +239,14 @@ class User {
       const shrt_id =
         id?.replace(' ', '').trim() || this.getURLSafeRandomString();
 
+      const prevShrt = (
+        await FirebaseClient.db.collection('shrts').doc(shrt_id).get()
+      ).data;
+
+      if (!!prevShrt) {
+        throw new Error(`ID ${shrt_id} unavailable`);
+      }
+
       const newShrtDocument = {
         created_by: uid,
         created_on: Date.now(),
