@@ -1,4 +1,6 @@
 import { css } from '@emotion/core';
+import { useUserDocumentListener } from 'common';
+import { useAuth } from 'features/authentication';
 import { Theme } from 'features/theme';
 import Link from 'next/link';
 import React from 'react';
@@ -40,6 +42,9 @@ const styles = {
 };
 
 export default function LandingPage() {
+  const authState = useAuth();
+  const { state } = useUserDocumentListener(authState.data?.currentUser?.uid);
+
   return (
     <section css={styles.section}>
       <h1 className="display">SHRT!</h1>
@@ -50,7 +55,13 @@ export default function LandingPage() {
           <p>
             Keep all your side links in one place and connect with people on any
             platform with{' '}
-            <Link href="/user/settings">
+            <Link
+              href={
+                state.data?.username
+                  ? '/user/' + state.data?.username
+                  : '/user/settings'
+              }
+            >
               <a>Personal Landing Pages (PLP)</a>
             </Link>
             .
