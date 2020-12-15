@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     <>
       <h1>Whoops! Looks like we'e having trouble finding that page.</h1>
       <p>
-        <Link href="/">
+        <Link href="/" passHref>
           <a>Go Home</a>
         </Link>
       </p>

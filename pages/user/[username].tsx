@@ -339,7 +339,7 @@ export default function UserProfile({
         </motion.ul>
 
         {isOwnProfile && (
-          <Link href="/user/settings">
+          <Link href="/user/settings" passHref>
             <motion.a
               css={styles.edit}
               variants={addDelay(fadeInDown, 2)}

@@ -84,7 +84,7 @@ export const ErrorWrapper: React.FC<{
       <div css={{ display: 'flex', alignItems: 'center' }}>
         <button onClick={() => router.reload()}>Refresh</button>
 
-        <Link href="/">
+        <Link href="/" passHref>
           <a>Go Home</a>
         </Link>
       </div>

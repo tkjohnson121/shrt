@@ -61,6 +61,7 @@ export default function LandingPage() {
                   ? '/user/' + state.data?.username
                   : '/user/settings'
               }
+              passHref
             >
               <a>Personal Landing Pages (PLP)</a>
             </Link>
@@ -70,7 +71,7 @@ export default function LandingPage() {
         <li>
           <p>
             Share any link and easily track it's usage and analytics with{' '}
-            <Link href="/user/dashboard">
+            <Link href="/user/dashboard" passHref>
               <a>Shrts</a>
             </Link>
             .

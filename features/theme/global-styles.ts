@@ -100,6 +100,7 @@ export const globalStyles: ThemedStyles = (theme) => css`
   a,
   button {
     cursor: pointer;
+    pointer-events: auto;
   }
 
   img {
