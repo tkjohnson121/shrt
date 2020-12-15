@@ -1,15 +1,11 @@
 ✅ General
- - Add loading on sign-up while document is creating
- - refactor setting page to be tabbed
- - add tooltip for new users
- - add client-side rate limiting
- - create common button component
+ ✅ Add loading on sign-up while document is creating
+ - ui update
 - Shrts
   ✅ url shortner api function
     ✅ lookup url in shrts db
     ✅ redirect, add view and related data
-  - custom link
-  - edit link
+  ✅ custom link
   ✅ view analytics for link
   ✅ add link
   ✅ remove link
@@ -27,7 +23,5 @@
     ✅ ??
   - add/edit profile image and background
     - color
-    - image
+    ✅ image
   ✅ style PLP links
-  - add SHRTs display
-  - Embedded WebView
