@@ -2,7 +2,6 @@ import { ErrorWrapper, Loading, PLPCard, PLPForm, smItems } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
 import { NextApiRequest } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { FaPhone } from 'react-icons/fa';
@@ -337,20 +336,6 @@ export default function UserProfile({
               ),
           )}
         </motion.ul>
-
-        {isOwnProfile && (
-          <Link href="/user/settings" passHref>
-            <motion.a
-              css={styles.edit}
-              variants={addDelay(fadeInDown, 2)}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              Edit Profile
-            </motion.a>
-          </Link>
-        )}
       </header>
 
       <div css={{ position: 'relative' }}>
