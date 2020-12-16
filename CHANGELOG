@@ -1,5 +1,17 @@
-* f123e2a (HEAD -> main) add instructions to auth-form, add auth-form to dashbboard
-* 9c6d38c (tag: v0.5.3, origin/staging, origin/main, staging) v0.5.3
+* 644b22f (HEAD -> 0.5.4) :fix: add header
+* d50f69d :fix: add padding to main
+* dcb003f :fix: increase min-width on input fields
+* 98577f7 :fix: remove button from username
+* 6359ad8 :fix: update auth form copy
+* 07336b2 :tada: add new header styling
+* ef7ed22 :fix: add passHref to links to add focusable
+* d1f13f0 :fix: convert plp link on landing page to profile instead of settings
+* 0da3c45 add todo to gitignore
+* 41147ed (main) misc
+* befb660 (tag: v0.5.4, origin/main) v0.5.4
+* 2b54615 update changelog
+* f123e2a add instructions to auth-form, add auth-form to dashbboard
+* 9c6d38c (tag: v0.5.3, origin/staging, staging) v0.5.3
 * dfd0ae7 update changelog
 * dda796c add instructions to settings and username
 * 3059c5a update landing page
