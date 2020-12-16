@@ -10,61 +10,67 @@ import {
   motion,
 } from 'features/theme';
 import { UserService } from 'features/user';
-import Image from 'next/image';
 import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
+import { MdDashboard, MdHome, MdSettings } from 'react-icons/md';
 import { FetchState } from 'types';
 import ErrorWrapper from './error-wrapper';
 import { useUserDocumentListener } from './use-user-document-listener';
 
 const styles: ComponentStyles = {
-  headerWrapper: (theme) => css`
-    padding: ${theme.space[2]} ${theme.space[4]};
+  header: (theme) => css`
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    width: 100%;
-    background-color: ${theme.colors.background};
-    box-shadow: ${theme.shadows['md']};
+    height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: stretch;
-    justify-content: space-between;
+    justify-content: flex-end;
+    padding-top: ${theme.space[4]};
+    padding-left: ${theme.space[2]};
     z-index: 9999;
+    background-color: transparent;
 
-    a {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      padding: ${theme.space[1]} ${theme.space[2]};
+    @media (min-width: ${theme.space['2xl']}) {
+      justify-content: flex-start;
+    }
+  `,
+  avatar: (theme) => css``,
+  nav: (theme) => css`
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: ${theme.colors.blackAlpha[300]};
+    border-radius: ${theme.radii['md']};
+    padding: ${theme.space[2]};
+    box-shadow: ${theme.shadows['lg']};
+    backdrop-filter: blur(3px);
 
-      &::after {
-        content: '';
-        transition: left 150ms cubic-bezier(${easing.join(',')});
-        position: absolute;
-        bottom: 0;
-        left: -100%;
-        width: 100%;
-        height: 2px;
-        background-color: ${theme.colors['primary']};
-      }
+    @media (min-width: ${theme.space['2xl']}) {
+      flex-direction: column;
+    }
+  `,
+  navLink: (theme) => css`
+    margin: ${theme.space[1]} 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 150ms cubic-bezier(${easing.join(',')});
 
-      &.active::after,
-      &:hover::after {
-        left: 0;
-      }
+    &.active,
+    &:hover,
+    &:focus {
+      color: ${theme.colors['primary']};
     }
 
-    nav {
-      display: flex;
-      align-items: stretch;
-      justify-content: space-between;
-
-      img {
-        border-radius: ${theme.radii['full']};
-      }
+    img,
+    svg {
+      height: ${theme.space[8]};
+      width: ${theme.space[8]};
+      border-radius: ${theme.radii['full']};
     }
   `,
 };
@@ -75,12 +81,16 @@ const isLinkActive = (href: string, router: NextRouter, username?: string) =>
     ? 'active'
     : 'inactive';
 
+const defaultLinks = [{ text: 'Home', href: '/', icon: <MdHome /> }];
+const authLinks = [
+  { text: 'Home', href: '/', icon: <MdHome /> },
+  { text: 'Dashboard', href: '/user/dashboard', icon: <MdDashboard /> },
+  { text: 'Settings', href: '/user/settings', icon: <MdSettings /> },
+];
+
 export const Avatar: React.FC<{
   username?: string;
-  css?: ComponentStyles;
 }> = ({ username }) => {
-  const router = useRouter();
-
   const { data } = useAuth();
 
   const [state, setState] = React.useState<FetchState<{ avatar: string }>>({
@@ -89,7 +99,7 @@ export const Avatar: React.FC<{
   });
 
   React.useEffect(() => {
-    const getAvatar = async () => {
+    const getUserAvatar = async () => {
       if (data?.currentUser && state.loading === true) {
         try {
           const avatar = await UserService.getUserFileByPath(
@@ -108,7 +118,7 @@ export const Avatar: React.FC<{
       }
     };
 
-    getAvatar();
+    getUserAvatar();
   }, [data?.currentUser]);
 
   if (state.error) {
@@ -116,13 +126,9 @@ export const Avatar: React.FC<{
   }
 
   return (
-    <Link href={username ? `/user/${username}` : '/user/settings'}>
+    <Link href={username ? `/user/${username}` : '/user/settings'} passHref>
       <motion.a
-        className={
-          isLinkActive('/user/settings', router) ||
-          isLinkActive(`/user/${username}`, router)
-        }
-        css={css}
+        css={styles.navLink}
         variants={addDelay(fadeInUp, 0.7)}
         initial="initial"
         animate="animate"
@@ -140,15 +146,9 @@ export const Avatar: React.FC<{
   );
 };
 
-const defaultLinks = [{ text: 'Home', href: '/' }];
-const authLinks = [
-  { text: 'Home', href: '/' },
-  { text: 'Dashboard', href: '/user/dashboard' },
-];
-
-export const Header: React.FC<{
-  heightRef: React.RefObject<HTMLElement>;
-}> = ({ heightRef }) => {
+export const Header: React.FC<{ headerRef: React.RefObject<HTMLElement> }> = ({
+  headerRef,
+}) => {
   const router = useRouter();
 
   const authState = useAuth();
@@ -159,34 +159,21 @@ export const Header: React.FC<{
   } = useUserDocumentListener(currentUser?.uid);
 
   return (
-    <header ref={heightRef} css={styles.headerWrapper}>
-      <Link href="/">
-        <motion.a
-          variants={addDelay(fadeInUp, 0.5)}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          key="home"
-        >
-          <Image
-            src={'/logo.svg'}
-            alt="GVEMPIRE.dev logo"
-            height="50px"
-            width="50px"
-            style={{ cursor: 'pointer' }}
-          />
-        </motion.a>
-      </Link>
-
+    <header ref={headerRef} css={styles.header}>
       <motion.nav
+        css={styles.nav}
         variants={addDelay(listAnimation, 1)}
         initial="initial"
         animate="animate"
         key="nav"
       >
+        <Avatar username={userDocument?.username} />
+
         {(isAuthenticated ? authLinks : defaultLinks).map((link) => (
-          <Link href={link.href} key={link.text}>
+          <Link href={link.href} key={link.text} passHref>
             <motion.a
+              key={link.href}
+              css={styles.navLink}
               className={isLinkActive(
                 link.href,
                 router,
@@ -196,14 +183,11 @@ export const Header: React.FC<{
               initial="initial"
               animate="animate"
               exit="exit"
-              key={link.text}
             >
-              {link.text}
+              {link.icon}
             </motion.a>
           </Link>
         ))}
-
-        <Avatar username={userDocument?.username} />
       </motion.nav>
     </header>
   );

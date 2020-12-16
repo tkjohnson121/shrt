@@ -1,6 +1,7 @@
 ✅ General
  ✅ Add loading on sign-up while document is creating
  - ui update
+  - twitter style nav
 - Shrts
   ✅ url shortner api function
     ✅ lookup url in shrts db

@@ -18,7 +18,9 @@ export const Layout = ({
   const router = useRouter();
   const { error } = useAuth();
 
-  const menuRef = React.useRef<HTMLElement>(null);
+  const headerRef = React.useRef<HTMLElement>(null);
+
+  console.log(headerRef.current);
 
   return (
     <>
@@ -28,7 +30,7 @@ export const Layout = ({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <Header heightRef={menuRef} />
+      <Header headerRef={headerRef} />
 
       {error ? (
         <ErrorWrapper error={error} />
@@ -39,7 +41,7 @@ export const Layout = ({
             css={css`
               min-height: 100vh;
               padding: 0 5%;
-              padding-top: ${menuRef.current?.clientHeight || 15 * 2}px;
+              padding-left: ${(headerRef.current?.clientWidth || 50) * 1.3}px;
             `}
             initial={'initial'}
             animate={'animate'}
