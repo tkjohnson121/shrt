@@ -241,10 +241,10 @@ class User {
 
       const prevShrt = (
         await FirebaseClient.db.collection('shrts').doc(shrt_id).get()
-      ).data;
+      ).data();
 
       if (!!prevShrt) {
-        throw new Error(`ID ${shrt_id} unavailable`);
+        throw new Error(`'${shrt_id}' is unavailable`);
       }
 
       const newShrtDocument = {
