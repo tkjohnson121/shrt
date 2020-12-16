@@ -15,14 +15,21 @@ import {
   fadeInDown,
   listAnimation,
   motion,
+  Theme,
 } from 'theme';
 
 const styles: ComponentStyles = {
-  listWrapper: () => css`
+  listWrapper: (theme) => css`
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
     justify-content: space-around;
+    padding: ${theme.space[4]};
+  `,
+
+  header: (theme: Theme) => css`
+    max-width: ${theme.space['6xl']};
+    margin: 0 auto;
   `,
 };
 
@@ -37,17 +44,19 @@ export default function ShrtDashboard() {
 
   return authState.data?.isAuthenticated ? (
     <>
-      <motion.h1
-        className="display"
-        variants={fadeInDown}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        User Dashboard
-      </motion.h1>
+      <header css={styles.header}>
+        <motion.h1
+          className="display"
+          variants={fadeInDown}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          User Dashboard
+        </motion.h1>
 
-      <ShrtForm withId />
+        <ShrtForm withId />
+      </header>
 
       <motion.ul
         css={styles.listWrapper}
