@@ -101,10 +101,15 @@ export function AuthForm() {
         <h1 css={styles.title} className="display">
           Welcome to SHRT!
         </h1>
+
+        <p>
+          Already have an account?{' '}
+          <button onClick={toggleIsNewUser} css={styles.button}>
+            Welcome back!
+          </button>
+        </p>
+
         <p>Sign-up below to create an account and start editing your PLP.</p>
-        <button onClick={toggleIsNewUser} css={styles.button}>
-          Need to sign-in?
-        </button>
       </header>
 
       <Form
@@ -120,13 +125,18 @@ export function AuthForm() {
         <h1 css={styles.title} className="display">
           Welcome Back!
         </h1>
+
+        <p>
+          Don't have an account?
+          <button onClick={toggleIsNewUser} css={styles.button}>
+            Create one!
+          </button>
+        </p>
+
         <p>
           Sign-in below to access your user dashboard and see how your shrts are
           connecting.
         </p>
-        <button onClick={toggleIsNewUser} css={styles.button}>
-          Need to sign-up?
-        </button>
       </header>
 
       <Form
