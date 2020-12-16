@@ -1,6 +1,6 @@
 import { css } from '@emotion/core';
 import { useAuth } from 'features/authentication';
-import { pageTransition } from 'features/theme';
+import { pageTransition, Theme } from 'features/theme';
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -38,10 +38,11 @@ export const Layout = ({
         <AnimatePresence exitBeforeEnter>
           <motion.main
             variants={pageTransition}
-            css={css`
+            css={(theme: Theme) => css`
               min-height: 100vh;
-              padding: 0 5%;
-              padding-left: ${(headerRef.current?.clientWidth || 50) * 1.3}px;
+              padding: ${theme.space[4]}
+                ${(headerRef.current?.clientWidth || 50) * 1.3}px;
+              margin: 0 auto;
             `}
             initial={'initial'}
             animate={'animate'}
