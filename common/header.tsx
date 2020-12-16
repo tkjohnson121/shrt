@@ -37,7 +37,7 @@ const styles: ComponentStyles = {
       justify-content: flex-start;
     }
   `,
-  avatar: (theme) => css``,
+
   nav: (theme) => css`
     display: flex;
     flex-direction: column-reverse;
