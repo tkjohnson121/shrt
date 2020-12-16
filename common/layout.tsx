@@ -20,8 +20,6 @@ export const Layout = ({
 
   const headerRef = React.useRef<HTMLElement>(null);
 
-  console.log(headerRef.current);
-
   return (
     <>
       <Head>

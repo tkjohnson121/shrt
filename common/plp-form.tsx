@@ -22,21 +22,16 @@ export function PLPForm() {
     linkConfig,
     setStatus,
   ) => {
-    try {
-      setStatus({ message: 'adding link', type: 'info' });
+    setStatus({ message: 'adding link', type: 'info' });
 
-      if (!currentUser) {
-        throw new Error('Please Login.');
-      }
-
-      await UserService.addPLPLink(currentUser.uid, linkConfig);
-
-      setStatus(null);
-      ShrtSwal.fire({ icon: 'success', title: 'Update Complete' });
-    } catch (error) {
-      console.error(error);
-      setStatus({ message: error.message, type: 'error' });
+    if (!currentUser) {
+      throw new Error('Please Login.');
     }
+
+    await UserService.addPLPLink(currentUser.uid, linkConfig);
+
+    setStatus(null);
+    ShrtSwal.fire({ icon: 'success', title: 'Update Complete' });
   };
 
   if (state.loading) return <Loading />;

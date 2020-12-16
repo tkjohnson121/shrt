@@ -26,7 +26,11 @@ export function ShrtForm({ withId }: { withId?: boolean }) {
       });
     } catch (error) {
       console.error(error);
-      setStatus({ message: error.message, type: 'error' });
+      const errorMessage = error.message.includes('permission-denied')
+        ? 'Hmm, that shrt might already be taken.'
+        : error.message;
+
+      setStatus({ message: errorMessage, type: 'error' });
     }
   };
 

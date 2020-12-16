@@ -260,10 +260,6 @@ export const Form: React.FC<FormProps> = (props) => {
 
   const formFields = Object.entries(props.fields);
 
-  React.useEffect(() => {
-    console.log(formState);
-  }, [errors]);
-
   /**
    * # onSubmit
    * prefaces a developers onFormSubmit to wrap in a try catch block
@@ -415,7 +411,7 @@ export const Form: React.FC<FormProps> = (props) => {
         exit="exit"
       >
         {status && (
-          <motion.p
+          <motion.span
             variants={fadeInDown}
             initial="initial"
             animate="animate"
@@ -424,7 +420,7 @@ export const Form: React.FC<FormProps> = (props) => {
             className={status.type}
           >
             {status.message || props.subtitle}
-          </motion.p>
+          </motion.span>
         )}
 
         <button type="submit" className="block">

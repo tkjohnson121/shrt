@@ -78,21 +78,16 @@ export function AuthForm() {
     }));
 
   const onAuthSubmit: OnFormSubmit = async ({ email, password }, setStatus) => {
-    try {
-      setStatus({ message: 'authenticating...', type: 'info' });
+    setStatus({ message: 'authenticating...', type: 'info' });
 
-      if (state.data?.isNewUser) {
-        await AuthService.signUp(email, password);
-      } else {
-        await AuthService.signIn(email, password);
-      }
-
-      setStatus(null);
-      ShrtSwal.fire({ icon: 'success', titleText: 'Success!' });
-    } catch (error) {
-      console.error(error);
-      setStatus({ message: error.message, type: 'error' });
+    if (state.data?.isNewUser) {
+      await AuthService.signUp(email, password);
+    } else {
+      await AuthService.signIn(email, password);
     }
+
+    setStatus(null);
+    ShrtSwal.fire({ icon: 'success', titleText: 'Success!' });
   };
 
   return state.data?.isNewUser ? (
