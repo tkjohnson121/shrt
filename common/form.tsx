@@ -97,18 +97,18 @@ const styles: ComponentStyles = {
     display: flex;
     flex-direction: column;
     margin: ${theme.space[4]} ${theme.space[2]};
-    min-width: ${theme.space[32]};
+    min-width: ${theme.space[48]};
 
     &.small {
-      flex: 1 1 20%;
+      flex: 1 1 10%;
     }
 
     &.medium {
-      flex: 1 1 40%;
+      flex: 1.3 1 40%;
     }
 
     &.large {
-      flex: 1 1 65%;
+      flex: 1.7 1 65%;
     }
 
     &.full {
