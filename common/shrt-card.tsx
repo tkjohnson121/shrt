@@ -1,8 +1,13 @@
-import { ErrorWrapper, Loading } from 'common';
 import { useAuth } from 'features/authentication';
 import { UserService } from 'features/user';
 import React, { useState } from 'react';
-import { MdDelete } from 'react-icons/md';
+import {
+  MdContentCopy,
+  MdDateRange,
+  MdDelete,
+  MdLink,
+  MdMouse,
+} from 'react-icons/md';
 import {
   addDelay,
   ComponentStyles,
@@ -12,23 +17,68 @@ import {
   motion,
 } from 'theme';
 import { FetchState, MotionTypes, ShrtDocument } from 'types';
+import { ErrorWrapper } from './error-wrapper';
+import Loading from './loading';
 
 const styles: ComponentStyles = {
   shrtCard: (theme) => css`
-    flex: 0 1 10%;
-    display: flex;
-    flex-direction: column;
-    align-item: flex-start;
-    justify-content: center;
+    display: grid;
+    grid-template-areas:
+      'title'
+      'stats'
+      'actions'
+      'status';
     position: relative;
-    border: 2px solid ${theme.colors['secondary']};
-    border-radius: ${theme.radii['md']};
     padding: ${theme.space[6]};
     margin: 0 ${theme.space[4]};
-    margin-bottom: ${theme.space[12]};
 
-    & > * {
-      line-height: ${theme.lineHeights['taller']};
+    &:not(:last-of-type) {
+      border-bottom: 2px solid ${theme.colors['muted']};
+    }
+
+    @media (min-width: ${theme.space['2xl']}) {
+      grid-template-areas:
+        'title title status'
+        'stats stats actions';
+    }
+  `,
+  shrtTitle: (theme) => css`
+    grid-area: title;
+    margin-bottom: ${theme.space[2]};
+
+    a {
+      font-size: inherit;
+      font-weight: inherit;
+      font-family: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      margin: inherit;
+      padding: inherit;
+    }
+  `,
+
+  shrtStats: (theme) => css`
+    grid-area: stats;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+      margin: ${theme.space[2]};
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      span[role='img'] {
+        height: 100%;
+        margin-right: ${theme.space[1]};
+
+        svg {
+          color: ${theme.colors['secondary']};
+          height: 100%;
+          // width: 100%;
+        }
+      }
     }
   `,
   shrtLink: (theme) => css`
@@ -36,17 +86,6 @@ const styles: ComponentStyles = {
     overflow: hidden;
     display: inline-flex;
     align-items: start;
-    padding: ${theme.space[1]} ${theme.space[2]};
-    max-width: ${theme.space[64]};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: '...';
-    font-size: inherit;
-    font-weight: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    margin: inherit;
-    padding: inherit;
 
     &::after {
       content: '';
@@ -60,17 +99,71 @@ const styles: ComponentStyles = {
     }
 
     &.active::after,
-    &:hover::after {
+    &:hover::after,
+    &:focus::after {
       left: 0;
     }
   `,
-  shrtArchive: (theme) => css`
-    margin-left: 90%;
-    background-color: ${theme.colors['error']};
-    color: ${theme.colors.whiteAlpha[900]};
-    font-weight: ${theme.fontWeights['semibold']};
+  shrtStatus: (theme) => css`
+    grid-area: status;
+    text-align: right;
+    position: relative;
     border-radius: ${theme.radii['md']};
-    font-size: ${theme.fontSizes['xl']};
+    margin-top: ${theme.space[2]};
+    padding: ${theme.space[2]};
+    display: inline-block;
+
+    &.info {
+      color: ${theme.colors['info']};
+    }
+    &.error {
+      color: ${theme.colors['error']};
+    }
+    &.warning {
+      color: ${theme.colors['warning']};
+    }
+    &.success {
+      color: ${theme.colors['success']};
+    }
+  `,
+  shrtActions: (theme) => css`
+    grid-area: actions;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: flex-end;
+    margin-top: ${theme.space[4]};
+
+    button {
+      margin-top: ${theme.space[2]};
+      margin-left: ${theme.space[2]};
+      background-color: ${theme.colors['muted']};
+      color: ${theme.colors.whiteAlpha[900]};
+      border-radius: ${theme.radii['md']};
+      font-size: ${theme.fontSizes['xl']};
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: ${theme.space[1]} ${theme.space[2]};
+
+      span[role='img'] {
+        height: 100%;
+        margin-right: ${theme.space[1]};
+
+        svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      &.archive {
+        background-color: ${theme.colors['error']};
+      }
+
+      &.copy {
+        background-color: ${theme.colors['info']};
+      }
+    }
   `,
 };
 
@@ -81,29 +174,63 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
   const authState = useAuth();
   const uid = authState.data?.currentUser?.uid;
 
-  const [state, setState] = useState<FetchState>({
+  const [state, setState] = useState<
+    FetchState<{
+      status: {
+        type: 'success' | 'error' | 'info' | 'warning';
+        message: string;
+      };
+    }>
+  >({
     loading: false,
   });
 
   const MotionComp = motion[as];
 
-  const onShrtArchive = async (shrt: ShrtDocument) => {
+  const onShrtAction = async (type: 'archive' | 'copy', shrt: ShrtDocument) => {
     try {
       setState({ loading: true });
 
-      if (uid === shrt.created_by && shrt.shrt_id) {
-        await UserService.archiveShrt(uid, shrt.shrt_id);
-      } else {
-        throw new Error('ShrtId not found.');
-      }
+      switch (type) {
+        case 'archive': {
+          if (uid === shrt.created_by && shrt.shrt_id) {
+            await UserService.archiveShrt(uid, shrt.shrt_id);
+          } else {
+            throw new Error('ShrtId not found.');
+          }
 
-      setState({ loading: false });
+          return setState({ loading: false });
+        }
+        case 'copy': {
+          if (!!shrt.shrt_url) {
+            navigator.clipboard.writeText(shrt.shrt_url);
+            return setState({
+              loading: false,
+              data: {
+                status: { type: 'success', message: 'URL Copied!' },
+              },
+            });
+          } else {
+            throw new Error('Shrt URL could not be found. Unable to copy.');
+          }
+        }
+        default: {
+          break;
+        }
+      }
     } catch (error) {
-      setState({ loading: false, error });
+      return setState({
+        loading: false,
+        data: {
+          status: {
+            type: 'error',
+            message: error.message || 'An error has occured archiving shrt URL',
+          },
+        },
+      });
     }
   };
 
-  if (state.loading) return <Loading />;
   if (state.error) return <ErrorWrapper error={state.error} />;
 
   return (
@@ -115,7 +242,7 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
       animate="animate"
       exit="exit"
     >
-      <h3>
+      <h3 css={styles.shrtTitle}>
         <a
           href={shrt.shrt_url || ''}
           target="_new"
@@ -125,25 +252,64 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
           {shrt.shrt_id}
         </a>
       </h3>
-      <pre>Clicks: {shrt.clicks}</pre>
 
-      <pre>
-        URL:{' '}
-        <a
-          href={shrt.url || ''}
-          target="_new"
-          rel="noreferrer noopener"
-          css={styles.shrtLink}
-        >
-          {shrt.url}
-        </a>
-      </pre>
+      <ul css={styles.shrtStats}>
+        <li className="clicks">
+          <span role="img" aria-label="click">
+            <MdMouse />
+          </span>{' '}
+          {shrt.clicks}
+        </li>
 
-      <pre>Created on: {new Date(shrt.created_on).toLocaleDateString()}</pre>
+        <li className="url">
+          <span role="img" aria-label="URL">
+            <MdLink />
+          </span>{' '}
+          <a
+            href={shrt.url || ''}
+            target="_new"
+            rel="noreferrer noopener"
+            css={styles.shrtLink}
+          >
+            {shrt.url}
+          </a>
+        </li>
 
-      <button css={styles.shrtArchive} onClick={() => onShrtArchive(shrt)}>
-        <MdDelete />
-      </button>
+        <li className="created">
+          <span role="img" aria-label="date">
+            <MdDateRange />
+          </span>{' '}
+          {new Date(shrt.created_on).toLocaleDateString()}
+        </li>
+      </ul>
+
+      {state.loading ? (
+        <Loading />
+      ) : (
+        <div css={styles.shrtActions}>
+          <button
+            className="archive"
+            onClick={() => onShrtAction('archive', shrt)}
+          >
+            <span role="img" aria-label="delete">
+              <MdDelete />
+            </span>{' '}
+            Archive
+          </button>
+          <button className="copy" onClick={() => onShrtAction('copy', shrt)}>
+            <span role="img" aria-label="copy">
+              <MdContentCopy />
+            </span>{' '}
+            Copy
+          </button>
+        </div>
+      )}
+
+      {state.data?.status && (
+        <span className={state.data.status.type} css={styles.shrtStatus}>
+          {state.data.status.message}
+        </span>
+      )}
     </MotionComp>
   );
 };

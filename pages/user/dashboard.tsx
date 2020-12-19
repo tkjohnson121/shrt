@@ -20,11 +20,9 @@ import {
 
 const styles: ComponentStyles = {
   listWrapper: (theme) => css`
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    justify-content: space-around;
     padding: ${theme.space[4]};
+    max-width: ${theme.space['6xl']};
+    margin: 0 auto;
   `,
 
   header: (theme: Theme) => css`
@@ -33,6 +31,10 @@ const styles: ComponentStyles = {
   `,
 };
 
+/**
+ * # ShrtDashboard
+ * @packageDescription
+ */
 export default function ShrtDashboard() {
   const authState = useAuth();
   const { state } = useUserShrtListener();
