@@ -1,4 +1,10 @@
-* c7bc24f (HEAD -> main, tag: 0.5.4, 0.5.4) update changelog
+* edc840e (HEAD -> 0.5.6) -m
+* bc59327 (tag: 0.5.6, origin/main, main) :bug: fix form error handling and status changes
+* 6156388 :bug: fixed addShrt unique error
+* e716bcd :fix: rmove avatr from styling
+* a69e00a (tag: v0.5.5) v0.5.5
+* 306d54e update changelog
+* c7bc24f (tag: 0.5.4, 0.5.4) update changelog
 * 644b22f :fix: add header
 * d50f69d :fix: add padding to main
 * dcb003f :fix: increase min-width on input fields
@@ -9,7 +15,7 @@
 * d1f13f0 :fix: convert plp link on landing page to profile instead of settings
 * 0da3c45 add todo to gitignore
 * 41147ed misc
-* befb660 (tag: v0.5.4, origin/main) v0.5.4
+* befb660 (tag: v0.5.4) v0.5.4
 * 2b54615 update changelog
 * f123e2a add instructions to auth-form, add auth-form to dashbboard
 * 9c6d38c (tag: v0.5.3, origin/staging, staging) v0.5.3
