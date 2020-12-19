@@ -9,7 +9,6 @@ import {
   useUserDocumentListener,
 } from 'common';
 import { AuthService, useAuth } from 'features/authentication';
-import { ShrtSwal } from 'features/swal';
 import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState, UserDocument } from 'types';
@@ -87,8 +86,7 @@ export default function UserSettings() {
         ...args,
       });
 
-      setStatus(null);
-      ShrtSwal.fire({ icon: 'success', title: 'Update Complete' });
+      setStatus({ type: 'success', message: 'Update Complete!' });
     } catch (error) {
       console.error(error);
       setStatus({ message: error.message, type: 'error' });

@@ -38,9 +38,12 @@ export const Layout = ({
             variants={pageTransition}
             css={(theme: Theme) => css`
               min-height: 100vh;
-              padding: ${theme.space[4]}
-                ${(headerRef.current?.clientWidth || 50) * 1.3}px;
               margin: 0 auto;
+              padding: 10% 5%;
+
+              @media (min-width: ${theme.space['2xl']}) {
+                padding: ${theme.space[4]} ${theme.space[16]};
+              }
             `}
             initial={'initial'}
             animate={'animate'}

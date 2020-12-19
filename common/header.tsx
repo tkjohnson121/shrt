@@ -21,49 +21,58 @@ import { useUserDocumentListener } from './use-user-document-listener';
 const styles: ComponentStyles = {
   header: (theme) => css`
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
-    height: 100%;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: stretch;
-    justify-content: flex-end;
-    padding-top: ${theme.space[4]};
-    padding-left: ${theme.space[2]};
+    justify-content: center;
     z-index: 9999;
     background-color: transparent;
 
     @media (min-width: ${theme.space['2xl']}) {
+      top: 0;
+      height: 100%;
+      width: auto;
+      flex-direction: column;
       justify-content: flex-start;
+      padding-top: ${theme.space[2]};
+      padding-left: ${theme.space[2]};
     }
   `,
 
   nav: (theme) => css`
+    width: 100%;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
-    background-color: ${theme.colors.blackAlpha[300]};
+    justify-content: space-evenly;
+    background-color: ${theme.colors.blackAlpha[600]};
     border-radius: ${theme.radii['md']};
-    padding: ${theme.space[2]};
     box-shadow: ${theme.shadows['lg']};
     backdrop-filter: blur(3px);
 
     @media (min-width: ${theme.space['2xl']}) {
       flex-direction: column;
+      justify-content: flex-end;
     }
   `,
   navLink: (theme) => css`
-    margin: ${theme.space[1]} 0;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 150ms cubic-bezier(${easing.join(',')});
+    margin: ${theme.space[1]} 0;
+    padding: ${theme.space[2]};
+    border-radius: ${theme.radii['md']};
+    transition: background-color 150ms cubic-bezier(${easing.join(',')});
 
     &.active,
     &:hover,
     &:focus {
-      color: ${theme.colors['primary']};
+      background-color: ${theme.colors['primary']};
     }
 
     img,
