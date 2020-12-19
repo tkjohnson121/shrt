@@ -130,7 +130,7 @@ const styles: ComponentStyles = {
     grid-area: actions;
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
+    align-items: flex-end;
     justify-content: flex-end;
     margin-top: ${theme.space[4]};
 
