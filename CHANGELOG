@@ -1,5 +1,9 @@
-* edc840e (HEAD -> 0.5.6) -m
-* bc59327 (tag: 0.5.6, origin/main, main) :bug: fix form error handling and status changes
+* aa52d80 (HEAD -> main) :lipstick: update shrtCard styles
+* 77ed7a9 (tag: v0.5.6, origin/main, 0.5.6) v0.5.6
+* 241b41d remove gitmoji
+* 45832cf update changelog
+* edc840e -m
+* bc59327 (tag: 0.5.6) :bug: fix form error handling and status changes
 * 6156388 :bug: fixed addShrt unique error
 * e716bcd :fix: rmove avatr from styling
 * a69e00a (tag: v0.5.5) v0.5.5
