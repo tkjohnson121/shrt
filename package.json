@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.35",
-    "@types/firebase": "^3.2.1",
     "dotenv": "^8.2.0",
     "emotion-reset": "^2.0.7",
     "emotion-theming": "^10.0.27",
@@ -48,6 +47,7 @@
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/firebase": "^3.2.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
