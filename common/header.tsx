@@ -163,9 +163,8 @@ export const Header: React.FC<{ headerRef: React.RefObject<HTMLElement> }> = ({
   const authState = useAuth();
   const { currentUser, isAuthenticated } = authState.data || {};
 
-  const {
-    state: { data: userDocument },
-  } = useUserDocumentListener(currentUser?.uid);
+  const [userDocState] = useUserDocumentListener(currentUser?.uid);
+  const { data: userDocument } = userDocState;
 
   return (
     <header ref={headerRef} css={styles.header}>

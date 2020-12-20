@@ -1,5 +1,5 @@
 import { useAuth } from 'features/authentication';
-import { UserService } from 'features/user';
+import { ShrtService } from 'features/shrt';
 import React, { useState } from 'react';
 import {
   MdContentCopy,
@@ -29,22 +29,22 @@ const styles: ComponentStyles = {
       'actions'
       'status';
     position: relative;
-    padding: ${theme.space[6]};
-    margin: 0 ${theme.space[4]};
+    padding: ${theme.space[3]};
+    margin: 0 ${theme.space[2]};
 
     &:not(:last-of-type) {
       border-bottom: 2px solid ${theme.colors['muted']};
     }
 
     @media (min-width: ${theme.space['2xl']}) {
+      grid-template-columns: 2fr auto 1fr;
       grid-template-areas:
-        'title title status'
-        'stats stats actions';
+        'title . status'
+        'stats . actions';
     }
   `,
-  shrtTitle: (theme) => css`
+  shrtTitle: () => css`
     grid-area: title;
-    margin-bottom: ${theme.space[2]};
 
     a {
       font-size: inherit;
@@ -59,7 +59,6 @@ const styles: ComponentStyles = {
 
   shrtStats: (theme) => css`
     grid-area: stats;
-
     display: flex;
     flex-wrap: wrap;
 
@@ -68,6 +67,7 @@ const styles: ComponentStyles = {
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      width: 100%;
 
       span[role='img'] {
         height: 100%;
@@ -76,7 +76,7 @@ const styles: ComponentStyles = {
         svg {
           color: ${theme.colors['secondary']};
           height: 100%;
-          // width: 100%;
+          width: ${theme.space[6]};
         }
       }
     }
@@ -132,11 +132,10 @@ const styles: ComponentStyles = {
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: flex-end;
-    margin-top: ${theme.space[4]};
 
     button {
-      margin-top: ${theme.space[2]};
-      margin-left: ${theme.space[2]};
+      margin: ${theme.space[2]};
+      margin-right: 0;
       background-color: ${theme.colors['muted']};
       color: ${theme.colors.whiteAlpha[900]};
       border-radius: ${theme.radii['md']};
@@ -194,7 +193,7 @@ export const ShrtCard: React.FC<{ as: MotionTypes; shrt: ShrtDocument }> = ({
       switch (type) {
         case 'archive': {
           if (uid === shrt.created_by && shrt.shrt_id) {
-            await UserService.archiveShrt(uid, shrt.shrt_id);
+            await ShrtService.archiveShrt(uid, shrt.shrt_id);
           } else {
             throw new Error('ShrtId not found.');
           }

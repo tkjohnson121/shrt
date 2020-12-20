@@ -61,19 +61,19 @@ class Authentication {
 
 export const AuthService = new Authentication();
 
-interface AuthState {
+type AuthState = FetchState<{
   isAuthenticated: boolean;
   currentUser?: ShrtUser;
-}
+}>;
 
 const initialState = {
-  isAuthenticated: false,
+  loading: true,
+  data: {
+    isAuthenticated: false,
+  },
 };
 
-const AuthContext = React.createContext<FetchState<AuthState>>({
-  loading: true,
-  data: initialState,
-});
+const AuthContext = React.createContext<AuthState>(initialState);
 
 export const useAuth = () => {
   const context = React.useContext(AuthContext);
@@ -86,9 +86,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [state, setState] = React.useState<FetchState<AuthState>>({
-    loading: true,
-  });
+  const [state, setState] = React.useState<AuthState>(initialState);
 
   React.useEffect(() => {
     let unsubscribe = AuthService.openAuthListener(
@@ -99,15 +97,11 @@ export const AuthProvider: React.FC = ({ children }) => {
             isAuthenticated: true,
             currentUser: {
               token: user.getIdToken(),
-              email: user.email,
-              emailVerified: user.emailVerified,
-              displayName: user.displayName,
-              uid: user.uid,
-              photoURL: user.photoURL,
+              ...user,
             },
           },
         }),
-      () => setState({ loading: false, data: initialState }),
+      () => setState({ ...initialState, loading: false }),
     );
 
     return () => {

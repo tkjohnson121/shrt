@@ -1,4 +1,4 @@
-import { UserService } from 'features/user';
+import { ShrtService } from 'features/shrt';
 import React from 'react';
 import Form, { OnFormSubmit } from './form';
 import { formFields } from './form-fields';
@@ -8,7 +8,7 @@ export function ShrtForm({ withId }: { withId?: boolean }) {
     try {
       setStatus({ message: 'adding shrt', type: 'info' });
 
-      const { shrt_url, shrt_id } = await UserService.addShrt(url, id);
+      const { shrt_url, shrt_id } = await ShrtService.addShrt(url, id);
 
       // copy to clipboard
       // https://stackoverflow.com/questions/39501289/in-reactjs-how-to-copy-text-to-clipboard

@@ -32,13 +32,12 @@ export default function UserSettings() {
   const authState = useAuth();
   const currentUser = authState.data?.currentUser;
 
+  const [userDocState] = useUserDocumentListener();
   const {
-    state: {
-      data: userDocument,
-      error: userDocumentError,
-      loading: userDocumentLoading,
-    },
-  } = useUserDocumentListener();
+    data: userDocument,
+    error: userDocumentError,
+    loading: userDocumentLoading,
+  } = userDocState;
 
   const [state, setState] = useState<FetchState>({ loading: false });
 

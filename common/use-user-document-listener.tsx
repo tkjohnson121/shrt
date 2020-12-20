@@ -4,11 +4,15 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { FetchState, UserDocument } from 'types';
 
-export const useUserDocumentListener = (uid?: string) => {
+type UserDocState = FetchState<UserDocument>;
+
+export const useUserDocumentListener = (
+  uid?: string,
+): [UserDocState, (error: Error) => void] => {
   const router = useRouter();
   const authState = useAuth();
 
-  const [state, setState] = React.useState<FetchState<UserDocument>>({
+  const [state, setState] = React.useState<UserDocState>({
     loading: true,
   });
 
@@ -43,5 +47,5 @@ export const useUserDocumentListener = (uid?: string) => {
     }
   }, [router.pathname]);
 
-  return { state, onUserDocumentError };
+  return [state, onUserDocumentError];
 };

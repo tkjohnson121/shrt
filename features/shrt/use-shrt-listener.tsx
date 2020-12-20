@@ -1,29 +1,31 @@
 import { useAuth } from 'features/authentication';
-import { UserService } from 'features/user';
+import { ShrtService } from 'features/shrt';
 import React from 'react';
 import { FetchState, ShrtDocument } from 'types';
 
-export const useUserShrtListener = (uid?: string) => {
+type ShrtListenerState = FetchState<{
+  shrts: Array<ShrtDocument>;
+  totalClicks: number;
+  mostVisited: ShrtDocument;
+}>;
+
+export const useShrtListener = (
+  uid?: string,
+): [ShrtListenerState, (error: Error) => void] => {
   const authState = useAuth();
 
-  const [state, setState] = React.useState<
-    FetchState<{
-      shrts: Array<ShrtDocument>;
-      totalClicks: number;
-      mostVisited: ShrtDocument;
-    }>
-  >({
+  const [state, setState] = React.useState<ShrtListenerState>({
     loading: true,
   });
 
-  const onUserShrtError = (error: Error) => setState({ loading: false, error });
+  const onShrtError = (error: Error) => setState({ loading: false, error });
 
   React.useEffect(() => {
     const currentUser = authState.data?.currentUser;
     let unsubscribe: () => void;
 
     if (currentUser) {
-      unsubscribe = UserService.openShrtListener(
+      unsubscribe = ShrtService.openShrtListener(
         uid || currentUser.uid,
         (documents) =>
           setState({
@@ -43,7 +45,7 @@ export const useUserShrtListener = (uid?: string) => {
               }, documents[0]),
             },
           }),
-        (error) => onUserShrtError(error),
+        (error) => onShrtError(error),
       );
     } else {
       setState({ loading: false, error: new Error('Please Login.') });
@@ -54,5 +56,5 @@ export const useUserShrtListener = (uid?: string) => {
     };
   }, [authState.data?.currentUser]);
 
-  return { state, onUserShrtError };
+  return [state, onShrtError];
 };

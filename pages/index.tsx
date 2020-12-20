@@ -43,7 +43,7 @@ const styles = {
 
 export default function LandingPage() {
   const authState = useAuth();
-  const { state } = useUserDocumentListener(authState.data?.currentUser?.uid);
+  const [state] = useUserDocumentListener(authState.data?.currentUser?.uid);
 
   return (
     <section css={styles.section}>

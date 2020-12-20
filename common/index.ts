@@ -10,4 +10,3 @@ export * from './plp-form';
 export * from './shrt-card';
 export * from './shrt-form';
 export * from './use-user-document-listener';
-export * from './use-user-shrt-listener';

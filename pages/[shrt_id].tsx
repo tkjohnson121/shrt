@@ -1,5 +1,5 @@
 import { ErrorWrapper, Loading } from 'common';
-import { UserService } from 'features/user';
+import { ShrtService } from 'features/shrt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import React from 'react';
 
@@ -38,7 +38,7 @@ export async function redirect(req: NextApiRequest, res: NextApiResponse) {
   }
 
   // - lookup shrt in shrts collection
-  const shrt = await UserService.getShrtById(
+  const shrt = await ShrtService.getShrtById(
     typeof shrt_id === 'string' ? shrt_id : shrt_id[0],
   );
 
@@ -48,7 +48,7 @@ export async function redirect(req: NextApiRequest, res: NextApiResponse) {
 
   // - add view and related data
   if (typeof window === 'undefined' && !!shrt) {
-    await require('../features/user').UserService.updateShrtAfterView(shrt);
+    await require('../features/shrt').ShrtService.updateShrtAfterView(shrt);
   }
 
   // redirect

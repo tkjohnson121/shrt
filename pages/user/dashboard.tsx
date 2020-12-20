@@ -1,12 +1,7 @@
-import {
-  AuthForm,
-  ErrorWrapper,
-  Loading,
-  ShrtCard,
-  useUserShrtListener,
-} from 'common';
+import { AuthForm, ErrorWrapper, Loading, ShrtCard } from 'common';
 import { ShrtForm } from 'common/shrt-form';
 import { useAuth } from 'features/authentication';
+import { useShrtListener } from 'features/shrt';
 import React from 'react';
 import {
   AnimatePresence,
@@ -34,10 +29,13 @@ const styles: ComponentStyles = {
 /**
  * # ShrtDashboard
  * @packageDescription
+ *
+ * @todo add sort by: clicks, date created (asc, desc)
+ * @todo add share, QR code to action
  */
 export default function ShrtDashboard() {
   const authState = useAuth();
-  const { state } = useUserShrtListener();
+  const [state] = useShrtListener();
 
   if (state.loading) return <Loading />;
 
@@ -60,10 +58,7 @@ export default function ShrtDashboard() {
         {state.data && (
           <ul>
             <li>Total Clicks: {state.data?.totalClicks}</li>
-            <li>
-              Most Visited:{' '}
-              <ShrtCard as="span" shrt={state.data?.mostVisited} />
-            </li>
+            <li>Most Visited: {state.data.mostVisited.shrt_id}</li>
           </ul>
         )}
 
