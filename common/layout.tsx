@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import { pageTransition, Theme } from 'features/theme';
 import { AnimatePresence, motion } from 'framer-motion';
 import Head from 'next/head';

@@ -1,15 +1,13 @@
 import {
-  AuthForm,
   ErrorWrapper,
   Form,
   FormFields,
   formFields,
   Loading,
   OnFormSubmit,
-  useUserDocumentListener,
 } from 'common';
-import { AuthService, useAuth } from 'features/authentication';
-import { UserService } from 'features/user';
+import { AuthForm, AuthService, useAuth } from 'features/auth';
+import { UserService, useUserDocumentListener } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState, UserDocument } from 'types';
 

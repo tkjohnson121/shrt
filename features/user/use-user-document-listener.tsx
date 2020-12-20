@@ -1,4 +1,4 @@
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import { UserService } from 'features/user';
 import { useRouter } from 'next/router';
 import React from 'react';

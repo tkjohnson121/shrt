@@ -1,4 +1,5 @@
-import { useAuth } from 'features/authentication';
+import { ErrorWrapper, Loading } from 'common';
+import { useAuth } from 'features/auth';
 import { ShrtService } from 'features/shrt';
 import React, { useState } from 'react';
 import {
@@ -17,8 +18,6 @@ import {
   motion,
 } from 'theme';
 import { FetchState, MotionTypes, ShrtDocument } from 'types';
-import { ErrorWrapper } from './error-wrapper';
-import Loading from './loading';
 
 const styles: ComponentStyles = {
   shrtCard: (theme) => css`

@@ -1,5 +1,5 @@
 import { css } from '@emotion/core';
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import {
   addDelay,
   ComponentStyles,
@@ -9,14 +9,13 @@ import {
   listChildAnimation,
   motion,
 } from 'features/theme';
-import { UserService } from 'features/user';
+import { UserService, useUserDocumentListener } from 'features/user';
 import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
 import React from 'react';
 import { MdDashboard, MdHome, MdSettings } from 'react-icons/md';
 import { FetchState } from 'types';
 import ErrorWrapper from './error-wrapper';
-import { useUserDocumentListener } from './use-user-document-listener';
 
 const styles: ComponentStyles = {
   header: (theme) => css`

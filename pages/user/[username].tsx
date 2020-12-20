@@ -1,6 +1,6 @@
-import { ErrorWrapper, Loading, PLPCard, PLPForm, smItems } from 'common';
-import { useAuth } from 'features/authentication';
-import { UserService } from 'features/user';
+import { ErrorWrapper, Loading, smItems } from 'common';
+import { useAuth } from 'features/auth';
+import { PLPCard, PLPForm, UserService } from 'features/user';
 import { NextApiRequest } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';

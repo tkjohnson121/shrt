@@ -1,7 +1,7 @@
+import Form, { OnFormSubmit } from 'common/form';
+import { formFields } from 'common/form-fields';
 import { ShrtService } from 'features/shrt';
 import React from 'react';
-import Form, { OnFormSubmit } from './form';
-import { formFields } from './form-fields';
 
 export function ShrtForm({ withId }: { withId?: boolean }) {
   const onShrtSubmit: OnFormSubmit = async ({ url, id }, setStatus) => {

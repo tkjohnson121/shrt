@@ -1,12 +1,5 @@
-import {
-  AuthForm,
-  ErrorWrapper,
-  Form,
-  formFields,
-  Loading,
-  OnFormSubmit,
-} from 'common';
-import { useAuth } from 'features/authentication';
+import { ErrorWrapper, Form, formFields, Loading, OnFormSubmit } from 'common';
+import { useAuth } from 'features/auth';
 import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState, LinkConfig } from 'types';
@@ -47,9 +40,7 @@ export function PLPForm() {
         buttonText="Add Link"
       />
     </section>
-  ) : (
-    <AuthForm />
-  );
+  ) : null;
 }
 
 export default PLPForm;

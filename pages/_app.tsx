@@ -1,5 +1,5 @@
 import { Layout } from 'common';
-import { AuthProvider } from 'features/authentication';
+import { AuthProvider } from 'features/auth';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import * as React from 'react';

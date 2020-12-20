@@ -1,7 +1,6 @@
-import { AuthForm, ErrorWrapper, Loading, ShrtCard } from 'common';
-import { ShrtForm } from 'common/shrt-form';
-import { useAuth } from 'features/authentication';
-import { useShrtListener } from 'features/shrt';
+import { ErrorWrapper, Loading } from 'common';
+import { AuthForm, useAuth } from 'features/auth';
+import { ShrtCard, ShrtForm, useShrtListener } from 'features/shrt';
 import React from 'react';
 import {
   AnimatePresence,

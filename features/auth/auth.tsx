@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import React from 'react';
 import { FetchState, ShrtUser } from 'types';
-import { FirebaseClient } from './firebase-client';
+import { FirebaseClient } from '../firebase-client';
 
 class Authentication {
   openAuthListener = (

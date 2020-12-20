@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 import { LinkConfig, PLPLinkDocument, UserDocument } from 'types/index';
-import { FirebaseClient } from './firebase-client';
+import { FirebaseClient } from '../firebase-client';
 
 class User {
   openUserDocumentListener(

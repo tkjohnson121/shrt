@@ -1,4 +1,4 @@
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import { ShrtService } from 'features/shrt';
 import React from 'react';
 import { FetchState, ShrtDocument } from 'types';

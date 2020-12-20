@@ -1,5 +1,5 @@
 import { ErrorWrapper, Loading } from 'common';
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import {

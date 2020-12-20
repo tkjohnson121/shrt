@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
-import { useUserDocumentListener } from 'common';
-import { useAuth } from 'features/authentication';
+import { useAuth } from 'features/auth';
 import { Theme } from 'features/theme';
+import { useUserDocumentListener } from 'features/user';
 import Link from 'next/link';
 import React from 'react';
 

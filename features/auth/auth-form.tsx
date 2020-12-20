@@ -1,9 +1,8 @@
-import { AuthService } from 'features/authentication';
+import { Form, formFields, OnFormSubmit } from 'common';
+import { AuthService } from 'features/auth';
 import React, { useState } from 'react';
 import { ComponentStyles, css } from 'theme';
 import { FetchState } from 'types';
-import Form, { OnFormSubmit } from './form';
-import { formFields } from './form-fields';
 
 const styles: ComponentStyles = {
   header: (theme) => css`
