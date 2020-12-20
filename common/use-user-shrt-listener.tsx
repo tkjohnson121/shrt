@@ -7,7 +7,11 @@ export const useUserShrtListener = (uid?: string) => {
   const authState = useAuth();
 
   const [state, setState] = React.useState<
-    FetchState<{ shrts: Array<ShrtDocument> }>
+    FetchState<{
+      shrts: Array<ShrtDocument>;
+      totalClicks: number;
+      mostVisited: ShrtDocument;
+    }>
   >({
     loading: true,
   });
@@ -21,7 +25,24 @@ export const useUserShrtListener = (uid?: string) => {
     if (currentUser) {
       unsubscribe = UserService.openShrtListener(
         uid || currentUser.uid,
-        (documents) => setState({ loading: false, data: { shrts: documents } }),
+        (documents) =>
+          setState({
+            loading: false,
+            data: {
+              shrts: documents,
+              totalClicks: documents.reduce(
+                (prev, curr) => prev + (curr.clicks || 0),
+                0,
+              ),
+              mostVisited: documents.reduce((prev, curr) => {
+                if (curr.clicks && prev.clicks && curr.clicks > prev.clicks) {
+                  return curr;
+                }
+
+                return prev;
+              }, documents[0]),
+            },
+          }),
         (error) => onUserShrtError(error),
       );
     } else {

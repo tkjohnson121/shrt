@@ -7,7 +7,6 @@ import {
   OnFormSubmit,
 } from 'common';
 import { useAuth } from 'features/authentication';
-import { ShrtSwal } from 'features/swal';
 import { UserService } from 'features/user';
 import React, { useState } from 'react';
 import { FetchState, LinkConfig } from 'types';
@@ -30,8 +29,7 @@ export function PLPForm() {
 
     await UserService.addPLPLink(currentUser.uid, linkConfig);
 
-    setStatus(null);
-    ShrtSwal.fire({ icon: 'success', title: 'Update Complete' });
+    setStatus({ type: 'success', message: 'Link added to PLP.' });
   };
 
   if (state.loading) return <Loading />;

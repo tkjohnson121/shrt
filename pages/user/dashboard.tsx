@@ -57,6 +57,16 @@ export default function ShrtDashboard() {
           User Dashboard
         </motion.h1>
 
+        {state.data && (
+          <ul>
+            <li>Total Clicks: {state.data?.totalClicks}</li>
+            <li>
+              Most Visited:{' '}
+              <ShrtCard as="span" shrt={state.data?.mostVisited} />
+            </li>
+          </ul>
+        )}
+
         <ShrtForm withId />
       </header>
 

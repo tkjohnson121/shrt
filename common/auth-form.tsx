@@ -1,5 +1,4 @@
 import { AuthService } from 'features/authentication';
-import { ShrtSwal } from 'features/swal';
 import React, { useState } from 'react';
 import { ComponentStyles, css } from 'theme';
 import { FetchState } from 'types';
@@ -85,9 +84,6 @@ export function AuthForm() {
     } else {
       await AuthService.signIn(email, password);
     }
-
-    setStatus(null);
-    ShrtSwal.fire({ icon: 'success', titleText: 'Success!' });
   };
 
   return state.data?.isNewUser ? (

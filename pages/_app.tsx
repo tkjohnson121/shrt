@@ -38,8 +38,8 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <AuthProvider>
-      <ThemeProvider>
+    <ThemeProvider>
+      <AuthProvider>
         <Head>
           <meta
             name="viewport"
@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Layout title="Shrt | A GVEMPIRE product">
           <Component {...pageProps} />
         </Layout>
-      </ThemeProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

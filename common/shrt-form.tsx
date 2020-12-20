@@ -17,7 +17,7 @@ export function ShrtForm({ withId }: { withId?: boolean }) {
         type: 'success',
         message: (
           <p>
-            Copied Shrt:{' '}
+            Shrt Copied:{' '}
             <a href={shrt_url} target="_new">
               {shrt_id}
             </a>
